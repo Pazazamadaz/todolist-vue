@@ -42,6 +42,16 @@
         </tbody>
       </table>
     </div>
+
+    <!-- Modal -->
+    <div v-if="showModal" class="modal">
+      <div class="modal-content">
+        <span class="modal-close" @click="showModal = false">&times;</span>
+        <h2 class="modal-title">Validation Error</h2>
+        <p class="modal-message">Please enter a task title.</p>
+        <button class="modal-btn" @click="showModal = false">OK</button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -53,6 +63,7 @@ export default {
   setup() {
     const todoItems = ref([]);
     const newTodoTitle = ref('');
+    const showModal = ref(false);
 
     const fetchTodoItems = async () => {
       try {
@@ -64,7 +75,10 @@ export default {
     };
 
     const addTodoItem = async () => {
-      if (!newTodoTitle.value.trim()) return;
+      if (!newTodoTitle.value.trim()) {
+        showModal.value = true;
+        return;
+      }
 
       try {
         const newTodo = { title: newTodoTitle.value, isCompleted: false };
@@ -103,6 +117,7 @@ export default {
       addTodoItem,
       toggleComplete,
       deleteTodoItem,
+      showModal,
     };
   },
 };
@@ -256,5 +271,60 @@ button:hover {
 
 button:active {
   transform: scale(0.98); /* Slightly scale down on click */
+}
+
+/* Modal styling */
+.modal {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000; /* Make sure modal is on top */
+}
+
+.modal-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 300px;
+  text-align: center;
+  position: relative;
+}
+
+.modal-title {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+
+.modal-message {
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.modal-btn {
+  background-color: #00796b;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.modal-btn:hover {
+  background-color: #004d40;
+}
+
+.modal-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  font-size: 24px;
 }
 </style>
