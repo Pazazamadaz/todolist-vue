@@ -14,7 +14,6 @@
         <thead>
         <tr>
           <th>Title</th>
-          <th>Complete</th>
           <th>Actions</th>
         </tr>
         </thead>
@@ -23,16 +22,6 @@
         <tr v-for="item in todoItems" :key="item.id">
           <td>
             <span :class="{ completed: item.isCompleted }">{{ item.title }}</span>
-          </td>
-          <td>
-            <label class="custom-checkbox">
-              <input
-                  type="checkbox"
-                  :checked="item.isCompleted"
-                  @change="toggleComplete(item)"
-              />
-              <span></span> <!-- Custom square checkbox -->
-            </label>
           </td>
           <td>
             <button @click="toggleComplete(item)">Complete</button>

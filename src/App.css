@@ -38,11 +38,7 @@ th:nth-child(1), td:nth-child(1) {
   width: 200px; /* Width for the title column */
 }
 
-th:nth-child(2), td:nth-child(2) {
-  width: 100px; /* Width for the complete column */
-}
-
-th:nth-child(3), td:nth-child(3) {
+th:nth-child(2), td:nth-child(3) {
   width: 300px; /* Width for the actions column */
 }
 
