@@ -12,38 +12,38 @@
     <div class="table-container">
       <table>
         <thead>
-          <tr>
-            <th>Title</th>
-            <th>Complete</th>
-            <th>Actions</th>
-          </tr>
+        <tr>
+          <th>Title</th>
+          <th>Complete</th>
+          <th>Actions</th>
+        </tr>
         </thead>
         <tbody>
-          <!-- Loop through the todo items -->
-          <tr v-for="item in todoItems" :key="item.id">
-            <td>
-              <span :class="{ completed: item.isCompleted }">{{ item.title }}</span>
-            </td>
-            <td>
-              <label class="custom-checkbox">
-                <input 
-                  type="checkbox" 
-                  :checked="item.isCompleted" 
+        <!-- Loop through the todo items -->
+        <tr v-for="item in todoItems" :key="item.id">
+          <td>
+            <span :class="{ completed: item.isCompleted }">{{ item.title }}</span>
+          </td>
+          <td>
+            <label class="custom-checkbox">
+              <input
+                  type="checkbox"
+                  :checked="item.isCompleted"
                   @change="toggleComplete(item)"
-                />
-                <span></span> <!-- Custom square checkbox -->
-              </label>
-            </td>
-            <td>
-              <button @click="toggleComplete(item)">Complete</button>
-              <button @click="deleteTodoItem(item.id)">Delete</button>
-            </td>
-          </tr>
+              />
+              <span></span> <!-- Custom square checkbox -->
+            </label>
+          </td>
+          <td>
+            <button @click="toggleComplete(item)">Complete</button>
+            <button @click="deleteTodoItem(item.id)">Delete</button>
+          </td>
+        </tr>
         </tbody>
       </table>
     </div>
-	
-	<!-- Loading modal -->
+
+    <!-- Loading modal -->
     <div v-if="loading" class="modal-overlay">
       <div class="modal-content">
         <div class="loading-spinner"></div>
@@ -51,12 +51,12 @@
       </div>
     </div>
 
-    <!-- Modal -->
-    <div v-if="showModal" class="modal">
+    <!-- Modal for error messages -->
+    <div v-if="showModal" class="modal-overlay">
       <div class="modal-content">
         <span class="modal-close" @click="showModal = false">&times;</span>
-        <h2 class="modal-title">Validation Error</h2>
-        <p class="modal-message">Please enter a task title.</p>
+        <h2 class="modal-title">{{ modalTitle }}</h2>
+        <p class="modal-message">{{ modalMessage }}</p>
         <button class="modal-btn" @click="showModal = false">OK</button>
       </div>
     </div>
@@ -74,6 +74,8 @@ export default {
     const newTodoTitle = ref('');
     const showModal = ref(false);
     const loading = ref(true); // Loading state
+    const modalTitle = ref(''); // Title for the modal
+    const modalMessage = ref(''); // Message for the modal
 
     const fetchTodoItems = async () => {
       loading.value = true; // Show loading modal
@@ -82,6 +84,9 @@ export default {
         todoItems.value = response.data;
       } catch (error) {
         console.error('Error fetching todo items:', error);
+        modalTitle.value = 'Fetch Error';
+        modalMessage.value = 'Failed to load todo items. Please try again later.';
+        showModal.value = true;
       } finally {
         loading.value = false; // Hide loading modal
       }
@@ -89,6 +94,8 @@ export default {
 
     const addTodoItem = async () => {
       if (!newTodoTitle.value.toString().trim()) {
+        modalTitle.value = 'Validation Error';
+        modalMessage.value = 'Please enter a task title.';
         showModal.value = true;
         return;
       }
@@ -100,6 +107,9 @@ export default {
         await fetchTodoItems(); // Reload todo items
       } catch (error) {
         console.error('Error adding todo item:', error);
+        modalTitle.value = 'Add Error';
+        modalMessage.value = 'Failed to add the new task. Please try again later.';
+        showModal.value = true;
       }
     };
 
@@ -110,6 +120,9 @@ export default {
         await fetchTodoItems(); // Reload the list
       } catch (error) {
         console.error('Error updating todo item:', error);
+        modalTitle.value = 'Update Error';
+        modalMessage.value = 'Failed to update the task. Please try again later.';
+        showModal.value = true;
       }
     };
 
@@ -119,6 +132,9 @@ export default {
         await fetchTodoItems(); // Reload the list
       } catch (error) {
         console.error('Error deleting todo item:', error);
+        modalTitle.value = 'Delete Error';
+        modalMessage.value = 'Failed to delete the task. Please try again later.';
+        showModal.value = true;
       }
     };
 
@@ -132,6 +148,8 @@ export default {
       deleteTodoItem,
       showModal,
       loading,
+      modalTitle,
+      modalMessage,
     };
   },
 };
