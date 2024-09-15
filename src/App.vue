@@ -24,7 +24,8 @@
             <span :class="{ completed: item.isCompleted }">{{ item.title }}</span>
           </td>
           <td>
-            <button @click="toggleComplete(item)">Complete</button>
+            <button v-if=!item.isCompleted @click="toggleComplete(item)">Complete</button>
+            <button v-if=item.isCompleted @click="toggleComplete(item)">Uncomplete</button>
             <button @click="deleteTodoItem(item.id)">Delete</button>
           </td>
         </tr>
@@ -33,7 +34,7 @@
     </div>
 
     <!-- Loading modal -->
-    <div v-if="loading" class="modal-overlay">
+    <div v-if="loading" class="modal">
       <div class="modal-content">
         <div class="loading-spinner"></div>
         <p>Loading...</p>
@@ -41,7 +42,7 @@
     </div>
 
     <!-- Modal for error messages -->
-    <div v-if="showModal" class="modal-overlay">
+    <div v-if="showModal" class="modal">
       <div class="modal-content">
         <span class="modal-close" @click="showModal = false">&times;</span>
         <h2 class="modal-title">{{ modalTitle }}</h2>
