@@ -48,8 +48,8 @@ th:nth-child(3), td:nth-child(3) {
 
 /* Custom checkbox styles */
 .custom-checkbox {
-  display: flex;
-  align-items: center;
+  display: inline;
+  /*align-items: center;*/
   position: relative;
   cursor: pointer;
   user-select: none;
