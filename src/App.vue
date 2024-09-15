@@ -88,7 +88,7 @@ export default {
     };
 
     const addTodoItem = async () => {
-      if (!newTodoTitle.value.trim()) {
+      if (!newTodoTitle.value.toString().trim()) {
         showModal.value = true;
         return;
       }
