@@ -66,7 +66,7 @@
 <script>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
-import './App.css'; // Import the CSS file
+import './App.css';
 
 export default {
   setup() {
