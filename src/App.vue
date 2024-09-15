@@ -42,6 +42,14 @@
         </tbody>
       </table>
     </div>
+	
+	<!-- Loading modal -->
+    <div v-if="loading" class="modal-overlay">
+      <div class="modal-content">
+        <div class="loading-spinner"></div>
+        <p>Loading...</p>
+      </div>
+    </div>
 
     <!-- Modal -->
     <div v-if="showModal" class="modal">
@@ -58,20 +66,24 @@
 <script>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
-import './App.css';
+import './App.css'; // Import the CSS file
 
 export default {
   setup() {
     const todoItems = ref([]);
     const newTodoTitle = ref('');
     const showModal = ref(false);
+    const loading = ref(true); // Loading state
 
     const fetchTodoItems = async () => {
+      loading.value = true; // Show loading modal
       try {
         const response = await axios.get('http://localhost:5000/api/TodoItems');
         todoItems.value = response.data;
       } catch (error) {
         console.error('Error fetching todo items:', error);
+      } finally {
+        loading.value = false; // Hide loading modal
       }
     };
 
@@ -119,6 +131,7 @@ export default {
       toggleComplete,
       deleteTodoItem,
       showModal,
+      loading,
     };
   },
 };
