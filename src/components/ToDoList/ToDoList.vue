@@ -1,12 +1,19 @@
 <template>
-  <div id="todo-list">
+  <div id="app">
     <h1>Todo List</h1>
 
-    <!-- Form for adding a new task -->
-    <form @submit.prevent="addTodoItem">
+    <!-- Add a div container to align the switch and input field -->
+    <div class="input-container">
+      <!-- The switch -->
+      <label class="switch">
+        <input type="checkbox" v-model="orderByCompleted">
+        <span class="slider round"></span>
+      </label>
+
+      <!-- The input field -->
       <input v-model="newTodoTitle" class="custom-input" placeholder="New task" />
-      <button type="submit">Add Task</button>
-    </form>
+      <button type="submit" @click="addTodoItem">Add Task</button>
+    </div>
 
     <!-- New div container for centering the table -->
     <div class="table-container">
@@ -18,8 +25,7 @@
           </tr>
         </thead>
         <tbody>
-          <!-- Sort the list before looping: uncompleted tasks first -->
-          <tr v-for="item in sortedTodoItems" :key="item.id">
+          <tr v-for="item in orderedTodoItems" :key="item.id">
             <td>
               <span :class="{ completed: item.isCompleted }">{{ item.title }}</span>
             </td>
@@ -54,9 +60,8 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import axios from 'axios';
-import '../../App.css';
 
 const todoItems = ref([]);
 const newTodoTitle = ref('');
@@ -64,11 +69,7 @@ const showModal = ref(false);
 const loading = ref(true);
 const modalTitle = ref('');
 const modalMessage = ref('');
-
-// Computed property to sort uncompleted tasks before completed ones
-const sortedTodoItems = computed(() => {
-  return [...todoItems.value].sort((a, b) => a.isCompleted - b.isCompleted);
-});
+const orderByCompleted = ref(false);
 
 const fetchTodoItems = async () => {
   loading.value = true;
@@ -86,7 +87,7 @@ const fetchTodoItems = async () => {
 };
 
 const addTodoItem = async () => {
-  if (!newTodoTitle.value.toString().trim()) {
+  if (!newTodoTitle.value.trim()) {
     modalTitle.value = 'Validation Error';
     modalMessage.value = 'Please enter a task title.';
     showModal.value = true;
@@ -96,8 +97,8 @@ const addTodoItem = async () => {
   try {
     const newTodo = { title: newTodoTitle.value, isCompleted: false };
     await axios.post('http://localhost:5000/api/TodoItems', newTodo);
-    newTodoTitle.value = ''; // Clear input
-    await fetchTodoItems(); // Reload todo items
+    newTodoTitle.value = '';
+    await fetchTodoItems();
   } catch (error) {
     console.error('Error adding todo item:', error);
     modalTitle.value = 'Add Error';
@@ -110,7 +111,7 @@ const toggleComplete = async (item) => {
   const updatedItem = { ...item, isCompleted: !item.isCompleted };
   try {
     await axios.put(`http://localhost:5000/api/TodoItems/${item.id}`, updatedItem);
-    await fetchTodoItems(); // Reload the list
+    await fetchTodoItems();
   } catch (error) {
     console.error('Error updating todo item:', error);
     modalTitle.value = 'Update Error';
@@ -122,7 +123,7 @@ const toggleComplete = async (item) => {
 const deleteTodoItem = async (id) => {
   try {
     await axios.delete(`http://localhost:5000/api/TodoItems/${id}`);
-    await fetchTodoItems(); // Reload the list
+    await fetchTodoItems();
   } catch (error) {
     console.error('Error deleting todo item:', error);
     modalTitle.value = 'Delete Error';
@@ -130,6 +131,12 @@ const deleteTodoItem = async (id) => {
     showModal.value = true;
   }
 };
+
+const orderedTodoItems = computed(() => {
+  return orderByCompleted.value
+    ? [...todoItems.value].sort((a, b) => Number(b.isCompleted) - Number(a.isCompleted)) // Completed on top
+    : [...todoItems.value].sort((a, b) => Number(a.isCompleted) - Number(b.isCompleted)); // Uncompleted on top
+});
 
 onMounted(fetchTodoItems);
 </script>
