@@ -12,23 +12,23 @@
     <div class="table-container">
       <table>
         <thead>
-        <tr>
-          <th>Title</th>
-          <th>Actions</th>
-        </tr>
+          <tr>
+            <th>Title</th>
+            <th>Actions</th>
+          </tr>
         </thead>
         <tbody>
-        <!-- Loop through the todo items -->
-        <tr v-for="item in todoItems" :key="item.id">
-          <td>
-            <span :class="{ completed: item.isCompleted }">{{ item.title }}</span>
-          </td>
-          <td>
-            <button v-if="!item.isCompleted" @click="toggleComplete(item)">Complete</button>
-            <button v-if="item.isCompleted" @click="toggleComplete(item)">Un-complete</button>
-            <button @click="deleteTodoItem(item.id)">Delete</button>
-          </td>
-        </tr>
+          <!-- Sort the list before looping: uncompleted tasks first -->
+          <tr v-for="item in sortedTodoItems" :key="item.id">
+            <td>
+              <span :class="{ completed: item.isCompleted }">{{ item.title }}</span>
+            </td>
+            <td>
+              <button v-if="!item.isCompleted" @click="toggleComplete(item)">Complete</button>
+              <button v-if="item.isCompleted" @click="toggleComplete(item)">Uncomplete</button>
+              <button @click="deleteTodoItem(item.id)">Delete</button>
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -54,8 +54,9 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import axios from 'axios';
+import '../../App.css';
 
 const todoItems = ref([]);
 const newTodoTitle = ref('');
@@ -63,6 +64,11 @@ const showModal = ref(false);
 const loading = ref(true);
 const modalTitle = ref('');
 const modalMessage = ref('');
+
+// Computed property to sort uncompleted tasks before completed ones
+const sortedTodoItems = computed(() => {
+  return [...todoItems.value].sort((a, b) => a.isCompleted - b.isCompleted);
+});
 
 const fetchTodoItems = async () => {
   loading.value = true;
