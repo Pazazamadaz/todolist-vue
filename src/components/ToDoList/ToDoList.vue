@@ -7,7 +7,7 @@
         <input type="checkbox" v-model="orderByCompleted">
         <span class="slider round"></span>
       </label>
-      <input v-model="newTodoTitle" class="custom-input" placeholder="New task" />
+      <input v-model="newTodoTitle" class="custom-input" placeholder="New task" @keyup.enter="addTodoItem" />
       <button @click="addTodoItem">Add Task</button>
     </div>
 
@@ -20,16 +20,16 @@
         </tr>
         </thead>
         <tbody>
-        <tr v-for="item in orderedTodoItems" :key="item.id">
-          <td>
-            <span :class="{ completed: item.isCompleted }">{{ item.title }}</span>
-          </td>
-          <td>
-            <button v-if="!item.isCompleted" @click="toggleComplete(item)">Complete</button>
-            <button v-if="item.isCompleted" @click="toggleComplete(item)">Uncomplete</button>
-            <button @click="deleteTodoItem(item.id)">Delete</button>
-          </td>
-        </tr>
+          <tr v-for="item in orderedTodoItems" :key="item.id">
+            <td>
+              <span :class="{ completed: item.isCompleted }">{{ item.title }}</span>
+            </td>
+            <td>
+              <button v-if="!item.isCompleted" @click="toggleComplete(item)">Complete</button>
+              <button v-if="item.isCompleted" @click="toggleComplete(item)">Uncomplete</button>
+              <button @click="deleteTodoItem(item.id)">Delete</button>
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>
@@ -56,7 +56,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { onMounted } from 'vue';
 import useTodoStore from '@/stores/useTodoStore';
 
 const {
@@ -68,14 +68,12 @@ const {
   showModal,
   modalTitle,
   modalMessage,
+  newTodoTitle,
   orderedTodoItems,
+  orderByCompleted,
 } = useTodoStore();
-
-const newTodoTitle = ref('');
-const orderByCompleted = ref(false);
 
 onMounted(() => {
   fetchTodoItems();
-  orderedTodoItems(orderByCompleted);
 });
 </script>
