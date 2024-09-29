@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <!-- Import the ToDoList component -->
     <ToDoList />
   </div>
 </template>
