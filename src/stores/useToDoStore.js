@@ -1,4 +1,4 @@
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import axios from 'axios';
 
 export default function useTodoStore() {
@@ -7,6 +7,8 @@ export default function useTodoStore() {
     const showModal = ref(false);
     const modalTitle = ref('');
     const modalMessage = ref('');
+    const orderByCompleted = ref(false);
+    const newTodoTitle = ref('');
 
     const fetchTodoItems = async () => {
         loading.value = true;
@@ -22,8 +24,8 @@ export default function useTodoStore() {
         }
     };
 
-    const addTodoItem = async (newTodoTitle) => {
-        if (!newTodoTitle.trim()) {
+    const addTodoItem = async () => {
+        if (!newTodoTitle.value.trim()) {
             showModal.value = true;
             modalTitle.value = 'Validation Error';
             modalMessage.value = 'Please enter a task title.';
@@ -31,9 +33,10 @@ export default function useTodoStore() {
         }
 
         try {
-            const newTodo = { title: newTodoTitle, isCompleted: false };
+            const newTodo = { title: newTodoTitle.value, isCompleted: false };
             await axios.post('http://localhost:5000/api/TodoItems', newTodo);
-            await fetchTodoItems();
+            newTodoTitle.value = ''; // Clear input after adding
+            await fetchTodoItems(); // Refresh the list after adding
         } catch (error) {
             showModal.value = true;
             modalTitle.value = 'Add Error';
@@ -45,7 +48,7 @@ export default function useTodoStore() {
         const updatedItem = { ...item, isCompleted: !item.isCompleted };
         try {
             await axios.put(`http://localhost:5000/api/TodoItems/${item.id}`, updatedItem);
-            await fetchTodoItems();
+            await fetchTodoItems(); // Refresh the list after toggling
         } catch (error) {
             showModal.value = true;
             modalTitle.value = 'Update Error';
@@ -56,7 +59,7 @@ export default function useTodoStore() {
     const deleteTodoItem = async (id) => {
         try {
             await axios.delete(`http://localhost:5000/api/TodoItems/${id}`);
-            await fetchTodoItems();
+            await fetchTodoItems(); // Refresh the list after deletion
         } catch (error) {
             showModal.value = true;
             modalTitle.value = 'Delete Error';
@@ -64,15 +67,15 @@ export default function useTodoStore() {
         }
     };
 
-    const orderedTodoItems = (orderByCompleted) => {
+    const orderedTodoItems = computed(() => {
         return todoItems.value.slice().sort((a, b) => {
-            if (orderByCompleted) {
-                return a.completed === b.completed ? 0 : a.completed ? 1 : -1;
+            if (orderByCompleted.value) {
+                return a.isCompleted === b.isCompleted ? 0 : a.isCompleted ? -1 : 1;
             } else {
-                return 0;
+                return a.isCompleted === b.isCompleted ? 0 : a.isCompleted ? 1 : -1;
             }
         });
-    };
+    });
 
     return {
         todoItems,
@@ -80,6 +83,8 @@ export default function useTodoStore() {
         showModal,
         modalTitle,
         modalMessage,
+        orderByCompleted,
+        newTodoTitle,
         fetchTodoItems,
         addTodoItem,
         toggleComplete,
