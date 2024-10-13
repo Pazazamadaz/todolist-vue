@@ -1,7 +1,10 @@
 import { ref, computed } from 'vue';
-import axios from 'axios';
+import http from '@/http';
+import useAuthStore from './useAuthStore'; // Import the auth store
 
 export default function useTodoStore() {
+    const { isAuthenticated } = useAuthStore();
+
     const todoItems = ref([]);
     const loading = ref(false);
     const showModal = ref(false);
@@ -11,9 +14,18 @@ export default function useTodoStore() {
     const newTodoTitle = ref('');
 
     const fetchTodoItems = async () => {
+		
+		if (!isAuthenticated()) {
+            showModal.value = true;
+            modalTitle.value = 'Authentication Error';
+            modalMessage.value = 'You must be logged in to view todo items.';
+            loading.value = false;
+            return; // Exit early if not authenticated
+        }
+		
         loading.value = true;
         try {
-            const response = await axios.get('http://localhost:5000/api/TodoItems');
+            const response = await http.get('/api/TodoItems');
             todoItems.value = response.data;
         } catch (error) {
             showModal.value = true;
@@ -34,7 +46,7 @@ export default function useTodoStore() {
 
         try {
             const newTodo = { title: newTodoTitle.value, isCompleted: false };
-            await axios.post('http://localhost:5000/api/TodoItems', newTodo);
+            await http.post('/api/TodoItems', newTodo);
             newTodoTitle.value = ''; // Clear input after adding
             await fetchTodoItems(); // Refresh the list after adding
         } catch (error) {
@@ -47,7 +59,7 @@ export default function useTodoStore() {
     const toggleComplete = async (item) => {
         const updatedItem = { ...item, isCompleted: !item.isCompleted };
         try {
-            await axios.put(`http://localhost:5000/api/TodoItems/${item.id}`, updatedItem);
+            await http.put(`/api/TodoItems/${item.id}`, updatedItem);
             await fetchTodoItems(); // Refresh the list after toggling
         } catch (error) {
             showModal.value = true;
@@ -58,7 +70,7 @@ export default function useTodoStore() {
 
     const deleteTodoItem = async (id) => {
         try {
-            await axios.delete(`http://localhost:5000/api/TodoItems/${id}`);
+            await http.delete(`/api/TodoItems/${id}`);
             await fetchTodoItems(); // Refresh the list after deletion
         } catch (error) {
             showModal.value = true;

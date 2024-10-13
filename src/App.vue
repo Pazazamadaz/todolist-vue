@@ -1,14 +1,11 @@
 <template>
-  <div id="app">
-    <ToDoList />
-  </div>
+  <router-view></router-view>  <!-- Displays either Login.vue or ToDoList.vue based on the route -->
 </template>
 
 <script setup>
-import ToDoList from './components/ToDoList/ToDoList.vue';
-import './App.css';
+// You can add imports here if you need any specific functionality or components.
 </script>
 
 <style>
-/* Add your global styles here */
+/* Add any global styles if needed */
 </style>

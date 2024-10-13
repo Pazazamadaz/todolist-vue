@@ -14,10 +14,10 @@
     <div class="table-container" v-if="orderedTodoItems.length > 0">
       <table>
         <thead>
-        <tr>
-          <th>Title</th>
-          <th>Actions</th>
-        </tr>
+          <tr>
+            <th>Title</th>
+            <th>Actions</th>
+          </tr>
         </thead>
         <tbody>
           <tr v-for="item in orderedTodoItems" :key="item.id">
