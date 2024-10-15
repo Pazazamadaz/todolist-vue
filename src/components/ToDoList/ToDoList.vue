@@ -57,7 +57,7 @@
 
 <script setup>
 import { onMounted } from 'vue';
-import useTodoStore from '@/stores/useTodoStore';
+import useTodoStore from '@/stores/useToDoStore';
 
 const {
   fetchTodoItems,

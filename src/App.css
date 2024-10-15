@@ -16,6 +16,21 @@
   margin-bottom: 20px; /* Optional spacing below */
 }
 
+/* Make the styles for inputs and buttons specific to the login form */
+.login-form .input-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-form input.custom-input {
+  margin-right: 10px; /* Adds spacing between the username and password inputs */
+}
+
+.login-form button {
+  margin-left: 10px; /* Adds spacing between the last input and the button */
+}
+
 /* Centering the table */
 .table-container {
   width: 600px; /* Set a fixed width for the table container */

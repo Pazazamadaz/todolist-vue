@@ -1,10 +1,12 @@
 <template>
   <div>
     <h2>Login</h2>
-    <form @submit.prevent="login">
-      <input v-model="username" placeholder="Username" required />
-      <input v-model="password" type="password" placeholder="Password" required />
-      <button type="submit">Login</button>
+    <form @submit.prevent="login" class="login-form">
+      <div class="input-container">
+        <input v-model="username" class="custom-input" placeholder="Username" required />
+        <input v-model="password" type="password" class="custom-input" placeholder="Password" required />
+        <button type="submit">Login</button>
+      </div>
     </form>
     <router-link to="/register">Don't have an account? Register here.</router-link> <!-- Add this line -->
   </div>
