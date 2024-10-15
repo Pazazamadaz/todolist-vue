@@ -1,9 +1,9 @@
 <template>
   <div>
     <h2>Register</h2>
-    <form @submit.prevent="register">
-      <input v-model="username" placeholder="Username" required />
-      <input v-model="password" type="password" placeholder="Password" required />
+    <form @submit.prevent="register" class="register-form">
+      <input v-model="username" class="custom-input" placeholder="Username" required />
+      <input v-model="password" class="custom-input" type="password" placeholder="Password" required />
       <button type="submit">Register</button>
     </form>
   </div>
