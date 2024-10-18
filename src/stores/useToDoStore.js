@@ -1,6 +1,6 @@
 import { ref, computed } from 'vue';
 import http from '@/http';
-import useAuthStore from './useAuthStore'; // Import the auth store
+import useAuthStore from './useAuthStore';
 
 export default function useTodoStore() {
     const { isAuthenticated } = useAuthStore();
@@ -47,8 +47,8 @@ export default function useTodoStore() {
         try {
             const newTodo = { title: newTodoTitle.value, isCompleted: false };
             await http.post('/api/TodoItems', newTodo);
-            newTodoTitle.value = ''; // Clear input after adding
-            await fetchTodoItems(); // Refresh the list after adding
+            newTodoTitle.value = '';
+            await fetchTodoItems();
         } catch (error) {
             showModal.value = true;
             modalTitle.value = 'Add Error';
@@ -60,7 +60,7 @@ export default function useTodoStore() {
         const updatedItem = { ...item, isCompleted: !item.isCompleted };
         try {
             await http.put(`/api/TodoItems/${item.id}`, updatedItem);
-            await fetchTodoItems(); // Refresh the list after toggling
+            await fetchTodoItems();
         } catch (error) {
             showModal.value = true;
             modalTitle.value = 'Update Error';
@@ -71,7 +71,7 @@ export default function useTodoStore() {
     const deleteTodoItem = async (id) => {
         try {
             await http.delete(`/api/TodoItems/${id}`);
-            await fetchTodoItems(); // Refresh the list after deletion
+            await fetchTodoItems();
         } catch (error) {
             showModal.value = true;
             modalTitle.value = 'Delete Error';

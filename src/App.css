@@ -17,32 +17,32 @@
 }
 
 /* Make the styles for inputs and buttons specific to the login form */
-.login-form .input-container {
+.login-inputs .input-container {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.login-form input.custom-input {
+.login-inputs input.custom-input {
   margin-right: 10px; /* Adds spacing between the username and password inputs */
 }
 
-.login-form button {
+.login-inputs button {
   margin-left: 10px; /* Adds spacing between the last input and the button */
 }
 
 /* Make the styles for inputs and buttons specific to the register form */
-.register-form .input-container {
+.register-inputs .input-container {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.register-form input.custom-input {
+.register-inputs input.custom-input {
   margin-right: 10px; /* Adds spacing between the username and password inputs */
 }
 
-.register-form button {
+.register-inputs button {
   margin-left: 10px; /* Adds spacing between the last input and the button */
 }
 
