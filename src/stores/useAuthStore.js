@@ -23,8 +23,8 @@ const useAuthStore = () => {
     try {
       const response = await http.post('/api/auth/login', { username: username.value, password: password.value });
       token.value = response.data.token;
-      localStorage.setItem('token', token.value);  // Store token locally
-      router.push('/todos');  // Redirect to TodoList after successful login
+      localStorage.setItem('token', token.value);
+      router.push('/todos');
     } catch (error) {
       console.error('Login failed:', error);
     }
@@ -32,15 +32,15 @@ const useAuthStore = () => {
 
   const logout = () => {
     token.value = null;
-    localStorage.removeItem('token');  // Remove token from storage
-    router.push('/login');  // Redirect to login page
+    localStorage.removeItem('token');
+    router.push('/login');
   };
 
   const isAuthenticated = () => {
     return !!localStorage.getItem('token');
   };
 
-  // Return the refs and methods for usage in components
+  // Return the refs and methods for usage in login and register components
   return { register, login, logout, isAuthenticated, username, password, token };
 };
 
