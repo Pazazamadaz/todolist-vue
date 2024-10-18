@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <button class="logout-button" @click="logout">Logout</button>
     <h1>Todo List</h1>
 
     <div class="input-container">
@@ -58,6 +59,7 @@
 <script setup>
 import { onMounted } from 'vue';
 import useTodoStore from '@/stores/useToDoStore';
+import useAuthStore from "@/stores/useAuthStore";
 
 const {
   fetchTodoItems,
@@ -72,6 +74,8 @@ const {
   orderedTodoItems,
   orderByCompleted,
 } = useTodoStore();
+
+const { logout } = useAuthStore();
 
 onMounted(() => {
   fetchTodoItems();

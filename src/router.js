@@ -17,9 +17,9 @@ const routes = [
     beforeEnter: (to, from, next) => {
       const authStore = useAuthStore();
       if (!authStore.isAuthenticated()) {
-        next('/login');  // Redirect to login if not authenticated
+        next('/login');
       } else {
-        next();  // Proceed to TodoList if authenticated
+        next();
       }
     },
   },
