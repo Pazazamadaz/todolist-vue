@@ -5,6 +5,16 @@ import useAuthStore from './stores/useAuthStore';
 import UserRegister from './components/UserRegister/UserRegister.vue';
 import AdminPanel from './components/Admin/AdminPanel.vue';
 
+// Reusable authentication guard
+const requireAuth = (to, from, next) => {
+  const authStore = useAuthStore();
+  if (!authStore.isAuthenticated()) {
+    next('/login');
+  } else {
+    next();
+  }
+};
+
 const routes = [
   {
     path: '/',
@@ -12,29 +22,15 @@ const routes = [
   },
   { path: '/login', component: Login },
   { path: '/register', component: UserRegister },
-  { 
-    path: '/todos', 
+  {
+    path: '/todos',
     component: ToDoList,
-    beforeEnter: (to, from, next) => {
-      const authStore = useAuthStore();
-      if (!authStore.isAuthenticated()) {
-        next('/login');
-      } else {
-        next();
-      }
-    },
+    beforeEnter: requireAuth, // Use the reusable auth guard
   },
   {
     path: '/adminpanel',
     component: AdminPanel,
-    beforeEnter: (to, from, next) => {
-      const authStore = useAuthStore();
-      if (!authStore.isAuthenticated()) {
-        next('/login');
-      } else {
-        next();
-      }
-    },
+    beforeEnter: requireAuth, // Use the reusable auth guard
   },
 ];
 
