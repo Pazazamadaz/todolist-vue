@@ -1,46 +1,40 @@
 import { ref, computed } from 'vue';
 import http from '@/http';
 import useAuthStore from './useAuthStore';
+import useShowModalStore from './useShowModalStore'; // Import the modal store
 
 export default function useTodoStore() {
     const { isAuthenticated } = useAuthStore();
+    const { openModal } = useShowModalStore(); // Destructure modal triggering function from useModalStore
 
     const todoItems = ref([]);
     const loading = ref(false);
-    const showModal = ref(false);
-    const modalTitle = ref('');
-    const modalMessage = ref('');
     const orderByCompleted = ref(false);
     const newTodoTitle = ref('');
 
+    // Fetch todo items
     const fetchTodoItems = async () => {
-		
-		if (!isAuthenticated()) {
-            showModal.value = true;
-            modalTitle.value = 'Authentication Error';
-            modalMessage.value = 'You must be logged in to view todo items.';
+        if (!isAuthenticated()) {
+            openModal('Authentication Error', 'You must be logged in to view todo items.');
             loading.value = false;
-            return; // Exit early if not authenticated
+            return;
         }
-		
+
         loading.value = true;
         try {
             const response = await http.get('/api/TodoItems');
             todoItems.value = response.data;
         } catch (error) {
-            showModal.value = true;
-            modalTitle.value = 'Fetch Error';
-            modalMessage.value = 'Failed to load todo items. Please try again later.';
+            openModal('Fetch Error', 'Failed to load todo items. Please try again later.');
         } finally {
             loading.value = false;
         }
     };
 
+    // Add a new todo item
     const addTodoItem = async () => {
         if (!newTodoTitle.value.trim()) {
-            showModal.value = true;
-            modalTitle.value = 'Validation Error';
-            modalMessage.value = 'Please enter a task title.';
+            openModal('Validation Error', 'Please enter a task title.');
             return;
         }
 
@@ -50,35 +44,32 @@ export default function useTodoStore() {
             newTodoTitle.value = '';
             await fetchTodoItems();
         } catch (error) {
-            showModal.value = true;
-            modalTitle.value = 'Add Error';
-            modalMessage.value = 'Failed to add the new task. Please try again later.';
+            openModal('Add Error', 'Failed to add the new task. Please try again later.');
         }
     };
 
+    // Toggle the completion status of a todo item
     const toggleComplete = async (item) => {
         const updatedItem = { ...item, isCompleted: !item.isCompleted };
         try {
             await http.put(`/api/TodoItems/${item.id}`, updatedItem);
             await fetchTodoItems();
         } catch (error) {
-            showModal.value = true;
-            modalTitle.value = 'Update Error';
-            modalMessage.value = 'Failed to update the task. Please try again later.';
+            openModal('Update Error', 'Failed to update the task. Please try again later.');
         }
     };
 
+    // Delete a todo item
     const deleteTodoItem = async (id) => {
         try {
             await http.delete(`/api/TodoItems/${id}`);
             await fetchTodoItems();
         } catch (error) {
-            showModal.value = true;
-            modalTitle.value = 'Delete Error';
-            modalMessage.value = 'Failed to delete the task. Please try again later.';
+            openModal('Delete Error', 'Failed to delete the task. Please try again later.');
         }
     };
 
+    // Sort the todo items based on completion status
     const orderedTodoItems = computed(() => {
         return todoItems.value.slice().sort((a, b) => {
             if (orderByCompleted.value) {
@@ -92,9 +83,6 @@ export default function useTodoStore() {
     return {
         todoItems,
         loading,
-        showModal,
-        modalTitle,
-        modalMessage,
         orderByCompleted,
         newTodoTitle,
         fetchTodoItems,

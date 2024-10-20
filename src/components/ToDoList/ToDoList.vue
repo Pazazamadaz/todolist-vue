@@ -15,22 +15,22 @@
     <div class="table-container" v-if="orderedTodoItems.length > 0">
       <table>
         <thead>
-          <tr>
-            <th>Title</th>
-            <th>Actions</th>
-          </tr>
+        <tr>
+          <th>Title</th>
+          <th>Actions</th>
+        </tr>
         </thead>
         <tbody>
-          <tr v-for="item in orderedTodoItems" :key="item.id">
-            <td>
-              <span :class="{ completed: item.isCompleted }">{{ item.title }}</span>
-            </td>
-            <td>
-              <button v-if="!item.isCompleted" @click="toggleComplete(item)">Complete</button>
-              <button v-if="item.isCompleted" @click="toggleComplete(item)">Uncomplete</button>
-              <button @click="deleteTodoItem(item.id)">Delete</button>
-            </td>
-          </tr>
+        <tr v-for="item in orderedTodoItems" :key="item.id">
+          <td>
+            <span :class="{ completed: item.isCompleted }">{{ item.title }}</span>
+          </td>
+          <td>
+            <button v-if="!item.isCompleted" @click="toggleComplete(item)">Complete</button>
+            <button v-if="item.isCompleted" @click="toggleComplete(item)">Uncomplete</button>
+            <button @click="deleteTodoItem(item.id)">Delete</button>
+          </td>
+        </tr>
         </tbody>
       </table>
     </div>
@@ -44,22 +44,15 @@
         <p>Loading...</p>
       </div>
     </div>
-
-    <div v-if="showModal" class="modal">
-      <div class="modal-content">
-        <span class="modal-close" @click="showModal = false">&times;</span>
-        <h2 class="modal-title">{{ modalTitle }}</h2>
-        <p class="modal-message">{{ modalMessage }}</p>
-        <button class="modal-btn" @click="showModal = false">OK</button>
-      </div>
-    </div>
+    <ShowModal />
   </div>
 </template>
 
 <script setup>
 import { onMounted } from 'vue';
 import useTodoStore from '@/stores/useToDoStore';
-import useAuthStore from "@/stores/useAuthStore";
+import useAuthStore from '@/stores/useAuthStore';
+import ShowModal from '@/components/Helpers/ShowModal.vue';
 
 const {
   fetchTodoItems,
@@ -67,9 +60,6 @@ const {
   toggleComplete,
   deleteTodoItem,
   loading,
-  showModal,
-  modalTitle,
-  modalMessage,
   newTodoTitle,
   orderedTodoItems,
   orderByCompleted,
