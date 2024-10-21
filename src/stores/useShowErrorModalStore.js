@@ -14,13 +14,13 @@ const closeModal = () => {
     showModal.value = false;
 };
 
-export default function useShowModalStore() {
+export default function useShowErrorModalStore() {
 
     return {
         showModal,
         modalTitle,
         modalMessage,
-        openModal,
+        openErrorModal: openModal,
         closeModal
     };
 }

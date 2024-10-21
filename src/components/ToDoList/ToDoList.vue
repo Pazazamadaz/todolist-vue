@@ -38,13 +38,9 @@
       <p>No tasks available.</p>
     </div>
 
-    <div v-if="loading" class="modal">
-      <div class="modal-content">
-        <div class="loading-spinner"></div>
-        <p>Loading...</p>
-      </div>
-    </div>
-    <ShowModal />
+    <ShowLoadingModal />
+    <ShowErrorModal />
+
   </div>
 </template>
 
@@ -52,14 +48,14 @@
 import { onMounted } from 'vue';
 import useTodoStore from '@/stores/useToDoStore';
 import useAuthStore from '@/stores/useAuthStore';
-import ShowModal from '@/components/Helpers/ShowModal.vue';
+import ShowErrorModal from '@/components/Helpers/ShowErrorModal.vue';
+import ShowLoadingModal from "@/components/Helpers/ShowLoadingModal.vue";
 
 const {
   fetchTodoItems,
   addTodoItem,
   toggleComplete,
   deleteTodoItem,
-  loading,
   newTodoTitle,
   orderedTodoItems,
   orderByCompleted,

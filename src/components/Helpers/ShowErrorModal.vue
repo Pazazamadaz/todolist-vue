@@ -10,7 +10,7 @@
 </template>
 
 <script setup>
-import useShowModalStore from '@/stores/useShowModalStore';
+import useShowErrorModalStore from '@/stores/useShowErrorModalStore';
 
-const { showModal, modalTitle, modalMessage, closeModal } = useShowModalStore();
+const { showModal, modalTitle, modalMessage, closeModal } = useShowErrorModalStore();
 </script>

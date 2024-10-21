@@ -1,40 +1,41 @@
 import { ref, computed } from 'vue';
 import http from '@/http';
 import useAuthStore from './useAuthStore';
-import useShowModalStore from './useShowModalStore'; // Import the modal store
+import useShowErrorModalStore from './useShowErrorModalStore'; // Import the modal store
+import useShowLoadingModalStore from "@/stores/useShowLoadingModalStore";
 
 export default function useTodoStore() {
     const { isAuthenticated } = useAuthStore();
-    const { openModal } = useShowModalStore(); // Destructure modal triggering function from useModalStore
+    const { openErrorModal } = useShowErrorModalStore(); // Destructure modal triggering function from useModalStore
+    const {  openLoadingModal, closeLoadingModal } = useShowLoadingModalStore();
 
     const todoItems = ref([]);
-    const loading = ref(false);
     const orderByCompleted = ref(false);
     const newTodoTitle = ref('');
 
     // Fetch todo items
     const fetchTodoItems = async () => {
         if (!isAuthenticated()) {
-            openModal('Authentication Error', 'You must be logged in to view todo items.');
-            loading.value = false;
+            openErrorModal('Authentication Error', 'You must be logged in to view todo items.');
+            closeLoadingModal();
             return;
         }
 
-        loading.value = true;
+        openLoadingModal();
         try {
             const response = await http.get('/api/TodoItems');
             todoItems.value = response.data;
         } catch (error) {
-            openModal('Fetch Error', 'Failed to load todo items. Please try again later.');
+            openErrorModal('Fetch Error', 'Failed to load todo items. Please try again later.');
         } finally {
-            loading.value = false;
+            closeLoadingModal();
         }
     };
 
     // Add a new todo item
     const addTodoItem = async () => {
         if (!newTodoTitle.value.trim()) {
-            openModal('Validation Error', 'Please enter a task title.');
+            openErrorModal('Validation Error', 'Please enter a task title.');
             return;
         }
 
@@ -44,7 +45,7 @@ export default function useTodoStore() {
             newTodoTitle.value = '';
             await fetchTodoItems();
         } catch (error) {
-            openModal('Add Error', 'Failed to add the new task. Please try again later.');
+            openErrorModal('Add Error', 'Failed to add the new task. Please try again later.');
         }
     };
 
@@ -55,7 +56,7 @@ export default function useTodoStore() {
             await http.put(`/api/TodoItems/${item.id}`, updatedItem);
             await fetchTodoItems();
         } catch (error) {
-            openModal('Update Error', 'Failed to update the task. Please try again later.');
+            openErrorModal('Update Error', 'Failed to update the task. Please try again later.');
         }
     };
 
@@ -65,7 +66,7 @@ export default function useTodoStore() {
             await http.delete(`/api/TodoItems/${id}`);
             await fetchTodoItems();
         } catch (error) {
-            openModal('Delete Error', 'Failed to delete the task. Please try again later.');
+            openErrorModal('Delete Error', 'Failed to delete the task. Please try again later.');
         }
     };
 
@@ -82,7 +83,6 @@ export default function useTodoStore() {
 
     return {
         todoItems,
-        loading,
         orderByCompleted,
         newTodoTitle,
         fetchTodoItems,
