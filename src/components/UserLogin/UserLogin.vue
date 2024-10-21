@@ -8,10 +8,14 @@
     </div>
     <router-link to="/register">Don't have an account? Register here.</router-link>
   </div>
+
+  <ShowErrorModal />
+  
 </template>
 
 <script setup>
 import useAuthStore from "@/stores/useAuthStore";
+import ShowErrorModal from "@/components/Helpers/ShowErrorModal.vue";
 
 const { login, username, password } = useAuthStore();
 </script>

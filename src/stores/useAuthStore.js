@@ -1,12 +1,14 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import http from '@/http';
+import useShowErrorModalStore from './useShowErrorModalStore';
 
 const useAuthStore = () => {
   const username = ref('');
   const password = ref('');
   const token = ref(null);
   const router = useRouter();
+  const { openErrorModal } = useShowErrorModalStore();
 
   const register = async () => {
     try {
@@ -14,8 +16,8 @@ const useAuthStore = () => {
       console.log('Registration successful:', response.data);
       await login();
     } catch (error) {
+      openErrorModal(`Registration failed: ${error}`);
       console.error('Registration failed:', error);
-      throw error;
     }
   };
 
@@ -26,6 +28,7 @@ const useAuthStore = () => {
       localStorage.setItem('token', token.value);
       router.push('/todos');
     } catch (error) {
+      openErrorModal(`Login failed: ${error}`);
       console.error('Login failed:', error);
     }
   };
