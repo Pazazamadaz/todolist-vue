@@ -1,15 +1,14 @@
 import { ref } from 'vue';
-import { debounce } from '@/utils/debouncer';
 
 const showLoadingModal = ref(false);
 
-const openLoadingModal = debounce(() => {
+const openLoadingModal = () => {
     showLoadingModal.value = true;
-}, 500);
-//
-const closeLoadingModal = debounce(() => {
+};
+
+const closeLoadingModal = () => {
     showLoadingModal.value = false;
-}, 500);
+};
 
 export default function useShowLoadingModalStore() {
     return {

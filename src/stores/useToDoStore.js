@@ -8,7 +8,6 @@ export default function useTodoStore() {
     const { isAuthenticated } = useAuthStore();
     const { openErrorModal } = useShowErrorModalStore(); // Destructure modal triggering function from useModalStore
     const {  openLoadingModal, closeLoadingModal } = useShowLoadingModalStore();
-
     const todoItems = ref([]);
     const orderByCompleted = ref(false);
     const newTodoTitle = ref('');
@@ -21,13 +20,24 @@ export default function useTodoStore() {
             return;
         }
 
-        openLoadingModal();
+        let loadingTimeout; // Declare the loading timeout variable
         try {
+            // Start a delayed timer for showing the loading modal
+            loadingTimeout = setTimeout(() => {
+                openLoadingModal();
+            }, 500); // 500ms delay
+
             const response = await http.get('/api/TodoItems');
             todoItems.value = response.data;
         } catch (error) {
             openErrorModal('Fetch Error', 'Failed to load todo items. Please try again later.');
         } finally {
+            // Clear the timeout if the fetch completes quickly
+            if (loadingTimeout) {
+                clearTimeout(loadingTimeout);
+            }
+
+            // Close the loading modal
             closeLoadingModal();
         }
     };

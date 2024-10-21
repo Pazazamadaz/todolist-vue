@@ -10,7 +10,7 @@
   </div>
 
   <ShowErrorModal />
-  
+
 </template>
 
 <script setup>
