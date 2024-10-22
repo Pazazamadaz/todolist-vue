@@ -2,14 +2,37 @@
   <div>
     <button class="admin-button" @click="() => $router.push('/todos')">Todos</button>
     <button class="logout-button" @click="logout">Logout</button>
+
     <h1>User List</h1>
+
+    <table v-if="users.length > 0">
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Email</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr v-for="user in users" :key="user.id">
+        <td>{{ user.id }}</td>
+        <td>{{ user.name }}</td>
+        <td>{{ user.email }}</td>
+      </tr>
+      </tbody>
+    </table>
+    <p v-else>No users available to display.</p>
   </div>
 </template>
 
 <script setup>
-// No need for additional logic here yet, but we can use setup for Composition API
-</script>
+import useAdminStore from '@/stores/useAdminStore';
+import { onMounted } from 'vue';
 
-<style scoped>
-/* Add any admin panel-specific styles here */
-</style>
+const adminStore = useAdminStore();
+const users = adminStore.users;
+
+onMounted(() => {
+  adminStore.fetchUsers();
+});
+</script>
