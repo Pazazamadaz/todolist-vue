@@ -1,7 +1,8 @@
 <template>
   <div>
-    <h1>Admin Panel</h1>
-    <p>This is the admin panel placeholder.</p>
+    <button class="admin-button" @click="() => $router.push('/todos')">Todos</button>
+    <button class="logout-button" @click="logout">Logout</button>
+    <h1>User List</h1>
   </div>
 </template>
 
