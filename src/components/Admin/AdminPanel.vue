@@ -29,10 +29,9 @@
 import useAdminStore from '@/stores/useAdminStore';
 import { onMounted } from 'vue';
 
-const adminStore = useAdminStore();
-const users = adminStore.users;
+const { fetchUsers, users } = useAdminStore();
 
 onMounted(() => {
-  adminStore.fetchUsers();
+  fetchUsers();
 });
 </script>
