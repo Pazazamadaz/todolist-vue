@@ -27,7 +27,7 @@ export default function useAdminStore() {
                     openLoadingModal();
                 }, 500);
 
-                const response = await http.get('/api/Users'); // Replace with actual endpoint
+                const response = await http.get('/api/Admin'); // Replace with actual endpoint
                 users.value = response.data;
             } catch (error) {
                 console.error('Fetch users error:', error);
@@ -43,7 +43,7 @@ export default function useAdminStore() {
         // Delete a user
         const deleteUser = async (id) => {
             try {
-                await http.delete(`/api/Users/${id}`);
+                await http.delete(`/api/Admin/${id}`);
                 await fetchUsers();
             } catch (error) {
                 openErrorModal('Delete Error', 'Failed to delete the user. Please try again later.');
