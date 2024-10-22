@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <button class="admin-button" @click="() => $router.push('/admin')">Admin</button>
     <button class="logout-button" @click="logout">Logout</button>
     <h1>Todo List</h1>
 

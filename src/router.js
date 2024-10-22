@@ -28,7 +28,7 @@ const routes = [
     beforeEnter: requireAuth, // Use the reusable auth guard
   },
   {
-    path: '/adminpanel',
+    path: '/admin',
     component: AdminPanel,
     beforeEnter: requireAuth, // Use the reusable auth guard
   },
