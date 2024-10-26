@@ -25,6 +25,17 @@ const useAuthStore = () => {
       }
     };
 
+    const registerOtherUser = async () => {
+      try {
+        const response = await http.post('/api/auth/register', { username: username.value, password: password.value });
+        console.log('Registration successful:', response.data);
+        return true;
+      } catch (error) {
+        openErrorModal(`Registration failed: ${error}`);
+        console.error('Registration failed:', error);
+      }
+    };
+
     const login = async () => {
       try {
         const response = await http.post('/api/auth/login', { username: username.value, password: password.value });
@@ -48,7 +59,7 @@ const useAuthStore = () => {
     };
 
     // Return the refs and methods for usage in login and register components
-    authStore = { register, login, logout, isAuthenticated, username, password, token };
+    authStore = { register, registerOtherUser, login, logout, isAuthenticated, username, password, token };
   }
 
   return authStore;

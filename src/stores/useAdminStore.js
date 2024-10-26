@@ -11,6 +11,7 @@ export default function useAdminStore() {
         const { isAuthenticated } = useAuthStore();
         const { openErrorModal } = useShowErrorModalStore();
         const { openLoadingModal, closeLoadingModal } = useShowLoadingModalStore();
+        const { openCreateUserModal } = useShowErrorModalStore();
         const users = ref([]); // Ensure users is always initialized
 
         // Fetch users with error handling
@@ -31,7 +32,7 @@ export default function useAdminStore() {
                 users.value = response.data;
             } catch (error) {
                 console.error('Fetch users error:', error);
-                openErrorModal('Fetch Error', 'Failed to load users. Please try again later.');
+                openErrorModal(`Failed to fetch users: ${error}`);
             } finally {
                 if (loadingTimeout) {
                     clearTimeout(loadingTimeout);
@@ -46,14 +47,20 @@ export default function useAdminStore() {
                 await http.delete(`/api/Admin/${id}`);
                 await fetchUsers();
             } catch (error) {
-                openErrorModal('Delete Error', 'Failed to delete the user. Please try again later.');
+                openErrorModal(`Failed to delete user: ${error}`);
             }
         };
+
+        const createUser = async () => {
+            openCreateUserModal();
+            //watch(users)
+        }
 
         adminStore = {
             users,
             fetchUsers,
             deleteUser,
+            createUser
         };
     }
 
