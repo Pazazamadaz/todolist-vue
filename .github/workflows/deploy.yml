@@ -3,7 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main  # This runs the workflow on commits to the main branch
+      - main  # This runs the workflow on commits to the main 
 
 jobs:
   build-deploy:
