@@ -1,5 +1,5 @@
 import { ref } from 'vue';
-import { useRouter } from 'vue-router';
+import router from '@/router';
 import http from '@/http';
 import useShowErrorModalStore from './useShowErrorModalStore';
 
@@ -11,7 +11,6 @@ const useAuthStore = () => {
     const username = ref('');
     const password = ref('');
     const token = ref(null);
-    const router = useRouter();
     const { openErrorModal } = useShowErrorModalStore();
 
     const register = async () => {
