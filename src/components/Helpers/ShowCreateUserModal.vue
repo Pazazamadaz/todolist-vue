@@ -1,5 +1,5 @@
 <template>
-  <div v-if="showModal" class="modal">
+  <div v-if="showCreateUserModal" class="modal">
     <div class="modal-content">
       <span class="modal-close" @click="closeModal">&times;</span>
       <h2 class="modal-title">{{ modalTitle }}</h2>
@@ -18,6 +18,6 @@
 import useCreateUserModalStore from '@/stores/useCreateUserModalStore';
 import useAuthStore from "@/stores/useAuthStore";
 
-const { showModal, modalTitle, modalMessage, closeModal, createUser } = useCreateUserModalStore();
+const { showCreateUserModal, modalTitle, modalMessage, closeModal, createUser } = useCreateUserModalStore();
 const { username, password } = useAuthStore();
 </script>

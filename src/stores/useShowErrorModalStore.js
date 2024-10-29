@@ -4,7 +4,7 @@ const showModal = ref(false);
 const modalTitle = ref('');
 const modalMessage = ref('');
 
-const openModal = (title, message) => {
+const openErrorModal = (title, message) => {
     modalTitle.value = title;
     modalMessage.value = message;
     showModal.value = true;
@@ -20,7 +20,7 @@ export default function useShowErrorModalStore() {
         showModal,
         modalTitle,
         modalMessage,
-        openErrorModal: openModal,
+        openErrorModal,
         closeModal
     };
 }

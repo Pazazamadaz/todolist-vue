@@ -1,15 +1,15 @@
 import { ref } from 'vue';
 import useAuthStore from "@/stores/useAuthStore";
 
-const showLoadingModal = ref(false);
+const showCreateUserModal = ref(false);
 const { registerOtherUser, password, username } = useAuthStore();
 
 const openCreateUserModal = () => {
-    showLoadingModal.value = true;
+    showCreateUserModal.value = true;
 };
 
 const closeCreateUserModal = () => {
-    showLoadingModal.value = false;
+    showCreateUserModal.value = false;
 };
 
 const createUser = () => {
@@ -20,7 +20,7 @@ const createUser = () => {
 
 export default function useCreateUserModalStore() {
     return {
-        showLoadingModal,
+        showCreateUserModal,
         openCreateUserModal,
         closeCreateUserModal,
         createUser
