@@ -53,7 +53,6 @@ export default function useAdminStore() {
 
         const createUser = async () => {
             openCreateUserModal();
-            //watch(users)
         }
 
         adminStore = {

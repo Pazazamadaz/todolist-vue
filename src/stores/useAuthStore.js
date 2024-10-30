@@ -10,6 +10,8 @@ const useAuthStore = () => {
     // Initialize the store once
     const username = ref('');
     const password = ref('');
+    const newUsername = ref('');
+    const newPassword = ref('');
     const token = ref(null);
     const { openErrorModal } = useShowErrorModalStore();
 
@@ -26,7 +28,7 @@ const useAuthStore = () => {
 
     const registerOtherUser = async () => {
       try {
-        const response = await http.post('/api/auth/register', { username: username.value, password: password.value });
+        const response = await http.post('/api/auth/register', { username: newUsername.value, password: newPassword.value });
         console.log('Registration successful:', response.data);
         return true;
       } catch (error) {
@@ -58,7 +60,7 @@ const useAuthStore = () => {
     };
 
     // Return the refs and methods for usage in login and register components
-    authStore = { register, registerOtherUser, login, logout, isAuthenticated, username, password, token };
+    authStore = { register, registerOtherUser, login, logout, isAuthenticated, username, password, newUsername, newPassword, token };
   }
 
   return authStore;

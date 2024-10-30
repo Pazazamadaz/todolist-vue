@@ -6,13 +6,10 @@
       <p class="modal-message">{{ modalMessage }}</p>
 
       <div class="form-container">
-        <!-- Align the inputs horizontally -->
         <div class="input-container">
-          <input v-model="username" class="custom-input" placeholder="Username" required @keyup.enter="register" />
-          <input v-model="password" class="custom-input" type="password" placeholder="Password" required @keyup.enter="register" />
+          <input v-model="newUsername" class="custom-input" placeholder="Enter username" autocomplete="off" required @keyup.enter="register" />
+          <input v-model="newPassword" class="custom-input" type="password" placeholder="Enter password" autocomplete="new-password" required @keyup.enter="register" />
         </div>
-
-        <!-- Align the buttons horizontally underneath the inputs -->
         <div class="button-container">
           <button @click="createUser">Create</button>
           <button class="modal-btn" @click="closeCreateUserModal">Cancel</button>
@@ -24,10 +21,8 @@
 
 <script setup>
 import useCreateUserModalStore from '@/stores/useCreateUserModalStore';
-import useAuthStore from "@/stores/useAuthStore";
 
-const { showCreateUserModal, modalTitle, modalMessage, closeCreateUserModal, createUser } = useCreateUserModalStore();
-const { username, password } = useAuthStore();
+const { showCreateUserModal, modalTitle, modalMessage, closeCreateUserModal, createUser, newUsername, newPassword } = useCreateUserModalStore();
 </script>
 
 <style scoped>
