@@ -1,7 +1,7 @@
 <template>
   <div v-if="showCreateUserModal" class="modal">
     <div class="modal-content">
-      <span class="modal-close" @click="closeModal">&times;</span>
+      <span class="modal-close" @click="closeCreateUserModal">&times;</span>
       <h2 class="modal-title">{{ modalTitle }}</h2>
       <p class="modal-message">{{ modalMessage }}</p>
 

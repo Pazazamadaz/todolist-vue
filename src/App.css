@@ -4,6 +4,10 @@
   margin-top: 40px;
 }
 
+body {
+  overflow-y: scroll; /* Forces a vertical scrollbar */
+}
+
 .completed {
   text-decoration: line-through;
 }
