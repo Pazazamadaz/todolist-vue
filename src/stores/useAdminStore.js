@@ -1,4 +1,4 @@
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import http from '@/http';
 import useAuthStore from './useAuthStore';
 import useShowErrorModalStore from './useShowErrorModalStore';
@@ -12,7 +12,8 @@ export default function useAdminStore() {
         const { openErrorModal } = useShowErrorModalStore();
         const { openLoadingModal, closeLoadingModal } = useShowLoadingModalStore();
         const { openCreateUserModal } = useShowErrorModalStore();
-        const users = ref([]); // Ensure users is always initialized
+        const users = ref([]);
+        const deleteUsername = ref('');
 
         // Fetch users with error handling
         const fetchUsers = async () => {
@@ -42,10 +43,11 @@ export default function useAdminStore() {
         };
 
         // Delete a user
-        const deleteUser = async (id) => {
+        const deleteUser = async () => {
             try {
-                await http.delete(`/api/Admin/${id}`);
+                await http.delete(`/api/Admin/${deleteUsername.value}`);
                 await fetchUsers();
+                deleteUsername.value = '';
             } catch (error) {
                 openErrorModal(`Failed to delete user: ${error}`);
             }
@@ -55,11 +57,18 @@ export default function useAdminStore() {
             openCreateUserModal();
         }
 
+        watch(deleteUsername, () => {
+            if (deleteUsername.value !== '') {
+                deleteUser();
+            }
+        });
+
         adminStore = {
             users,
             fetchUsers,
             deleteUser,
-            createUser
+            createUser,
+            deleteUsername
         };
     }
 

@@ -14,10 +14,10 @@
         </tr>
         </thead>
         <tbody>
-        <tr v-for="user in users" :key="user.id">
+        <tr v-for="user in users" :key="user">
           <td>{{ user }}</td>
           <td>
-            <button @click="deleteUser(user.id)">Delete</button>
+            <button @click="() => deleteUsername = user">Delete</button>
           </td>
         </tr>
         </tbody>
@@ -42,7 +42,7 @@ import ShowCreateUserModal from "@/components/Helpers/ShowCreateUserModal.vue"
 import useCreateUserModalStore from "@/stores/useCreateUserModalStore";
 import useAuthStore from "@/stores/useAuthStore";
 
-const { fetchUsers, users, deleteUser } = useAdminStore();
+const { fetchUsers, users, deleteUsername } = useAdminStore();
 const { openCreateUserModal } = useCreateUserModalStore();
 const { logout } = useAuthStore();
 
