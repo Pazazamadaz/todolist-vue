@@ -35,6 +35,7 @@
 
 <script setup>
 import useAdminStore from '@/stores/useAdminStore';
+import useAdminState from "@/state/useAdminState";
 import { onMounted } from 'vue';
 import ShowErrorModal from '@/components/Helpers/ShowErrorModal.vue';
 import ShowLoadingModal from "@/components/Helpers/ShowLoadingModal.vue";
@@ -42,7 +43,8 @@ import ShowCreateUserModal from "@/components/Helpers/ShowCreateUserModal.vue"
 import useCreateUserModalStore from "@/stores/useCreateUserModalStore";
 import useAuthStore from "@/stores/useAuthStore";
 
-const { fetchUsers, users, deleteUsername } = useAdminStore();
+const { fetchUsers } = useAdminStore();
+const { users, deleteUsername } = useAdminState();
 const { openCreateUserModal } = useCreateUserModalStore();
 const { logout } = useAuthStore();
 

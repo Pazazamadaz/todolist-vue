@@ -1,6 +1,6 @@
-import { ref } from 'vue';
 import router from '@/router';
 import http from '@/http';
+import useAuthState from '@/state/useAuthState';
 import useShowErrorModalStore from './useShowErrorModalStore';
 import useShowLoadingModalStore from "@/stores/useShowLoadingModalStore";
 
@@ -8,12 +8,7 @@ let authStore; // Singleton instance
 
 const useAuthStore = () => {
   if (!authStore) {
-    // Initialize the store once
-    const username = ref('');
-    const password = ref('');
-    const newUsername = ref('');
-    const newPassword = ref('');
-    const token = ref(null);
+    const { username, password, newUsername, newPassword, token } = useAuthState();
     const { openErrorModal } = useShowErrorModalStore();
     const { openLoadingModal, closeLoadingModal } = useShowLoadingModalStore();
 

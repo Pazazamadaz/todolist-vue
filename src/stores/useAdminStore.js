@@ -1,6 +1,7 @@
-import { ref, watch } from 'vue';
+import { watch } from 'vue';
 import http from '@/http';
 import useAuthStore from './useAuthStore';
+import useAdminState from '@/state/useAdminState'
 import useShowErrorModalStore from './useShowErrorModalStore';
 import useShowLoadingModalStore from "@/stores/useShowLoadingModalStore";
 import useCreateUserModalStore from "@/stores/useCreateUserModalStore";
@@ -9,12 +10,11 @@ let adminStore; // Singleton instance
 
 export default function useAdminStore() {
     if (!adminStore) {
+        const { users, deleteUsername } = useAdminState();
         const { isAuthenticated } = useAuthStore();
         const { openErrorModal } = useShowErrorModalStore();
         const { openLoadingModal, closeLoadingModal } = useShowLoadingModalStore();
         const { showCreateUserModal } = useCreateUserModalStore();
-        const users = ref([]);
-        const deleteUsername = ref('');
 
         // Fetch users with error handling
         const fetchUsers = async () => {
@@ -68,8 +68,7 @@ export default function useAdminStore() {
             users,
             fetchUsers,
             deleteUser,
-            createUser,
-            deleteUsername
+            createUser
         };
     }
 
