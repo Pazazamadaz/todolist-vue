@@ -10,12 +10,14 @@
   </div>
 
   <ShowErrorModal />
+  <ShowLoadingModal />
 
 </template>
 
 <script setup>
 import useAuthStore from "@/stores/useAuthStore";
 import ShowErrorModal from "@/components/Helpers/ShowErrorModal.vue";
+import ShowLoadingModal from "@/components/Helpers/ShowLoadingModal.vue";
 import {onMounted, ref} from "vue";
 
 const { login, username, password } = useAuthStore();
