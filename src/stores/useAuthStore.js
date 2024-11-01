@@ -2,6 +2,7 @@ import { ref } from 'vue';
 import router from '@/router';
 import http from '@/http';
 import useShowErrorModalStore from './useShowErrorModalStore';
+import useShowLoadingModalStore from "@/stores/useShowLoadingModalStore";
 
 let authStore; // Singleton instance
 
@@ -14,6 +15,7 @@ const useAuthStore = () => {
     const newPassword = ref('');
     const token = ref(null);
     const { openErrorModal } = useShowErrorModalStore();
+    const { openLoadingModal, closeLoadingModal } = useShowLoadingModalStore();
 
     const register = async () => {
       try {
@@ -38,14 +40,28 @@ const useAuthStore = () => {
     };
 
     const login = async () => {
+
+      let loadingTimeout;
+
       try {
+
+        loadingTimeout = setTimeout(() => {
+          openLoadingModal();
+        }, 500);
+
         const response = await http.post('/api/auth/login', { username: username.value, password: password.value });
         token.value = response.data.token;
         localStorage.setItem('token', token.value);
         router.push('/todos');
+
       } catch (error) {
         openErrorModal(`Login failed: ${error}`);
         console.error('Login failed:', error);
+      } finally {
+        if (loadingTimeout) {
+          clearTimeout(loadingTimeout);
+        }
+        closeLoadingModal();
       }
     };
 

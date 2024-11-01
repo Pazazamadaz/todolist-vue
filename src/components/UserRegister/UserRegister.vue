@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="showCreateUserModal">
     <h2>Register</h2>
     <div class="register-inputs">
       <input v-model="username" class="custom-input" placeholder="Username" required @keyup.enter="register" />
@@ -11,6 +11,8 @@
 
 <script setup>
 import useAuthStore from "@/stores/useAuthStore";
+import useCreateUserModalStore from "@/stores/useCreateUserModalStore";
 
 const { username, password, register} = useAuthStore();
+const { showCreateUserModal } = useCreateUserModalStore();
 </script>

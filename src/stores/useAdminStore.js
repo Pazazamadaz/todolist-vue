@@ -3,6 +3,7 @@ import http from '@/http';
 import useAuthStore from './useAuthStore';
 import useShowErrorModalStore from './useShowErrorModalStore';
 import useShowLoadingModalStore from "@/stores/useShowLoadingModalStore";
+import useCreateUserModalStore from "@/stores/useCreateUserModalStore";
 
 let adminStore; // Singleton instance
 
@@ -11,7 +12,7 @@ export default function useAdminStore() {
         const { isAuthenticated } = useAuthStore();
         const { openErrorModal } = useShowErrorModalStore();
         const { openLoadingModal, closeLoadingModal } = useShowLoadingModalStore();
-        const { openCreateUserModal } = useShowErrorModalStore();
+        const { showCreateUserModal } = useCreateUserModalStore();
         const users = ref([]);
         const deleteUsername = ref('');
 
@@ -54,7 +55,7 @@ export default function useAdminStore() {
         };
 
         const createUser = async () => {
-            openCreateUserModal();
+            showCreateUserModal.value = true;
         }
 
         watch(deleteUsername, () => {
