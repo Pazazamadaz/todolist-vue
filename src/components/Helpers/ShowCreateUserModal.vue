@@ -1,7 +1,7 @@
 <template>
   <div v-if="showCreateUserModal" class="modal">
     <div class="modal-content">
-      <span class="modal-close" @click="closeCreateUserModal">&times;</span>
+      <span class="modal-close" @click="(() => showCreateUserModal = false)">&times;</span>
       <h2 class="modal-title">{{ modalTitle }}</h2>
       <p class="modal-message">{{ modalMessage }}</p>
 
@@ -12,7 +12,7 @@
         </div>
         <div class="button-container">
           <button @click="createUser">Create</button>
-          <button class="modal-btn" @click="closeCreateUserModal">Cancel</button>
+          <button class="modal-btn" @click="(() => showCreateUserModal = false)">Cancel</button>
         </div>
       </div>
     </div>
@@ -21,8 +21,10 @@
 
 <script setup>
 import useCreateUserModalStore from '@/stores/useCreateUserModalStore';
+import useCreateUserModalState from "@/state/useCreateUserModalState";
 
-const { showCreateUserModal, modalTitle, modalMessage, closeCreateUserModal, createUser, newUsername, newPassword } = useCreateUserModalStore();
+const { createUser, newUsername, newPassword } = useCreateUserModalStore();
+const { showCreateUserModal } = useCreateUserModalState();
 </script>
 
 <style scoped>
