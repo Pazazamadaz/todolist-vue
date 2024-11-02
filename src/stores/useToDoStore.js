@@ -1,4 +1,4 @@
-import { computed } from 'vue';
+import { watchEffect } from 'vue';
 import http from '@/http';
 import useToDoState from '@/state/useToDoState';
 import useAuthStore from './useAuthStore';
@@ -7,7 +7,7 @@ import useShowLoadingModalStore from "@/stores/useShowLoadingModalStore";
 
 let todoStore; // Singleton instance
 
-export default function useTodoStore() {
+export default function useToDoStore() {
     if (!todoStore) {
         const { todoItems, orderedTodoItems, orderByCompleted, newTodoTitle } = useToDoState();
         const { isAuthenticated } = useAuthStore();
@@ -79,8 +79,8 @@ export default function useTodoStore() {
         };
 
         // Sort the todo items based on completion status
-        orderedTodoItems.value = computed(() => {
-            return todoItems.value.slice().sort((a, b) => {
+        watchEffect(() => {
+            orderedTodoItems.value = todoItems.value.slice().sort((a, b) => {
                 if (orderByCompleted.value) {
                     return a.isCompleted === b.isCompleted ? 0 : a.isCompleted ? -1 : 1;
                 } else {
@@ -90,14 +90,10 @@ export default function useTodoStore() {
         });
 
         todoStore = {
-            todoItems,
-            orderByCompleted,
-            newTodoTitle,
             fetchTodoItems,
             addTodoItem,
             toggleComplete,
-            deleteTodoItem,
-            orderedTodoItems,
+            deleteTodoItem
         };
     }
 
