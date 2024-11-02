@@ -1,4 +1,5 @@
-import { ref, readonly } from 'vue';
+import { readonly } from 'vue';
+import useCreateUserModalState from '@/state/useCreateUserModalState';
 import useAuthStore from "@/stores/useAuthStore";
 import useAuthState from '@/state/useAuthState';
 import useAdminStore from "@/stores/useAdminStore";
@@ -7,12 +8,10 @@ let createUserModalStore; // Singleton store instance
 
 export default function useCreateUserModalStore() {
     if (!createUserModalStore) {
+        const { showCreateUserModal } = useCreateUserModalState();
         const { registerOtherUser } = useAuthStore();
         const { newUsername, newPassword } = useAuthState();
         const { fetchUsers } = useAdminStore();
-
-        // Define modal visibility as a ref
-        const showCreateUserModal = ref(false);
 
         // Functions to control modal visibility
         const openModal = () => {

@@ -4,7 +4,7 @@ import useAuthStore from './useAuthStore';
 import useAdminState from '@/state/useAdminState'
 import useShowErrorModalStore from './useShowErrorModalStore';
 import useShowLoadingModalStore from "@/stores/useShowLoadingModalStore";
-import useCreateUserModalStore from "@/stores/useCreateUserModalStore";
+import useCreateUserModalState from "@/state/useCreateUserModalState";
 
 let adminStore; // Singleton instance
 
@@ -14,7 +14,7 @@ export default function useAdminStore() {
         const { isAuthenticated } = useAuthStore();
         const { openErrorModal } = useShowErrorModalStore();
         const { openLoadingModal, closeLoadingModal } = useShowLoadingModalStore();
-        const { showCreateUserModal } = useCreateUserModalStore();
+        const { showCreateUserModal } = useCreateUserModalState();
 
         // Fetch users with error handling
         const fetchUsers = async () => {
