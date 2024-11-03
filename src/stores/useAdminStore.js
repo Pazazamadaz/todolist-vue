@@ -46,7 +46,9 @@ export default function useAdminStore() {
         // Delete a user
         const deleteUser = async () => {
             try {
-                await http.delete(`/api/Admin/${deleteUsername.value}`);
+                await http.delete('/api/Admin/delete', {
+                    data: { Username: deleteUsername.value }
+                });
                 await fetchUsers();
                 deleteUsername.value = '';
             } catch (error) {
