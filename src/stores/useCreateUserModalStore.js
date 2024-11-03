@@ -1,5 +1,6 @@
 import { readonly } from 'vue';
 import useCreateUserModalState from '@/state/useCreateUserModalState';
+import useShowErrorModalState from "@/state/useShowErrorModalState";
 import useAuthStore from "@/stores/useAuthStore";
 import useAuthState from '@/state/useAuthState';
 import useAdminStore from "@/stores/useAdminStore";
@@ -9,6 +10,7 @@ let createUserModalStore; // Singleton store instance
 export default function useCreateUserModalStore() {
     if (!createUserModalStore) {
         const { showCreateUserModal } = useCreateUserModalState();
+        const { errorModalTitle, errorModalMessage, showErrorModal } = useShowErrorModalState();
         const { registerOtherUser } = useAuthStore();
         const { newUsername, newPassword } = useAuthState();
         const { fetchUsers } = useAdminStore();
@@ -26,11 +28,15 @@ export default function useCreateUserModalStore() {
         const createUser = async () => {
             const response = await registerOtherUser(newUsername.value, newPassword.value);
             if (response) {
-                closeModal();
-                newUsername.value = '';
-                newPassword.value = '';
                 fetchUsers();
+            } else {
+                errorModalTitle.value = "Bugger!";
+                errorModalMessage.value = "Failed to create user!";
+                showErrorModal.value = true
             }
+            newUsername.value = '';
+            newPassword.value = '';
+            closeModal();
         };
 
         // Define store

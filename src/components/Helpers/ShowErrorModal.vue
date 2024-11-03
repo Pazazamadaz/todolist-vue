@@ -12,5 +12,5 @@
 <script setup>
 import useShowErrorModalState from "@/state/useShowErrorModalState";
 
-const { showErrorModal, errorModalMessage} = useShowErrorModalState();
+const { showErrorModal, errorModalMessage, errorModalTitle} = useShowErrorModalState();
 </script>

@@ -1,6 +1,7 @@
 import router from '@/router';
 import http from '@/http';
 import useAuthState from '@/state/useAuthState';
+import useCreateUserModalState from "@/state/useCreateUserModalState";
 import useShowErrorModalStore from './useShowErrorModalStore';
 import useShowLoadingModalStore from "@/stores/useShowLoadingModalStore";
 
@@ -9,6 +10,7 @@ let authStore; // Singleton instance
 const useAuthStore = () => {
   if (!authStore) {
     const { username, password, newUsername, newPassword, token } = useAuthState();
+    const { showCreateUserModal } = useCreateUserModalState();
     const { openErrorModal } = useShowErrorModalStore();
     const { openLoadingModal, closeLoadingModal } = useShowLoadingModalStore();
 
@@ -30,6 +32,7 @@ const useAuthStore = () => {
         return true;
       } catch (error) {
         openErrorModal(`Registration failed: ${error}`);
+        showCreateUserModal.value = false;
         console.error('Registration failed:', error);
       }
     };
@@ -39,16 +42,13 @@ const useAuthStore = () => {
       let loadingTimeout;
 
       try {
-
         loadingTimeout = setTimeout(() => {
           openLoadingModal();
         }, 500);
-
         const response = await http.post('/api/auth/login', { username: username.value, password: password.value });
         token.value = response.data.token;
         localStorage.setItem('token', token.value);
         router.push('/todos');
-
       } catch (error) {
         openErrorModal(`Login failed: ${error}`);
         console.error('Login failed:', error);
