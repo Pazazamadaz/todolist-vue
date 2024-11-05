@@ -1,4 +1,3 @@
-import { readonly } from 'vue';
 import useCreateUserModalState from '@/state/useCreateUserModalState';
 import useShowErrorModalState from "@/state/useShowErrorModalState";
 import useAuthStore from "@/stores/useAuthStore";
@@ -15,7 +14,6 @@ export default function useCreateUserModalStore() {
         const { newUsername, newPassword } = useAuthState();
         const { fetchUsers } = useAdminStore();
 
-        // Functions to control modal visibility
         const openModal = () => {
             showCreateUserModal.value = true;
         };
@@ -24,7 +22,6 @@ export default function useCreateUserModalStore() {
             showCreateUserModal.value = false;
         };
 
-        // Function to create a user and handle modal state
         const createUser = async () => {
             const response = await registerOtherUser(newUsername.value, newPassword.value);
             if (response) {
@@ -41,7 +38,7 @@ export default function useCreateUserModalStore() {
 
         // Define store
         createUserModalStore = {
-            showCreateUserModal: readonly(showCreateUserModal),
+            showCreateUserModal,
             openModal,
             closeModal,
             createUser,

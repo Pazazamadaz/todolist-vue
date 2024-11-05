@@ -5,8 +5,9 @@ let createUserModal; // Singleton instance
 const useCreateUserModalState = () => {
     if (!createUserModal) {
         const showCreateUserModal = ref(false);
+        const inputRef = ref(null);
 
-        createUserModal = { showCreateUserModal };
+        createUserModal = { showCreateUserModal, inputRef};
     }
 
     return createUserModal;
