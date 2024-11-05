@@ -4,7 +4,7 @@
     <button class="logout-button" @click="logout">Logout</button>
 
     <h1>User List</h1>
-    <button class="create-user-button" @click="openCreateUserModal">Create User</button>
+    <button class="create-user-button" @click="(() => showCreateUserModal = true)">Create User</button>
     <div class="table-container" v-if="users.length > 0">
       <table >
         <thead>
@@ -35,15 +35,17 @@
 
 <script setup>
 import useAdminStore from '@/stores/useAdminStore';
+import useAdminState from "@/state/useAdminState";
 import { onMounted } from 'vue';
 import ShowErrorModal from '@/components/Helpers/ShowErrorModal.vue';
 import ShowLoadingModal from "@/components/Helpers/ShowLoadingModal.vue";
 import ShowCreateUserModal from "@/components/Helpers/ShowCreateUserModal.vue"
-import useCreateUserModalStore from "@/stores/useCreateUserModalStore";
+import useCreateUserModalState from "@/state/useCreateUserModalState";
 import useAuthStore from "@/stores/useAuthStore";
 
-const { fetchUsers, users, deleteUsername } = useAdminStore();
-const { openCreateUserModal } = useCreateUserModalStore();
+const { fetchUsers } = useAdminStore();
+const { users, deleteUsername } = useAdminState();
+const { showCreateUserModal } = useCreateUserModalState();
 const { logout } = useAuthStore();
 
 onMounted(() => {

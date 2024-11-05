@@ -1,18 +1,19 @@
-import { ref, readonly } from 'vue';
+import useCreateUserModalState from '@/state/useCreateUserModalState';
+import useShowErrorModalState from "@/state/useShowErrorModalState";
 import useAuthStore from "@/stores/useAuthStore";
+import useAuthState from '@/state/useAuthState';
 import useAdminStore from "@/stores/useAdminStore";
 
 let createUserModalStore; // Singleton store instance
 
 export default function useCreateUserModalStore() {
     if (!createUserModalStore) {
-        const { registerOtherUser, newUsername, newPassword } = useAuthStore();
+        const { showCreateUserModal } = useCreateUserModalState();
+        const { errorModalTitle, errorModalMessage, showErrorModal } = useShowErrorModalState();
+        const { registerOtherUser } = useAuthStore();
+        const { newUsername, newPassword } = useAuthState();
         const { fetchUsers } = useAdminStore();
 
-        // Define modal visibility as a ref
-        const showCreateUserModal = ref(false);
-
-        // Functions to control modal visibility
         const openModal = () => {
             showCreateUserModal.value = true;
         };
@@ -21,20 +22,23 @@ export default function useCreateUserModalStore() {
             showCreateUserModal.value = false;
         };
 
-        // Function to create a user and handle modal state
         const createUser = async () => {
             const response = await registerOtherUser(newUsername.value, newPassword.value);
             if (response) {
-                closeModal();
-                newUsername.value = '';
-                newPassword.value = '';
                 fetchUsers();
+            } else {
+                errorModalTitle.value = "Bugger!";
+                errorModalMessage.value = "Failed to create user!";
+                showErrorModal.value = true
             }
+            newUsername.value = '';
+            newPassword.value = '';
+            closeModal();
         };
 
         // Define store
         createUserModalStore = {
-            showCreateUserModal: readonly(showCreateUserModal),
+            showCreateUserModal,
             openModal,
             closeModal,
             createUser,

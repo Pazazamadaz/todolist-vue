@@ -1,26 +1,16 @@
-import { ref } from 'vue';
+import useShowErrorModalState from "@/state/useShowErrorModalState";
 
-const showModal = ref(false);
-const modalTitle = ref('');
-const modalMessage = ref('');
+const {showErrorModal, errorModalTitle, errorModalMessage } = useShowErrorModalState();
 
 const openErrorModal = (title, message) => {
-    modalTitle.value = title;
-    modalMessage.value = message;
-    showModal.value = true;
-};
-
-const closeModal = () => {
-    showModal.value = false;
+    errorModalTitle.value = title;
+    errorModalMessage.value = message;
+    showErrorModal.value = true;
 };
 
 export default function useShowErrorModalStore() {
 
     return {
-        showModal,
-        modalTitle,
-        modalMessage,
         openErrorModal,
-        closeModal
     };
 }

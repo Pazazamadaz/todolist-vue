@@ -47,20 +47,15 @@
 
 <script setup>
 import { onMounted } from 'vue';
-import useTodoStore from '@/stores/useToDoStore';
+import useToDoStore from '@/stores/useToDoStore';
+import useToDoState from '@/state/useToDoState';
 import useAuthStore from '@/stores/useAuthStore';
 import ShowErrorModal from '@/components/Helpers/ShowErrorModal.vue';
 import ShowLoadingModal from "@/components/Helpers/ShowLoadingModal.vue";
 
-const {
-  fetchTodoItems,
-  addTodoItem,
-  toggleComplete,
-  deleteTodoItem,
-  newTodoTitle,
-  orderedTodoItems,
-  orderByCompleted,
-} = useTodoStore();
+const { fetchTodoItems, addTodoItem, toggleComplete, deleteTodoItem } = useToDoStore();
+
+const { orderedTodoItems, newTodoTitle, orderByCompleted } = useToDoState();
 
 const { logout } = useAuthStore();
 

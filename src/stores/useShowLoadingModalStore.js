@@ -1,6 +1,6 @@
-import { ref } from 'vue';
+import { useShowLoadingModalState } from '@/state/useShowLoadingModalState';
 
-const showLoadingModal = ref(false);
+const { showLoadingModal } = useShowLoadingModalState;
 
 const openLoadingModal = () => {
     showLoadingModal.value = true;
