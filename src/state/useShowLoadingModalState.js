@@ -1,15 +1,15 @@
 import { ref } from 'vue';
 
-let errorModalState; // Singleton instance
+let loadModalState; // Singleton instance
 
-const useShowErrorModalState = () => {
-    if (!errorModalState) {
+const useShowLoadingModalState = () => {
+    if (!loadModalState) {
         const showLoadingModal = ref(false);
 
-        errorModalState = { showLoadingModal };
+        loadModalState = { showLoadingModal };
     }
 
-    return errorModalState;
+    return loadModalState;
 };
 
-export default useShowErrorModalState;
+export default useShowLoadingModalState;

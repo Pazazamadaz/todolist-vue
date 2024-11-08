@@ -2,8 +2,8 @@ import { watchEffect } from 'vue';
 import http from '@/http';
 import useToDoState from '@/state/useToDoState';
 import useAuthStore from './useAuthStore';
-import useShowErrorModalStore from './useShowErrorModalStore';
-import useShowLoadingModalStore from "@/stores/useShowLoadingModalStore";
+import useShowLoadingModalState from "@/state/useShowLoadingModalState";
+import useShowErrorModalState from "@/state/useShowErrorModalState";
 
 let todoStore; // Singleton instance
 
@@ -11,39 +11,45 @@ export default function useToDoStore() {
     if (!todoStore) {
         const { todoItems, orderedTodoItems, orderByCompleted, newTodoTitle } = useToDoState();
         const { isAuthenticated } = useAuthStore();
-        const { openErrorModal } = useShowErrorModalStore();
-        const { openLoadingModal, closeLoadingModal } = useShowLoadingModalStore();
+        const { showLoadingModal } = useShowLoadingModalState();
+        const { showErrorModal, errorModalTitle, errorModalMessage } = useShowErrorModalState();
 
         // Fetch todo items
         const fetchTodoItems = async () => {
             if (!isAuthenticated()) {
-                openErrorModal('Authentication Error', 'You must be logged in to view todo items.');
-                closeLoadingModal();
+                showErrorModal.value = true;
+                errorModalTitle.value = 'Authentication Error';
+                errorModalMessage.value = 'You must be logged in to view the user list';
+                showLoadingModal.value = false;
                 return;
             }
 
             let loadingTimeout;
             try {
                 loadingTimeout = setTimeout(() => {
-                    openLoadingModal();
+                    showLoadingModal.value = true;
                 }, 500);
 
                 const response = await http.get('/api/TodoItems');
                 todoItems.value = response.data;
             } catch (error) {
-                openErrorModal('Fetch Error', 'Failed to load todo items. Please try again later.');
+                showErrorModal.value = true;
+                errorModalTitle.value = 'Fetch Error';
+                errorModalMessage.value = 'Failed to load todo items';
             } finally {
                 if (loadingTimeout) {
                     clearTimeout(loadingTimeout);
                 }
-                closeLoadingModal();
+                showLoadingModal.value = false;
             }
         };
 
         // Add a new todo item
         const addTodoItem = async () => {
             if (!newTodoTitle.value.trim()) {
-                openErrorModal('Validation Error', 'Please enter a task title.');
+                showErrorModal.value = true;
+                errorModalTitle.value = 'Validation Error';
+                errorModalMessage.value = 'Please enter a valid task title';
                 return;
             }
 
@@ -53,20 +59,35 @@ export default function useToDoStore() {
                 newTodoTitle.value = '';
                 await fetchTodoItems();
             } catch (error) {
-                openErrorModal('Add Error', 'Failed to add the new task. Please try again later.');
+                showErrorModal.value = true;
+                errorModalTitle.value = 'Add Error';
+                errorModalMessage.value = 'Failed to add task';
             }
         };
 
-        // Toggle the completion status of a todo item
         const toggleComplete = async (item) => {
-            const updatedItem = { ...item, isCompleted: !item.isCompleted };
+            const initialStatus = item.isCompleted;
+            const updatedItem = { ...item, isCompleted: !initialStatus };
+
+            // Optimistically update the item locally
+            const index = todoItems.value.findIndex(todo => todo.id === item.id);
+            if (index !== -1) {
+                todoItems.value[index].isCompleted = updatedItem.isCompleted;
+            }
+
             try {
                 await http.put(`/api/TodoItems/${item.id}`, updatedItem);
-                await fetchTodoItems();
             } catch (error) {
-                openErrorModal('Update Error', 'Failed to update the task. Please try again later.');
+                // Revert the change if API call fails
+                if (index !== -1) {
+                    todoItems.value[index].isCompleted = initialStatus;
+                }
+                showErrorModal.value = true;
+                errorModalTitle.value = 'Update Error';
+                errorModalMessage.value = 'Failed to update task';
             }
         };
+
 
         // Delete a todo item
         const deleteTodoItem = async (id) => {
@@ -74,7 +95,9 @@ export default function useToDoStore() {
                 await http.delete(`/api/TodoItems/${id}`);
                 await fetchTodoItems();
             } catch (error) {
-                openErrorModal('Delete Error', 'Failed to delete the task. Please try again later.');
+                showErrorModal.value = true;
+                errorModalTitle.value = 'Delete Error';
+                errorModalMessage.value = 'Failed to delete task';
             }
         };
 

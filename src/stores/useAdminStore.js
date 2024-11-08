@@ -2,8 +2,8 @@ import { watch } from 'vue';
 import http from '@/http';
 import useAuthStore from './useAuthStore';
 import useAdminState from '@/state/useAdminState'
-import useShowErrorModalStore from './useShowErrorModalStore';
-import useShowLoadingModalStore from "@/stores/useShowLoadingModalStore";
+import useShowErrorModalState from '@/state/useShowErrorModalState';
+import useShowLoadingModalState from "@/state/useShowLoadingModalState";
 import useCreateUserModalState from "@/state/useCreateUserModalState";
 
 let adminStore; // Singleton instance
@@ -12,47 +12,63 @@ export default function useAdminStore() {
     if (!adminStore) {
         const { users, deleteUsername } = useAdminState();
         const { isAuthenticated } = useAuthStore();
-        const { openErrorModal } = useShowErrorModalStore();
-        const { openLoadingModal, closeLoadingModal } = useShowLoadingModalStore();
+        const { showErrorModal, errorModalTitle, errorModalMessage } = useShowErrorModalState();
+        const { showLoadingModal } = useShowLoadingModalState();
         const { showCreateUserModal } = useCreateUserModalState();
 
         // Fetch users with error handling
         const fetchUsers = async () => {
             if (!isAuthenticated()) {
-                openErrorModal('Authentication Error', 'You must be logged in to view the user list.');
-                closeLoadingModal();
+                showErrorModal.value = true;
+                errorModalTitle.value = 'Authentication Error';
+                errorModalMessage.value = 'You must be logged in to view the user list';
+                showLoadingModal.value = false;
                 return;
             }
 
             let loadingTimeout;
             try {
                 loadingTimeout = setTimeout(() => {
-                    openLoadingModal();
+                    showLoadingModal.value = true;
                 }, 500);
 
                 const response = await http.get('/api/Admin'); // Replace with actual endpoint
                 users.value = response.data;
             } catch (error) {
                 console.error('Fetch users error:', error);
-                openErrorModal(`Failed to fetch users: ${error}`);
+                showErrorModal.value = true;
+                errorModalTitle.value = 'Fetch Error';
+                errorModalMessage.value = `Failed to fetch users with error: ${error}`;
             } finally {
                 if (loadingTimeout) {
                     clearTimeout(loadingTimeout);
                 }
-                closeLoadingModal();
+                showLoadingModal.value = false;
             }
         };
 
-        // Delete a user
         const deleteUser = async () => {
             try {
                 await http.delete('/api/Admin/delete', {
                     data: { Username: deleteUsername.value }
                 });
-                await fetchUsers();
+
+                // Find the index of the user to delete
+                const userIndex = users.value.findIndex(
+                    user => user.username === deleteUsername.value
+                );
+
+                // Only update if the user was found
+                if (userIndex !== -1) {
+                    users.value.splice(userIndex, 1);
+                }
+
+                // Clear the username after successful deletion
                 deleteUsername.value = '';
             } catch (error) {
-                openErrorModal(`Failed to delete user: ${error}`);
+                showErrorModal.value = true;
+                errorModalTitle.value = 'Delete Error';
+                errorModalMessage.value = `Failed to delete user: ${error}`;
             }
         };
 

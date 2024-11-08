@@ -2,8 +2,8 @@ import router from '@/router';
 import http from '@/http';
 import useAuthState from '@/state/useAuthState';
 import useCreateUserModalState from "@/state/useCreateUserModalState";
-import useShowErrorModalStore from './useShowErrorModalStore';
-import useShowLoadingModalStore from "@/stores/useShowLoadingModalStore";
+import useShowErrorModalState from '@/state/useShowErrorModalState';
+import useShowLoadingModalState from "@/state/useShowLoadingModalState";
 
 let authStore; // Singleton instance
 
@@ -11,8 +11,8 @@ const useAuthStore = () => {
   if (!authStore) {
     const { username, password, newUsername, newPassword, token } = useAuthState();
     const { showCreateUserModal } = useCreateUserModalState();
-    const { openErrorModal } = useShowErrorModalStore();
-    const { openLoadingModal, closeLoadingModal } = useShowLoadingModalStore();
+    const { showErrorModal, errorModalTitle, errorModalMessage } = useShowErrorModalState();
+    const { showLoadingModal } = useShowLoadingModalState();
 
     const register = async () => {
       try {
@@ -20,7 +20,9 @@ const useAuthStore = () => {
         console.log('Registration successful:', response.data);
         await login();
       } catch (error) {
-        openErrorModal(`Registration failed: ${error}`);
+        showErrorModal.value = true;
+        errorModalTitle.value = 'Registration Error';
+        errorModalMessage.value = `Failed to register user with error: ${error}`;
         console.error('Registration failed:', error);
       }
     };
@@ -31,7 +33,9 @@ const useAuthStore = () => {
         console.log('Registration successful:', response.data);
         return true;
       } catch (error) {
-        openErrorModal(`Registration failed: ${error}`);
+        showErrorModal.value = true;
+        errorModalTitle.value = 'Create User Error';
+        errorModalMessage.value = `Failed to create user with error: ${error}`;
         showCreateUserModal.value = false;
         console.error('Registration failed:', error);
       }
@@ -43,20 +47,22 @@ const useAuthStore = () => {
 
       try {
         loadingTimeout = setTimeout(() => {
-          openLoadingModal();
+          showLoadingModal.value = true;
         }, 500);
         const response = await http.post('/api/auth/login', { username: username.value, password: password.value });
         token.value = response.data.token;
         localStorage.setItem('token', token.value);
         router.push('/todos');
       } catch (error) {
-        openErrorModal(`Login failed: ${error}`);
+        showErrorModal.value = true;
+        errorModalTitle.value = 'Login Error';
+        errorModalMessage.value = `Failed to login with error: ${error}`;
         console.error('Login failed:', error);
       } finally {
         if (loadingTimeout) {
           clearTimeout(loadingTimeout);
         }
-        closeLoadingModal();
+        showLoadingModal.value = false;
       }
     };
 

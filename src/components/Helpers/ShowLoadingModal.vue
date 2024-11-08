@@ -8,8 +8,7 @@
 </template>
 
 <script setup>
-import useShowLoadingModalStore from '@/stores/useShowLoadingModalStore';
+import useShowLoadingModalState from '@/state/useShowLoadingModalState';
 
-// Use the loading modal store to get reactive state
-const { showLoadingModal } = useShowLoadingModalStore();
+const { showLoadingModal } = useShowLoadingModalState();
 </script>
