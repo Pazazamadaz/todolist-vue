@@ -55,7 +55,7 @@ export default function useAdminStore() {
 
                 // Find the index of the user to delete
                 const userIndex = users.value.findIndex(
-                    user => user.username === deleteUsername.value
+                    user => user === deleteUsername.value
                 );
 
                 // Only update if the user was found
