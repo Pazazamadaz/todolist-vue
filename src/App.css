@@ -50,6 +50,10 @@ body {
   margin-left: 10px; /* Adds spacing between the last input and the button */
 }
 
+.register-button {
+  margin-top: 10px;
+}
+
 /* Centering the table */
 .table-container {
   width: 600px; /* Set a fixed width for the table container */

@@ -17,7 +17,7 @@
         <tr v-for="user in users" :key="user">
           <td>{{ user }}</td>
           <td>
-            <button @click="() => deleteUsername = user">Delete</button>
+            <button @click="deleteUsername = user">Delete</button>
           </td>
         </tr>
         </tbody>

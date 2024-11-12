@@ -84,7 +84,6 @@ const useAuthStore = () => {
       }
     })
 
-    // Return the refs and methods for usage in login and register components
     authStore = { register, registerOtherUser, login, logout, isAuthenticated, username, password, newUsername, newPassword, token };
   }
 
