@@ -6,9 +6,10 @@
       <input v-model="password" type="password" class="custom-input" placeholder="Password" required @keyup.enter="login" />
       <button @click="login">Login</button>
     </div>
-    <router-link to="/register">Don't have an account? Register here.</router-link>
+    <button @click="(() => registerUser = true)" class="custom-button">Register</button>
   </div>
 
+  <ShowCreateUserModal />
   <ShowErrorModal />
   <ShowLoadingModal />
 
@@ -16,11 +17,14 @@
 
 <script setup>
 import useAuthStore from "@/stores/useAuthStore";
+import useAuthState from '@/state/useAuthState';
 import ShowErrorModal from "@/components/Helpers/ShowErrorModal.vue";
 import ShowLoadingModal from "@/components/Helpers/ShowLoadingModal.vue";
+import ShowCreateUserModal from "@/components/Helpers/ShowCreateUserModal.vue";
 import {onMounted, ref} from "vue";
 
 const { login, username, password } = useAuthStore();
+const { registerUser } = useAuthState();
 
 const inputRef = ref(null)
 

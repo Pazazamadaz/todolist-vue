@@ -4,25 +4,27 @@ import useAuthState from '@/state/useAuthState';
 import useCreateUserModalState from "@/state/useCreateUserModalState";
 import useShowErrorModalState from '@/state/useShowErrorModalState';
 import useShowLoadingModalState from "@/state/useShowLoadingModalState";
+import {watch} from "vue";
 
 let authStore; // Singleton instance
 
 const useAuthStore = () => {
   if (!authStore) {
-    const { username, password, newUsername, newPassword, token } = useAuthState();
+    const { username, password, newUsername, newPassword, registerUser, token } = useAuthState();
     const { showCreateUserModal } = useCreateUserModalState();
     const { showErrorModal, errorModalTitle, errorModalMessage } = useShowErrorModalState();
     const { showLoadingModal } = useShowLoadingModalState();
 
     const register = async () => {
       try {
-        const response = await http.post('/api/auth/register', { username: username.value, password: password.value });
+        const response = await http.post('/api/auth/register', { username: newUsername.value, password: newPassword.value });
         console.log('Registration successful:', response.data);
         await login();
       } catch (error) {
         showErrorModal.value = true;
         errorModalTitle.value = 'Registration Error';
         errorModalMessage.value = `Failed to register user with error: ${error}`;
+        showCreateUserModal.value = false;
         console.error('Registration failed:', error);
       }
     };
@@ -75,6 +77,12 @@ const useAuthStore = () => {
     const isAuthenticated = () => {
       return !!localStorage.getItem('token');
     };
+
+    watch(registerUser, (newValue) => {
+      if (newValue === true) {
+        showErrorModal.value = true;
+      }
+    })
 
     // Return the refs and methods for usage in login and register components
     authStore = { register, registerOtherUser, login, logout, isAuthenticated, username, password, newUsername, newPassword, token };
