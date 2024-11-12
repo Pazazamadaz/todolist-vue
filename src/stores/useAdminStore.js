@@ -64,7 +64,7 @@ export default function useAdminStore() {
                 }
 
                 // Clear the username after successful deletion
-                deleteUsername.value = '';
+                deleteUsername.value = null;
             } catch (error) {
                 showErrorModal.value = true;
                 errorModalTitle.value = 'Delete Error';
@@ -77,7 +77,7 @@ export default function useAdminStore() {
         }
 
         watch(deleteUsername, () => {
-            if (deleteUsername.value !== '') {
+            if (deleteUsername.value !== null) {
                 deleteUser();
             }
         });

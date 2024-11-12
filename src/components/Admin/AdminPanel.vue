@@ -17,7 +17,7 @@
         <tr v-for="user in users" :key="user">
           <td>{{ user }}</td>
           <td>
-            <button @click="deleteUsername = user">Delete</button>
+            <button @click="deleteUser(user)">Delete</button>
           </td>
         </tr>
         </tbody>
@@ -47,6 +47,10 @@ const { fetchUsers } = useAdminStore();
 const { users, deleteUsername } = useAdminState();
 const { showCreateUserModal } = useCreateUserModalState();
 const { logout } = useAuthStore();
+
+function deleteUser(username) {
+  deleteUsername.value = username;
+}
 
 onMounted(() => {
   fetchUsers();

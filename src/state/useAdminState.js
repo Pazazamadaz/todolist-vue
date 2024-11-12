@@ -5,7 +5,7 @@ let AdminState; // Singleton instance
 const useAdminState = () => {
     if (!AdminState) {
         const users = ref([]);
-        const deleteUsername = ref('');
+        const deleteUsername = ref(null);
 
         AdminState = { users, deleteUsername };
     }

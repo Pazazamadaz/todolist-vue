@@ -11,7 +11,7 @@ export default function useCreateUserModalStore() {
         const { showCreateUserModal } = useCreateUserModalState();
         const { errorModalTitle, errorModalMessage, showErrorModal } = useShowErrorModalState();
         const { registerOtherUser } = useAuthStore();
-        const { newUsername, newPassword } = useAuthState();
+        const { newUsername, newPassword, registerUser } = useAuthState();
         const { fetchUsers } = useAdminStore();
 
         const openModal = () => {
@@ -25,7 +25,13 @@ export default function useCreateUserModalStore() {
         const createUser = async () => {
             const response = await registerOtherUser(newUsername.value, newPassword.value);
             if (response) {
-                fetchUsers();
+                if(registerUser.value.length > 0) {
+                    errorModalTitle.value = 'Registered User';
+                    errorModalMessage.value = 'User successfully created. You may now log in.';
+                    showErrorModal.value = true;
+                } else {
+                    fetchUsers();
+                }
             } else {
                 errorModalTitle.value = "Bugger!";
                 errorModalMessage.value = "Failed to create user!";
