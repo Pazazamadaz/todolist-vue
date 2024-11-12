@@ -80,7 +80,7 @@ const useAuthStore = () => {
 
     watch(registerUser, (newValue) => {
       if (newValue === true) {
-        showErrorModal.value = true;
+        showCreateUserModal.value = true;
       }
     })
 
