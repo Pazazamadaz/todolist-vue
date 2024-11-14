@@ -1,56 +1,57 @@
-import useCreateUserModalState from '@/state/useCreateUserModalState';
-import useShowErrorModalState from "@/state/useShowErrorModalState";
-import useAuthStore from "@/stores/useAuthStore";
-import useAuthState from '@/state/useAuthState';
-import useAdminStore from "@/stores/useAdminStore";
+import { defineStore } from 'pinia';
+import { ref } from 'vue';
+import { useShowErrorModalStore } from '@/stores/useShowErrorModalStore';
+import { useAuthStore } from '@/stores/useAuthStore';
+import { useAdminStore } from '@/stores/useAdminStore';
 
-let createUserModalStore; // Singleton store instance
+export const useCreateUserModalStore = defineStore('createUserModal', () => {
+    // State
+    const showCreateUserModal = ref(false);
+    const newUsername = ref('');
+    const newPassword = ref('');
 
-export default function useCreateUserModalStore() {
-    if (!createUserModalStore) {
-        const { showCreateUserModal } = useCreateUserModalState();
-        const { errorModalTitle, errorModalMessage, showErrorModal } = useShowErrorModalState();
-        const { registerOtherUser } = useAuthStore();
-        const { newUsername, newPassword, registerUser } = useAuthState();
-        const { fetchUsers } = useAdminStore();
+    // Dependency stores
+    const errorModalStore = useShowErrorModalStore();
+    const authStore = useAuthStore();
+    const adminStore = useAdminStore();
 
-        const openModal = () => {
-            showCreateUserModal.value = true;
-        };
+    // Actions
+    const openModal = () => {
+        showCreateUserModal.value = true;
+    };
 
-        const closeModal = () => {
-            showCreateUserModal.value = false;
-        };
+    const closeModal = () => {
+        showCreateUserModal.value = false;
+    };
 
-        const createUser = async () => {
-            const response = await registerOtherUser(newUsername.value, newPassword.value);
-            if (response) {
-                if(registerUser.value.length > 0) {
-                    errorModalTitle.value = 'Registered User';
-                    errorModalMessage.value = 'User successfully created. You may now log in.';
-                    showErrorModal.value = true;
-                } else {
-                    fetchUsers();
-                }
+    const createUser = async () => {
+        const response = await authStore.registerOtherUser(newUsername.value, newPassword.value);
+
+        if (response) {
+            if (authStore.registerUser) {
+                errorModalStore.errorModalTitle = 'Registered User';
+                errorModalStore.errorModalMessage = 'User successfully created. You may now log in.';
+                errorModalStore.showErrorModal = true;
             } else {
-                errorModalTitle.value = "Bugger!";
-                errorModalMessage.value = "Failed to create user!";
-                showErrorModal.value = true
+                adminStore.fetchUsers();
             }
-            newUsername.value = '';
-            newPassword.value = '';
-            closeModal();
-        };
+        } else {
+            errorModalStore.errorModalTitle = "Bugger!";
+            errorModalStore.errorModalMessage = "Failed to create user!";
+            errorModalStore.showErrorModal = true;
+        }
 
-        // Define store
-        createUserModalStore = {
-            showCreateUserModal,
-            openModal,
-            closeModal,
-            createUser,
-            newUsername,
-            newPassword,
-        };
-    }
-    return createUserModalStore;
-}
+        newUsername.value = '';
+        newPassword.value = '';
+        closeModal();
+    };
+
+    return {
+        showCreateUserModal,
+        openModal,
+        closeModal,
+        createUser,
+        newUsername,
+        newPassword,
+    };
+});
