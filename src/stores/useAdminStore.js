@@ -1,94 +1,90 @@
-import { watch } from 'vue';
+import { defineStore } from 'pinia';
+import { ref, watch } from 'vue';
 import http from '@/http';
-import useAuthStore from './useAuthStore';
-import useAdminState from '@/state/useAdminState'
-import useShowErrorModalState from '@/state/useShowErrorModalState';
-import useShowLoadingModalState from "@/state/useShowLoadingModalState";
-import useCreateUserModalState from "@/state/useCreateUserModalState";
+import { useAuthStore } from '@/stores/useAuthStore';
+import { useShowErrorModalStore } from '@/stores/useShowErrorModalStore';
+import { useShowLoadingModalStore } from '@/stores/useShowLoadingModalStore';
+import { useCreateUserModalStore } from '@/stores/useCreateUserModalStore';
 
-let adminStore; // Singleton instance
+export const useAdminStore = defineStore('admin', () => {
+    // State
+    const users = ref([]);
+    const deleteUsername = ref(null);
 
-export default function useAdminStore() {
-    if (!adminStore) {
-        const { users, deleteUsername } = useAdminState();
-        const { isAuthenticated } = useAuthStore();
-        const { showErrorModal, errorModalTitle, errorModalMessage } = useShowErrorModalState();
-        const { showLoadingModal } = useShowLoadingModalState();
-        const { showCreateUserModal } = useCreateUserModalState();
+    // Dependency stores
+    const authStore = useAuthStore();
+    const errorModalStore = useShowErrorModalStore();
+    const loadingModalStore = useShowLoadingModalStore();
+    const createUserModalStore = useCreateUserModalStore();
 
-        // Fetch users with error handling
-        const fetchUsers = async () => {
-            if (!isAuthenticated()) {
-                showErrorModal.value = true;
-                errorModalTitle.value = 'Authentication Error';
-                errorModalMessage.value = 'You must be logged in to view the user list';
-                showLoadingModal.value = false;
-                return;
-            }
-
-            let loadingTimeout;
-            try {
-                loadingTimeout = setTimeout(() => {
-                    showLoadingModal.value = true;
-                }, 500);
-
-                const response = await http.get('/api/Admin'); // Replace with actual endpoint
-                users.value = response.data;
-            } catch (error) {
-                console.error('Fetch users error:', error);
-                showErrorModal.value = true;
-                errorModalTitle.value = 'Fetch Error';
-                errorModalMessage.value = `Failed to fetch users with error: ${error}`;
-            } finally {
-                if (loadingTimeout) {
-                    clearTimeout(loadingTimeout);
-                }
-                showLoadingModal.value = false;
-            }
-        };
-
-        const deleteUser = async () => {
-            try {
-                await http.delete('/api/Admin/delete', {
-                    data: { Username: deleteUsername.value }
-                });
-
-                // Find the index of the user to delete
-                const userIndex = users.value.findIndex(
-                    user => user === deleteUsername.value
-                );
-
-                // Only update if the user was found
-                if (userIndex !== -1) {
-                    users.value.splice(userIndex, 1);
-                }
-
-                // Clear the username after successful deletion
-                deleteUsername.value = null;
-            } catch (error) {
-                showErrorModal.value = true;
-                errorModalTitle.value = 'Delete Error';
-                errorModalMessage.value = `Failed to delete user: ${error}`;
-            }
-        };
-
-        const createUser = async () => {
-            showCreateUserModal.value = true;
+    // Fetch users with error handling
+    const fetchUsers = async () => {
+        if (!authStore.isAuthenticated()) {
+            errorModalStore.showErrorModal = true;
+            errorModalStore.errorModalTitle = 'Authentication Error';
+            errorModalStore.errorModalMessage = 'You must be logged in to view the user list';
+            loadingModalStore.showLoadingModal = false;
+            return;
         }
 
-        watch(deleteUsername, () => {
-            if (deleteUsername.value !== null) {
-                deleteUser();
+        let loadingTimeout;
+        try {
+            loadingTimeout = setTimeout(() => {
+                loadingModalStore.showLoadingModal = true;
+            }, 500);
+
+            const response = await http.get('/api/Admin'); // Replace with actual endpoint
+            users.value = response.data;
+        } catch (error) {
+            console.error('Fetch users error:', error);
+            errorModalStore.showErrorModal = true;
+            errorModalStore.errorModalTitle = 'Fetch Error';
+            errorModalStore.errorModalMessage = `Failed to fetch users with error: ${error}`;
+        } finally {
+            if (loadingTimeout) {
+                clearTimeout(loadingTimeout);
             }
-        });
+            loadingModalStore.showLoadingModal = false;
+        }
+    };
 
-        adminStore = {
-            users,
-            fetchUsers,
-            deleteUser,
-            createUser
-        };
-    }
+    const deleteUser = async () => {
+        try {
+            await http.delete('/api/Admin/delete', {
+                data: { Username: deleteUsername.value }
+            });
 
-    return adminStore;
-}
+            // Remove the user from the local state after successful deletion
+            const userIndex = users.value.findIndex(user => user === deleteUsername.value);
+            if (userIndex !== -1) {
+                users.value.splice(userIndex, 1);
+            }
+
+            // Clear the username after successful deletion
+            deleteUsername.value = null;
+        } catch (error) {
+            errorModalStore.showErrorModal = true;
+            errorModalStore.errorModalTitle = 'Delete Error';
+            errorModalStore.errorModalMessage = `Failed to delete user: ${error}`;
+        }
+    };
+
+    const createUser = () => {
+        createUserModalStore.showCreateUserModal = true;
+    };
+
+    // Watch `deleteUsername` and delete user if it's set
+    watch(deleteUsername, (newValue) => {
+        if (newValue !== null) {
+            deleteUser();
+        }
+    });
+
+    return {
+        users,
+        fetchUsers,
+        deleteUser,
+        createUser,
+        deleteUsername,
+    };
+});
