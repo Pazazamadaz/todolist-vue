@@ -6,7 +6,7 @@
       <input v-model="password" type="password" class="custom-input" placeholder="Password" required @keyup.enter="login" />
       <button @click="login">Login</button>
     </div>
-    <button @click="(() => registerUser = true)" class="custom-button register-button">Register</button>
+    <button @click="registerUser.value = true" class="custom-button register-button">Register</button>
   </div>
 
   <ShowCreateUserModal />
