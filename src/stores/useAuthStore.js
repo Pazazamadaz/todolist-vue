@@ -1,93 +1,97 @@
+import { defineStore } from 'pinia';
 import router from '@/router';
 import http from '@/http';
-import useAuthState from '@/state/useAuthState';
-import useCreateUserModalState from "@/state/useCreateUserModalState";
-import useShowErrorModalState from '@/state/useShowErrorModalState';
-import useShowLoadingModalState from "@/state/useShowLoadingModalState";
-import {watch} from "vue";
+import { ref, watch } from 'vue';
+import useCreateUserModalStore from '@/stores/useCreateUserModalStore';
+import useShowErrorModalStore from '@/stores/useShowErrorModalStore';
+import useShowLoadingModalStore from '@/stores/useShowLoadingModalStore';
 
-let authStore; // Singleton instance
+export const useAuthStore = defineStore('auth', () => {
+  const username = ref('');
+  const password = ref('');
+  const newUsername = ref('');
+  const newPassword = ref('');
+  const token = ref(localStorage.getItem('token') || null);
 
-const useAuthStore = () => {
-  if (!authStore) {
-    const { username, password, newUsername, newPassword, registerUser, token } = useAuthState();
-    const { showCreateUserModal } = useCreateUserModalState();
-    const { showErrorModal, errorModalTitle, errorModalMessage } = useShowErrorModalState();
-    const { showLoadingModal } = useShowLoadingModalState();
+  const createUserModalStore = useCreateUserModalStore();
+  const errorModalStore = useShowErrorModalStore();
+  const loadingModalStore = useShowLoadingModalStore();
 
-    const register = async () => {
-      try {
-        const response = await http.post('/api/auth/register', { username: newUsername.value, password: newPassword.value });
-        console.log('Registration successful:', response.data);
-        await login();
-      } catch (error) {
-        showErrorModal.value = true;
-        errorModalTitle.value = 'Registration Error';
-        errorModalMessage.value = `Failed to register user with error: ${error}`;
-        showCreateUserModal.value = false;
-        console.error('Registration failed:', error);
-      }
-    };
+  const register = async () => {
+    try {
+      const response = await http.post('/api/auth/register', { username: newUsername.value, password: newPassword.value });
+      console.log('Registration successful:', response.data);
+      await login(); // Automatically log in after registration
+    } catch (error) {
+      errorModalStore.showErrorModal = true;
+      errorModalStore.errorModalTitle = 'Registration Error';
+      errorModalStore.errorModalMessage = `Failed to register user with error: ${error}`;
+      createUserModalStore.showCreateUserModal = false;
+      console.error('Registration failed:', error);
+    }
+  };
 
-    const registerOtherUser = async () => {
-      try {
-        const response = await http.post('/api/auth/register', { username: newUsername.value, password: newPassword.value });
-        console.log('Registration successful:', response.data);
-        return true;
-      } catch (error) {
-        showErrorModal.value = true;
-        errorModalTitle.value = 'Create User Error';
-        errorModalMessage.value = `Failed to create user with error: ${error}`;
-        showCreateUserModal.value = false;
-        console.error('Registration failed:', error);
-      }
-    };
+  const registerOtherUser = async () => {
+    try {
+      const response = await http.post('/api/auth/register', { username: newUsername.value, password: newPassword.value });
+      console.log('Registration successful:', response.data);
+      return true;
+    } catch (error) {
+      errorModalStore.showErrorModal = true;
+      errorModalStore.errorModalTitle = 'Create User Error';
+      errorModalStore.errorModalMessage = `Failed to create user with error: ${error}`;
+      createUserModalStore.showCreateUserModal = false;
+      console.error('Registration failed:', error);
+    }
+  };
 
-    const login = async () => {
+  const login = async () => {
+    let loadingTimeout;
 
-      let loadingTimeout;
+    try {
+      loadingTimeout = setTimeout(() => {
+        loadingModalStore.showLoadingModal = true;
+      }, 500);
 
-      try {
-        loadingTimeout = setTimeout(() => {
-          showLoadingModal.value = true;
-        }, 500);
-        const response = await http.post('/api/auth/login', { username: username.value, password: password.value });
-        token.value = response.data.token;
-        localStorage.setItem('token', token.value);
-        router.push('/todos');
-      } catch (error) {
-        showErrorModal.value = true;
-        errorModalTitle.value = 'Login Error';
-        errorModalMessage.value = `Failed to login with error: ${error}`;
-        console.error('Login failed:', error);
-      } finally {
-        if (loadingTimeout) {
-          clearTimeout(loadingTimeout);
-        }
-        showLoadingModal.value = false;
-      }
-    };
+      const response = await http.post('/api/auth/login', { username: username.value, password: password.value });
+      token.value = response.data.token;
+      localStorage.setItem('token', token.value);
+      router.push('/todos');
+    } catch (error) {
+      errorModalStore.showErrorModal = true;
+      errorModalStore.errorModalTitle = 'Login Error';
+      errorModalStore.errorModalMessage = `Failed to login with error: ${error}`;
+      console.error('Login failed:', error);
+    } finally {
+      if (loadingTimeout) clearTimeout(loadingTimeout);
+      loadingModalStore.showLoadingModal = false;
+    }
+  };
 
-    const logout = () => {
-      token.value = null;
-      localStorage.removeItem('token');
-      router.push('/login');
-    };
+  const logout = () => {
+    token.value = null;
+    localStorage.removeItem('token');
+    router.push('/login');
+  };
 
-    const isAuthenticated = () => {
-      return !!localStorage.getItem('token');
-    };
+  const isAuthenticated = () => !!token.value;
 
-    watch(registerUser, (newValue) => {
-      if (newValue === true) {
-        showCreateUserModal.value = true;
-      }
-    })
+  watch(() => createUserModalStore.registerUser, (newValue) => {
+    if (newValue === true) {
+      createUserModalStore.showCreateUserModal = true;
+    }
+  });
 
-    authStore = { register, registerOtherUser, login, logout, isAuthenticated, username, password, newUsername, newPassword, token };
-  }
-
-  return authStore;
-};
-
-export default useAuthStore;
+  return {
+    username,
+    password,
+    newUsername,
+    newPassword,
+    token,
+    register,
+    registerOtherUser,
+    login,
+    logout,
+    isAuthenticated
+  };
+});
