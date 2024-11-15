@@ -9,7 +9,7 @@ import { useCreateUserModalStore } from '@/stores/useCreateUserModalStore';
 export const useAdminStore = defineStore('adminStore', () => {
     // State
     const users = ref([]);
-    const deleteUsername = ref(null);
+    const deleteUsername = ref('');
 
     // Dependency stores
     const authStore = useAuthStore();
