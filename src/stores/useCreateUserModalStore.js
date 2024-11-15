@@ -1,14 +1,12 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { useShowErrorModalStore } from '@/stores/useShowErrorModalStore';
-import { useAuthStore } from '@/stores/useAuthStore';
+import { useAuthStore } from "@/stores/useAuthStore";
 import { useAdminStore } from '@/stores/useAdminStore';
 
-export const useCreateUserModalStore = defineStore('createUserModal', () => {
+export const useCreateUserModalStore = defineStore('createUserModalStore', () => {
     // State
     const showCreateUserModal = ref(false);
-    const newUsername = ref('');
-    const newPassword = ref('');
 
     // Dependency stores
     const errorModalStore = useShowErrorModalStore();
@@ -25,15 +23,15 @@ export const useCreateUserModalStore = defineStore('createUserModal', () => {
     };
 
     const createUser = async () => {
-        const response = await authStore.registerOtherUser(newUsername.value, newPassword.value);
+        const response = await authStore.registerOtherUser();
 
         if (response) {
-            if (authStore.registerUser) {
+            if (authStore.isRegistration) {
                 errorModalStore.errorModalTitle = 'Registered User';
                 errorModalStore.errorModalMessage = 'User successfully created. You may now log in.';
                 errorModalStore.showErrorModal = true;
             } else {
-                adminStore.fetchUsers();
+                await adminStore.fetchUsers();
             }
         } else {
             errorModalStore.errorModalTitle = "Bugger!";
@@ -41,8 +39,8 @@ export const useCreateUserModalStore = defineStore('createUserModal', () => {
             errorModalStore.showErrorModal = true;
         }
 
-        newUsername.value = '';
-        newPassword.value = '';
+        authStore.newUsername = '';
+        authStore.newPassword = '';
         closeModal();
     };
 
@@ -50,8 +48,6 @@ export const useCreateUserModalStore = defineStore('createUserModal', () => {
         showCreateUserModal,
         openModal,
         closeModal,
-        createUser,
-        newUsername,
-        newPassword,
+        createUser
     };
 });

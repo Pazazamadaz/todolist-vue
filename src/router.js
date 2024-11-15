@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import ToDoList from './components/ToDoList/ToDoList.vue';
 import Login from './components/UserLogin/UserLogin.vue';
-import useAuthStore from './stores/useAuthStore';
+import { useAuthStore } from './stores/useAuthStore';
 import AdminPanel from './components/Admin/AdminPanel.vue';
 
 // Reusable authentication guard

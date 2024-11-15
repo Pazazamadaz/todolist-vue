@@ -6,7 +6,7 @@ import { useShowErrorModalStore } from '@/stores/useShowErrorModalStore';
 import { useShowLoadingModalStore } from '@/stores/useShowLoadingModalStore';
 import { useCreateUserModalStore } from '@/stores/useCreateUserModalStore';
 
-export const useAdminStore = defineStore('admin', () => {
+export const useAdminStore = defineStore('adminStore', () => {
     // State
     const users = ref([]);
     const deleteUsername = ref(null);

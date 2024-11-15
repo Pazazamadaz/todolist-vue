@@ -2,8 +2,8 @@ import { defineStore } from 'pinia';
 import { ref, computed, watchEffect } from 'vue';
 import http from '@/http';
 import { useAuthStore } from './useAuthStore';
-import useShowLoadingModalStore from '@/stores/useShowLoadingModalStore';
-import useShowErrorModalStore from '@/stores/useShowErrorModalStore';
+import { useShowLoadingModalStore } from '@/stores/useShowLoadingModalStore';
+import { useShowErrorModalStore } from '@/stores/useShowErrorModalStore';
 
 export const useToDoStore = defineStore('todo', () => {
     // State

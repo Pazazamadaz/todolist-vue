@@ -2,15 +2,16 @@ import { defineStore } from 'pinia';
 import router from '@/router';
 import http from '@/http';
 import { ref, watch } from 'vue';
-import useCreateUserModalStore from '@/stores/useCreateUserModalStore';
-import useShowErrorModalStore from '@/stores/useShowErrorModalStore';
-import useShowLoadingModalStore from '@/stores/useShowLoadingModalStore';
+import { useCreateUserModalStore } from '@/stores/useCreateUserModalStore';
+import { useShowErrorModalStore } from '@/stores/useShowErrorModalStore';
+import { useShowLoadingModalStore } from '@/stores/useShowLoadingModalStore';
 
-export const useAuthStore = defineStore('auth', () => {
+export const useAuthStore = defineStore('authStore', () => {
   const username = ref('');
   const password = ref('');
   const newUsername = ref('');
   const newPassword = ref('');
+  const isRegistration = ref(false);
   const token = ref(localStorage.getItem('token') || null);
 
   const createUserModalStore = useCreateUserModalStore();
@@ -33,6 +34,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   const registerOtherUser = async () => {
     try {
+      isRegistration.value = true;
       const response = await http.post('/api/auth/register', { username: newUsername.value, password: newPassword.value });
       console.log('Registration successful:', response.data);
       return true;
@@ -87,6 +89,7 @@ export const useAuthStore = defineStore('auth', () => {
     password,
     newUsername,
     newPassword,
+    isRegistration,
     token,
     register,
     registerOtherUser,

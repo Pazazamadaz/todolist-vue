@@ -1,16 +1,17 @@
 <template>
-  <div v-if="showErrorModal" class="modal">
+  <div v-if="showErrorModalStore.showErrorModal" class="modal">
     <div class="modal-content">
-      <span class="modal-close" @click="(() => showErrorModal = false)">&times;</span>
-      <h2 class="modal-title">{{ errorModalTitle }}</h2>
-      <p class="modal-message">{{ errorModalMessage }}</p>
-      <button class="modal-btn" @click="(() => showErrorModal = false)">OK</button>
+      <span class="modal-close" @click="() => (showErrorModalStore.showErrorModal = false)">&times;</span>
+      <h2 class="modal-title">{{ showErrorModalStore.errorModalTitle }}</h2>
+      <p class="modal-message">{{ showErrorModalStore.errorModalMessage }}</p>
+      <button class="modal-btn" @click="() => (showErrorModalStore.showErrorModal = false)">OK</button>
     </div>
   </div>
 </template>
 
 <script setup>
-import useShowErrorModalState from "@/state/useShowErrorModalState";
+import { useShowErrorModalStore } from "@/stores/useShowErrorModalStore";
 
-const { showErrorModal, errorModalMessage, errorModalTitle} = useShowErrorModalState();
+// Initialize store and extract values
+const showErrorModalStore = useShowErrorModalStore();
 </script>

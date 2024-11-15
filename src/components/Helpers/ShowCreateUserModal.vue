@@ -1,18 +1,34 @@
 <template>
-  <div v-if="showCreateUserModal" class="modal">
+  <div v-if="createUserModalStore.showCreateUserModal" class="modal">
     <div class="modal-content">
-      <span class="modal-close" @click="(() => showCreateUserModal = false)">&times;</span>
+      <span class="modal-close" @click="createUserModalStore.closeModal">&times;</span>
       <h2 class="modal-title">Create User</h2>
       <p class="modal-message">Enter name and password</p>
 
       <div class="form-container">
         <div class="input-container">
-          <input v-model="newUsername" class="custom-input" ref="inputRef" placeholder="Enter username" autocomplete="off" required @keyup.enter="createUser" />
-          <input v-model="newPassword" class="custom-input" type="password" placeholder="Enter password" autocomplete="new-password" required @keyup.enter="createUser" />
+          <input
+              v-model="authStore.newUsername"
+              class="custom-input"
+              ref="inputRef"
+              placeholder="Enter username"
+              autocomplete="off"
+              required
+              @keyup.enter="createUserModalStore.createUser"
+          />
+          <input
+              v-model="authStore.newPassword"
+              class="custom-input"
+              type="password"
+              placeholder="Enter password"
+              autocomplete="new-password"
+              required
+              @keyup.enter="createUserModalStore.createUser"
+          />
         </div>
         <div class="button-container">
-          <button @click="createUser">Create</button>
-          <button class="modal-btn" @click="(() => showCreateUserModal = false)">Cancel</button>
+          <button @click="createUserModalStore.createUser">Create</button>
+          <button class="modal-btn" @click="createUserModalStore.closeModal">Cancel</button>
         </div>
       </div>
     </div>
@@ -20,15 +36,19 @@
 </template>
 
 <script setup>
-import useCreateUserModalStore from '@/stores/useCreateUserModalStore';
-import useCreateUserModalState from "@/state/useCreateUserModalState";
-import { watch, nextTick } from "vue";
+import { watch, nextTick, ref } from "vue";
+import { useCreateUserModalStore} from "@/stores/useCreateUserModalStore";
+import { useAuthStore} from "@/stores/useAuthStore";
 
-const { createUser, newUsername, newPassword } = useCreateUserModalStore();
-const { showCreateUserModal, inputRef } = useCreateUserModalState();
+// Initialize stores
+const createUserModalStore = useCreateUserModalStore();
+const authStore = useAuthStore();
 
+const inputRef = ref(null);
+
+// Watch for modal visibility changes to focus input
 watch(
-    () => showCreateUserModal.value,
+    () => createUserModalStore.showCreateUserModal,
     async (isVisible) => {
       if (isVisible) {
         await nextTick();
@@ -36,7 +56,6 @@ watch(
       }
     }
 );
-
 </script>
 
 <style scoped>
@@ -53,8 +72,8 @@ watch(
 }
 
 .modal-content {
-  width: 400px; /* Set the desired width for the modal */
-  max-width: 90%; /* Allow modal to scale down on smaller screens */
+  width: 400px;
+  max-width: 90%;
   background-color: white;
   padding: 20px;
   border-radius: 8px;
