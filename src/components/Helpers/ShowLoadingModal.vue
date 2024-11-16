@@ -1,5 +1,5 @@
 <template>
-  <div v-if="showLoadingModal" class="modal">
+  <div v-if="showLoadingModal.showLoadingModal" class="modal">
     <div class="modal-content">
       <div class="loading-spinner"></div>
       <p>Loading...</p>
@@ -8,7 +8,7 @@
 </template>
 
 <script setup>
-import useShowLoadingModalState from '@/state/useShowLoadingModalState';
+import { useShowLoadingModalStore } from '@/stores/useShowLoadingModalStore';
 
-const { showLoadingModal } = useShowLoadingModalState();
+const { showLoadingModal } = useShowLoadingModalStore();
 </script>
