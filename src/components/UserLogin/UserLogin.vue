@@ -6,7 +6,7 @@
       <input v-model="authStore.password" type="password" class="custom-input" placeholder="Password" required @keyup.enter="authStore.login" />
       <button @click="authStore.login">Login</button>
     </div>
-    <button @click="createUserModalStore.openModal" class="custom-button register-button">Register</button>
+    <button @click="Register()" class="custom-button register-button">Register</button>
   </div>
 
   <ShowCreateUserModal />
@@ -26,10 +26,13 @@ import ShowCreateUserModal from "@/components/Helpers/ShowCreateUserModal.vue";
 const authStore = useAuthStore();
 const createUserModalStore = useCreateUserModalStore();
 
-// Destructure required state and actions from auth store
-
 // Ref for input focus
 const inputRef = ref(null);
+
+function Register() {
+  authStore.isRegistration = true;
+  createUserModalStore.openModal();
+}
 
 // Focus on the username input when mounted
 onMounted(() => {

@@ -22,7 +22,6 @@ export const useAuthStore = defineStore('authStore', () => {
     try {
       const response = await http.post('/api/auth/register', { username: newUsername.value, password: newPassword.value });
       console.log('Registration successful:', response.data);
-      await login(); // Automatically log in after registration
     } catch (error) {
       errorModalStore.showErrorModal = true;
       errorModalStore.errorModalTitle = 'Registration Error';
@@ -34,7 +33,6 @@ export const useAuthStore = defineStore('authStore', () => {
 
   const registerOtherUser = async () => {
     try {
-      isRegistration.value = true;
       const response = await http.post('/api/auth/register', { username: newUsername.value, password: newPassword.value });
       console.log('Registration successful:', response.data);
       return true;
@@ -58,6 +56,8 @@ export const useAuthStore = defineStore('authStore', () => {
       const response = await http.post('/api/auth/login', { username: username.value, password: password.value });
       token.value = response.data.token;
       localStorage.setItem('token', token.value);
+      username.value = '';
+      password.value = '';
       router.push('/todos');
     } catch (error) {
       errorModalStore.showErrorModal = true;

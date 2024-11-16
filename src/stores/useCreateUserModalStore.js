@@ -23,19 +23,28 @@ export const useCreateUserModalStore = defineStore('createUserModalStore', () =>
     };
 
     const createUser = async () => {
-        const response = await authStore.registerOtherUser();
+        try{
+            if (!authStore.isRegistration) {
+                await authStore.registerOtherUser();
+            } else {
+                await authStore.register();
+            }
 
-        if (response) {
             if (authStore.isRegistration) {
-                errorModalStore.errorModalTitle = 'Registered User';
-                errorModalStore.errorModalMessage = 'User successfully created. You may now log in.';
-                errorModalStore.showErrorModal = true;
+                authStore.username = authStore.newUsername;
+                authStore.password = authStore.newPassword;
+                await authStore.login();
+                authStore.username = '';
+                authStore.password = '';
+                authStore.newUsername = '';
+                authStore.newPassword = '';
+                authStore.isRegistration = false;
             } else {
                 await adminStore.fetchUsers();
             }
-        } else {
+        } catch(error) {
             errorModalStore.errorModalTitle = "Bugger!";
-            errorModalStore.errorModalMessage = "Failed to create user!";
+            errorModalStore.errorModalMessage = `Failed to create user: ${error}`;
             errorModalStore.showErrorModal = true;
         }
 
