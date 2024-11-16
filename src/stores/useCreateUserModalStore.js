@@ -23,7 +23,7 @@ export const useCreateUserModalStore = defineStore('createUserModalStore', () =>
     };
 
     const createUser = async () => {
-        if (authStore.newUsername == '' || authStore.newPassword == '') {
+        if (authStore.newUsername === '' || authStore.newPassword === '') {
             errorModalStore.errorModalTitle = 'Create User Error';
             errorModalStore.errorModalMessage = "Username and password required to create user";
             errorModalStore.showErrorModal = true;
