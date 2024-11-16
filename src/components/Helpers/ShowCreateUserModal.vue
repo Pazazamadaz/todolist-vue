@@ -6,7 +6,7 @@
       <p class="modal-message">Enter name and password</p>
 
       <div class="form-container">
-        <div class="input-container">
+        <div class="input-field">
           <input
               v-model="authStore.newUsername"
               class="custom-input"
@@ -16,6 +16,10 @@
               required
               @keyup.enter="createUserModalStore.createUser"
           />
+          <span :style="{ visibility: authStore.newUsername ? 'hidden' : 'visible' }" class="required-text">* Required</span>
+        </div>
+
+        <div class="input-field">
           <input
               v-model="authStore.newPassword"
               class="custom-input"
@@ -25,20 +29,23 @@
               required
               @keyup.enter="createUserModalStore.createUser"
           />
+          <span :style="{ visibility: authStore.newPassword ? 'hidden' : 'visible' }" class="required-text">* Required</span>
         </div>
+
         <div class="button-container">
           <button @click="createUserModalStore.createUser">Create</button>
           <button class="modal-btn" @click="createUserModalStore.closeModal">Cancel</button>
         </div>
       </div>
+
     </div>
   </div>
 </template>
 
 <script setup>
 import { watch, nextTick, ref } from "vue";
-import { useCreateUserModalStore} from "@/stores/useCreateUserModalStore";
-import { useAuthStore} from "@/stores/useAuthStore";
+import { useCreateUserModalStore } from "@/stores/useCreateUserModalStore";
+import { useAuthStore } from "@/stores/useAuthStore";
 
 // Initialize stores
 const createUserModalStore = useCreateUserModalStore();
@@ -102,6 +109,26 @@ watch(
   flex: 1;
   padding: 8px;
 }
+
+.input-field {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 20px; /* Space between input fields */
+}
+
+.custom-input {
+  width: 100%; /* Ensure input takes full width */
+  padding: 8px;
+  box-sizing: border-box; /* Prevent padding from affecting width */
+}
+
+.required-text {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px; /* Space between input and error message */
+}
+
 
 .button-container {
   display: flex;
