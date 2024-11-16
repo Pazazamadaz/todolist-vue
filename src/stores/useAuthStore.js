@@ -48,6 +48,13 @@ export const useAuthStore = defineStore('authStore', () => {
   const login = async () => {
     let loadingTimeout;
 
+    if (username.value === '' || password.value === '') {
+      errorModalStore.errorModalTitle = 'Login Error';
+      errorModalStore.errorModalMessage = "Username and password required to login";
+      errorModalStore.showErrorModal = true;
+      return;
+    }
+
     try {
       loadingTimeout = setTimeout(() => {
         loadingModalStore.showLoadingModal = true;
