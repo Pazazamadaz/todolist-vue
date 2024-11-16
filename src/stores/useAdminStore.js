@@ -39,7 +39,7 @@ export const useAdminStore = defineStore('adminStore', () => {
             console.error('Fetch users error:', error);
             errorModalStore.showErrorModal = true;
             errorModalStore.errorModalTitle = 'Fetch Error';
-            errorModalStore.errorModalMessage = `Failed to fetch users with error: ${error}`;
+            errorModalStore.errorModalMessage = `Failed to fetch users with error: ${error.response.data}`;
         } finally {
             if (loadingTimeout) {
                 clearTimeout(loadingTimeout);
@@ -65,7 +65,7 @@ export const useAdminStore = defineStore('adminStore', () => {
         } catch (error) {
             errorModalStore.showErrorModal = true;
             errorModalStore.errorModalTitle = 'Delete Error';
-            errorModalStore.errorModalMessage = `Failed to delete user: ${error}`;
+            errorModalStore.errorModalMessage = `Failed to delete user: ${error.response.data}`;
         }
     };
 

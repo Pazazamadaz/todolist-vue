@@ -25,7 +25,7 @@ export const useAuthStore = defineStore('authStore', () => {
     } catch (error) {
       errorModalStore.showErrorModal = true;
       errorModalStore.errorModalTitle = 'Registration Error';
-      errorModalStore.errorModalMessage = `Failed to register user with error: ${error}`;
+      errorModalStore.errorModalMessage = `Failed to register user with error: ${error.response.data}`;
       createUserModalStore.showCreateUserModal = false;
       console.error('Registration failed:', error);
     }
@@ -39,7 +39,7 @@ export const useAuthStore = defineStore('authStore', () => {
     } catch (error) {
       errorModalStore.showErrorModal = true;
       errorModalStore.errorModalTitle = 'Create User Error';
-      errorModalStore.errorModalMessage = `Failed to create user with error: ${error}`;
+      errorModalStore.errorModalMessage = `Failed to create user with error: ${error.response.data}`;
       createUserModalStore.showCreateUserModal = false;
       console.error('Registration failed:', error);
     }
@@ -62,7 +62,7 @@ export const useAuthStore = defineStore('authStore', () => {
     } catch (error) {
       errorModalStore.showErrorModal = true;
       errorModalStore.errorModalTitle = 'Login Error';
-      errorModalStore.errorModalMessage = `Failed to login with error: ${error}`;
+      errorModalStore.errorModalMessage = `Failed to login with error: ${error.response.data}`;
       console.error('Login failed:', error);
     } finally {
       if (loadingTimeout) clearTimeout(loadingTimeout);
