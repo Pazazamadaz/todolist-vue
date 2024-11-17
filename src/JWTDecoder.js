@@ -26,6 +26,11 @@ export function decodeJwt(token) {
             delete decoded['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']; // Clean up the old key
         }
 
+        if (decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name']) {
+            decoded.name = decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name']
+            delete decoded['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name']
+        }
+
         return decoded;
     } catch (error) {
         console.error('Failed to decode JWT:', error.message);
