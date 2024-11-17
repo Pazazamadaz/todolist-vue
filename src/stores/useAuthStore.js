@@ -59,7 +59,7 @@ export const useAuthStore = defineStore('authStore', () => {
     try {
       loadingTimeout = setTimeout(() => {
         loadingModalStore.showLoadingModal = true;
-      }, 500);
+      }, 100);
 
       const response = await http.post('/api/auth/login', { username: username.value, password: password.value });
       token.value = response.data.token;
