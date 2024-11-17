@@ -20,6 +20,8 @@ export const useCreateUserModalStore = defineStore('createUserModalStore', () =>
 
     const closeModal = () => {
         showCreateUserModal.value = false;
+        authStore.newUsername = '';
+        authStore.newPassword = '';
     };
 
     const createUser = async () => {
