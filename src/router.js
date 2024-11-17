@@ -3,8 +3,6 @@ import ToDoList from './components/ToDoList/ToDoList.vue';
 import Login from './components/UserLogin/UserLogin.vue';
 import { useAuthStore } from './stores/useAuthStore';
 import AdminPanel from './components/Admin/AdminPanel.vue';
-import ShowErrorModal from "@/components/Helpers/ShowErrorModal.vue";
-import {useShowErrorModalStore} from "@/stores/useShowErrorModalStore";
 
 // Reusable authentication guard
 const requireAuth = (to, from, next) => {
@@ -12,7 +10,7 @@ const requireAuth = (to, from, next) => {
   if (!authStore.isAuthenticated) {
     next('/login');
   } else if (to.path === '/admin' && !authStore.isAdmin) {
-    next('/notadmin');
+    next('/login');
   }
   else {
     next();
@@ -35,16 +33,6 @@ const routes = [
     component: AdminPanel,
     beforeEnter: requireAuth, // Use the reusable auth guard
   },
-  {
-    path: '/notadmin',
-    component: ShowErrorModal,
-    beforeEnter: () => {
-      const showErrorModalStore = useShowErrorModalStore();
-      showErrorModalStore.errorModalTitle = "UNAUTHORISED ACCESS!!!";
-      showErrorModalStore.errorModalMessage = "Naughty user!";
-      showErrorModalStore.showErrorModal = true;
-    },
-  }
 ];
 
 const router = createRouter({
