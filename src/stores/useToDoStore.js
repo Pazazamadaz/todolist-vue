@@ -9,6 +9,7 @@ export const useToDoStore = defineStore('todo', () => {
     // State
     const todoItems = ref([]);
     const newTodoTitle = ref('');
+    const newTodoPriority = ref(false);
     const orderByCompleted = ref(false);
 
     // Modal stores
@@ -70,7 +71,7 @@ export const useToDoStore = defineStore('todo', () => {
         }
 
         try {
-            const newTodo = { title: newTodoTitle.value, isCompleted: false };
+            const newTodo = { title: newTodoTitle.value, isCompleted: false, isPriority: newTodoPriority };
             await http.post('/api/TodoItems', newTodo);
             newTodoTitle.value = '';
             await fetchTodoItems();
@@ -147,6 +148,7 @@ export const useToDoStore = defineStore('todo', () => {
         todoItems,
         orderedTodoItems,
         newTodoTitle,
+        newTodoPriority,
         orderByCompleted,
         fetchTodoItems,
         addTodoItem,
