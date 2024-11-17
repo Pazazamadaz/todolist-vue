@@ -56,7 +56,7 @@ body {
 
 /* Centering the table */
 .table-container {
-  width: 600px; /* Set a fixed width for the table container */
+  width: 700px; /* Set a fixed width for the table container */
   margin: 0 auto; /* Center the table container horizontally */
 }
 
@@ -255,6 +255,24 @@ input:checked + .slider:before {
   border-radius: 50%;
 }
 
+/* Smaller switch class */
+.switch-smaller {
+  width: 35px; /* Shrink width to 70% of original */
+  height: 20px; /* Shrink height to 70% of original */
+}
+
+.switch-smaller .slider:before {
+  height: 14px; /* Shrink the slider to match */
+  width: 14px; /* Shrink the slider to match */
+  left: 3px; /* Adjust the position of the slider knob */
+  bottom: 3px; /* Adjust the position of the slider knob */
+}
+
+/* Optional: you can also tweak the transition speed if needed */
+.switch-smaller .slider {
+  transition: 0.3s; /* Faster transition for the smaller switch */
+}
+
 .logout-button {
   position: absolute;
   top: 10px;
@@ -298,7 +316,3 @@ input:checked + .slider:before {
 .create-user-button {
   margin-bottom: 16px; /* Adds space below the button */
 }
-
-
-
-

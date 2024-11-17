@@ -18,6 +18,7 @@
         <thead>
         <tr>
           <th>Title</th>
+          <th :style="{ width: '100px' }" >Is Priority</th>
           <th>Actions</th>
         </tr>
         </thead>
@@ -25,6 +26,12 @@
         <tr v-for="item in todoStore.orderedTodoItems" :key="item.id">
           <td>
             <span :class="{ completed: item.isCompleted }">{{ item.title }}</span>
+          </td>
+          <td>
+            <label class="switch">
+              <input type="checkbox" v-model="item.isPriority" @change="todoStore.togglePriority(item)">
+              <span class="slider round"></span>
+            </label>
           </td>
           <td>
             <button v-if="!item.isCompleted" @click="todoStore.toggleComplete(item)">Complete</button>
