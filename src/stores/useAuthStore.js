@@ -1,7 +1,8 @@
 import { defineStore } from 'pinia';
 import router from '@/router';
 import http from '@/http';
-import { ref, watch } from 'vue';
+import {computed, ref, watch} from 'vue';
+import { decodeJwt } from '@/JWTDecoder';
 import { useCreateUserModalStore } from '@/stores/useCreateUserModalStore';
 import { useShowErrorModalStore } from '@/stores/useShowErrorModalStore';
 import { useShowLoadingModalStore } from '@/stores/useShowLoadingModalStore';
@@ -83,7 +84,12 @@ export const useAuthStore = defineStore('authStore', () => {
     router.push('/login');
   };
 
-  const isAuthenticated = () => !!token.value;
+  const isAuthenticated = computed(() => !!token.value);  // Dynamically checks if the user is authenticated
+  const isAdmin = computed(() => {
+    const decodedToken = token.value ? decodeJwt(token.value) : null;
+    console.log('Decoded Token:', decodedToken);
+    return decodedToken && decodedToken.role === 'Administrator';
+  });
 
   watch(() => createUserModalStore.registerUser, (newValue) => {
     if (newValue === true) {
@@ -98,6 +104,7 @@ export const useAuthStore = defineStore('authStore', () => {
     newPassword,
     isRegistration,
     token,
+    isAdmin,
     register,
     registerOtherUser,
     login,

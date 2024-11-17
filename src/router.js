@@ -7,9 +7,12 @@ import AdminPanel from './components/Admin/AdminPanel.vue';
 // Reusable authentication guard
 const requireAuth = (to, from, next) => {
   const authStore = useAuthStore();
-  if (!authStore.isAuthenticated()) {
+  if (!authStore.isAuthenticated) {
     next('/login');
-  } else {
+  } else if (to.path === '/admin' && !authStore.isAdmin) {
+    next('/login');
+  }
+  else {
     next();
   }
 };
