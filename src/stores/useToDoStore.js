@@ -98,6 +98,27 @@ export const useToDoStore = defineStore('todo', () => {
         }
     };
 
+    const togglePriority = async (item) => {
+        const updatedItem = { ...item, isPriority: item.isPriority };
+
+        const index = todoItems.value.findIndex(todo => todo.id === item.id);
+        if (index !== -1) {
+            todoItems.value[index].isPriority = updatedItem.isPriority;
+        }
+
+        try {
+            await http.put(`/api/TodoItems/${item.id}`, updatedItem);
+        } catch (error) {
+            // Revert the change if API call fails
+            if (index !== -1) {
+                todoItems.value[index].isPriority = !item.isPriority;
+            }
+            errorModalStore.showErrorModal = true;
+            errorModalStore.errorModalTitle = 'Update Error';
+            errorModalStore.errorModalMessage = 'Failed to update task';
+        }
+    }
+
     const deleteTodoItem = async (id) => {
         try {
             await http.delete(`/api/TodoItems/${id}`);
@@ -122,6 +143,7 @@ export const useToDoStore = defineStore('todo', () => {
         fetchTodoItems,
         addTodoItem,
         toggleComplete,
+        togglePriority,
         deleteTodoItem
     };
 });
