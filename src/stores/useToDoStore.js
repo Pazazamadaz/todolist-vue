@@ -19,6 +19,12 @@ export const useToDoStore = defineStore('todo', () => {
     // Computed ordered list of todo items
     const orderedTodoItems = computed(() => {
         return todoItems.value.slice().sort((a, b) => {
+            // First, sort by priority (true > false)
+            if (a.isPriority !== b.isPriority) {
+                return a.isPriority ? -1 : 1;  // Higher priority first
+            }
+
+            // If priorities are equal, then sort by completion status
             if (orderByCompleted.value) {
                 return a.isCompleted === b.isCompleted ? 0 : a.isCompleted ? -1 : 1;
             } else {
