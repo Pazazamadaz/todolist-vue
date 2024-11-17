@@ -71,46 +71,38 @@ onMounted(() => {
 </script>
 
 <style scoped>
-/* Style the checkbox to match the input field */
+/* Style for the custom checkbox */
 .priority-checkbox {
-  appearance: none;  /* Remove the default checkbox styling */
-  background-color: #e0f7fa; /* Match the input field background color */
-  border: 1px solid #b2ebf2; /* Match the input border color */
-  padding: 9px; /* Padding to give it some space */
-  border-radius: 4px; /* Rounded corners */
-  width: 15px; /* Adjust size of checkbox */
-  height: 15px; /* Adjust size of checkbox */
-  position: relative; /* To allow positioning of check mark */
+  appearance: none; /* Remove default styling */
+  width: 18px; /* Match the size of your input field */
+  height: 18px;
+  background-color: #e0f7fa; /* Match the input field's background */
+  border: 1px solid #b2ebf2; /* Match the input field's border */
+  border-radius: 4px; /* Optional: rounded corners for the checkbox */
+  cursor: pointer;
   display: inline-block;
-  cursor: pointer; /* Cursor changes to pointer on hover */
-  font-family: 'Arial', sans-serif;
+  vertical-align: middle; /* Align with the text */
 }
 
-/* Checkbox checked state */
+/* Add checked state for the checkbox */
 .priority-checkbox:checked {
-  background-color: #00796b; /* Change background when checked */
-  border-color: #00796b; /* Border color when checked */
+  background-color: #00796b; /* Fill with your desired color */
+  border-color: #00796b;
+  background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="white"%3E%3Cpath d="M6.173 13.707l-3.828-3.828 1.414-1.414L6.173 10.88l6.364-6.364 1.414 1.414z"/%3E%3C/svg%3E');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 70%;
 }
 
-/* Custom checkmark */
-.priority-checkbox:checked::after {
-  content: '';
-  position: absolute;
-  top: 2px;
-  left: 6px;
-  width: 6px;
-  height: 10px;
-  border: solid white;
-  border-width: 0 3px 3px 0;
-  transform: rotate(45deg); /* Create a checkmark */
-}
-
+/* Style the checkbox label */
 .checkbox-label {
   font-size: 0.8rem; /* Smaller text size */
   color: #00796b; /* Match your app's color scheme */
   margin-left: 8px; /* Spacing between checkbox and label */
   font-family: Arial, sans-serif; /* Match input text styling */
-  vertical-align: middle; /* Align text with the checkbox */
+  line-height: 18px; /* Match the height of the checkbox */
+  vertical-align: middle; /* Ensure alignment with the checkbox */
 }
+
 
 </style>
