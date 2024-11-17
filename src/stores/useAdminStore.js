@@ -19,7 +19,7 @@ export const useAdminStore = defineStore('adminStore', () => {
 
     // Fetch users with error handling
     const fetchUsers = async () => {
-        if (!authStore.isAuthenticated()) {
+        if (!authStore.isAuthenticated) {
             errorModalStore.showErrorModal = true;
             errorModalStore.errorModalTitle = 'Authentication Error';
             errorModalStore.errorModalMessage = 'You must be logged in to view the user list';
