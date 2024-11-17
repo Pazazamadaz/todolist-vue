@@ -89,6 +89,8 @@ export const useToDoStore = defineStore('todo', () => {
         const index = todoItems.value.findIndex(todo => todo.id === item.id);
         if (index !== -1) {
             todoItems.value[index].isCompleted = updatedItem.isCompleted;
+            // if marking complete, it doesn't need to be priority
+            todoItems.value[index].isPriority = updatedItem.isCompleted ? false : updatedItem.isPriority;
         }
 
         try {
