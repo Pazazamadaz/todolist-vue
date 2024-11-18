@@ -1,8 +1,8 @@
 import { defineStore } from 'pinia';
 import router from '@/router';
-import http from '@/http';
+import http from '@/utils/http';
 import {computed, ref, watch} from 'vue';
-import { decodeJwt } from '@/JWTDecoder';
+import { decodeJwt } from '@/utils/JWTDecoder';
 import { useCreateUserModalStore } from '@/stores/useCreateUserModalStore';
 import { useShowErrorModalStore } from '@/stores/useShowErrorModalStore';
 import { useShowLoadingModalStore } from '@/stores/useShowLoadingModalStore';
