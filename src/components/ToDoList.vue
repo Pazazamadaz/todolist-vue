@@ -71,22 +71,21 @@ onMounted(() => {
 </script>
 
 <style scoped>
-/* Style for the custom checkbox */
+
 .priority-checkbox {
-  appearance: none; /* Remove default styling */
-  width: 18px; /* Match the size of your input field */
+  appearance: none;
+  width: 18px;
   height: 18px;
-  background-color: #e0f7fa; /* Match the input field's background */
-  border: 1px solid #b2ebf2; /* Match the input field's border */
-  border-radius: 4px; /* Optional: rounded corners for the checkbox */
+  background-color: #e0f7fa;
+  border: 1px solid #b2ebf2;
+  border-radius: 4px;
   cursor: pointer;
   display: inline-block;
-  vertical-align: middle; /* Align with the text */
+  vertical-align: middle;
 }
 
-/* Add checked state for the checkbox */
 .priority-checkbox:checked {
-  background-color: #00796b; /* Fill with your desired color */
+  background-color: #00796b;
   border-color: #00796b;
   background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="white"%3E%3Cpath d="M6.173 13.707l-3.828-3.828 1.414-1.414L6.173 10.88l6.364-6.364 1.414 1.414z"/%3E%3C/svg%3E');
   background-repeat: no-repeat;
@@ -94,14 +93,13 @@ onMounted(() => {
   background-size: 70%;
 }
 
-/* Style the checkbox label */
 .checkbox-label {
-  font-size: 0.8rem; /* Smaller text size */
-  color: #00796b; /* Match your app's color scheme */
-  margin-left: 8px; /* Spacing between checkbox and label */
-  font-family: Arial, sans-serif; /* Match input text styling */
-  line-height: 18px; /* Match the height of the checkbox */
-  vertical-align: middle; /* Ensure alignment with the checkbox */
+  font-size: 0.8rem;
+  color: #00796b;
+  margin-left: 8px;
+  font-family: Arial, sans-serif;
+  line-height: 18px;
+  vertical-align: middle;
 }
 
 .switch {
@@ -148,7 +146,6 @@ input:checked + .slider:before {
   transform: translateX(26px);
 }
 
-/* Rounded sliders */
 .slider.round {
   border-radius: 34px;
 }

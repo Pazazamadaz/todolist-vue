@@ -5,94 +5,87 @@
 }
 
 body {
-  overflow-y: scroll; /* Forces a vertical scrollbar */
+  overflow-y: scroll;
 }
 
-/* New input-container class to align switch and input field */
 .input-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 20px; /* Optional spacing below */
+  margin-bottom: 20px;
 }
 
-/* Centering the table */
 .table-container {
-  width: 700px; /* Set a fixed width for the table container */
-  margin: 0 auto; /* Center the table container horizontally */
+  width: 700px;
+  margin: 0 auto;
 }
 
-/* Style the table */
 table {
-  width: 100%; /* Table takes up the full width of its container */
+  width: 100%;
   border-collapse: collapse;
-  table-layout: fixed; /* Fix the table layout */
+  table-layout: fixed;
 }
 
 th, td {
   border: 1px solid #ddd;
   padding: 10px;
   text-align: center;
-  overflow: hidden; /* Hide overflow content */
-  word-wrap: break-word; /* Ensure text wraps */
+  overflow: hidden;
+  word-wrap: break-word;
 }
 
 th {
   background-color: #f1f1db;
 }
 
-/* Fixed column widths */
 th:nth-child(1), td:nth-child(1) {
-  width: 200px; /* Width for the title column */
+  width: 200px;
 }
 
 th:nth-child(2), td:nth-child(2) {
-  width: 300px; /* Width for the actions column */
+  width: 300px;
 }
 
 .custom-input {
-  background-color: #e0f7fa; /* Set your desired color */
-  border: 1px solid #b2ebf2; /* Optional: border color */
-  padding: 9px; /* Optional: padding inside the input */
-  border-radius: 4px; /* Optional: rounded corners */
-  font-family: 'Arial', sans-serif; /* Font family */
-  font-size: 16px; /* Font size */
+  background-color: #e0f7fa;
+  border: 1px solid #b2ebf2;
+  padding: 9px;
+  border-radius: 4px;
+  font-family: 'Arial', sans-serif;
+  font-size: 16px;
 }
 
-/* Custom button styles */
 button {
-  background-color: #00796b; /* Background color */
-  color: #ffffff; /* Text color */
-  border: none; /* Remove default border */
-  border-radius: 4px; /* Rounded corners */
-  padding: 10px 20px; /* Padding */
+  background-color: #00796b;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
   width: 140px;
-  font-family: Arial, sans-serif; /* Font family */
-  font-size: 16px; /* Font size */
-  cursor: pointer; /* Pointer cursor on hover */
-  transition: background-color 0.3s, transform 0.2s; /* Smooth transitions */
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
   margin-left: 10px;
   display: inline-block;
 }
 
 button:first-of-type {
-  margin-right: 15px; /* Add space to the right of the first button (Complete) */
+  margin-right: 15px;
 }
 
-/* Remove margin on the last button */
 button:last-of-type {
   margin-right: 0;
 }
 
 button:hover {
-  background-color: #004d40; /* Darker background on hover */
+  background-color: #004d40;
 }
 
 button:active {
-  transform: scale(0.98); /* Slightly scale down on click */
+  transform: scale(0.98);
 }
 
-/* Modal styling */
 .modal {
   position: fixed;
   left: 0;
@@ -103,7 +96,7 @@ button:active {
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000; /* Make sure modal is on top */
+  z-index: 1000;
 }
 
 .modal-content {
@@ -147,10 +140,9 @@ button:active {
   font-size: 24px;
 }
 
-/* Loading spinner */
 .loading-spinner {
-  border: 8px solid #f3f3f3; /* Light grey */
-  border-top: 8px solid #00796b; /* Blue color */
+  border: 8px solid #f3f3f3;
+  border-top: 8px solid #00796b;
   border-radius: 50%;
   width: 50px;
   height: 50px;
@@ -162,8 +154,6 @@ button:active {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
-
-/* Add switch toggle styles */
 
 .logout-button {
   position: absolute;
@@ -177,7 +167,7 @@ button:active {
   border-radius: 4px;
   cursor: pointer;
   transform: scale(0.8);
-  transform-origin: top right;  /* Makes sure the scaling happens from the top-right corner */
+  transform-origin: top right;
   transition: transform 0.2s ease;
 }
 
@@ -188,7 +178,7 @@ button:active {
 .portal-switch-button {
   position: absolute;
   top: 10px;
-  right: 130px;  /* Increased right property to 130px for better spacing */
+  right: 130px;
   padding: 8px 16px;
   font-size: 0.9rem;
   background-color: #409EFF;
@@ -197,7 +187,7 @@ button:active {
   border-radius: 4px;
   cursor: pointer;
   transform: scale(0.8);
-  transform-origin: top right;  /* Ensures the scale happens from the top-right corner */
+  transform-origin: top right;
   transition: transform 0.2s ease;
 }
 

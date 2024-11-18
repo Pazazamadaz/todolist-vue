@@ -42,12 +42,10 @@ import ShowErrorModal from '@/components/ShowErrorModal.vue';
 import ShowLoadingModal from "@/components/ShowLoadingModal.vue";
 import ShowCreateUserModal from "@/components/ShowCreateUserModal.vue";
 
-// Initialize stores
 const adminStore = useAdminStore();
 const authStore = useAuthStore();
 const createUserModalStore = useCreateUserModalStore();
 
-// Fetch users on mount
 onMounted(() => {
   adminStore.fetchUsers();
 });
