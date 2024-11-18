@@ -2,35 +2,43 @@
   <div>
     <button class="portal-switch-button" @click="() => $router.push('/todos')">Todos</button>
     <button class="logout-button" @click="authStore.logout()">Logout</button>
-    <div>
-      <h1>User List</h1>
-      <button class="create-user-button" @click="createUserModalStore.showCreateUserModal = true">Create User</button>
 
-      <div class="table-container" v-if="adminStore.users.length > 0">
-        <table>
-          <thead>
-          <tr>
-            <th>Name</th>
-            <th>Actions</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr v-for="user in adminStore.users" :key="user">
-            <td>{{ user }}</td>
-            <td>
-              <button @click="adminStore.deleteUsername = user">Delete</button>
-            </td>
-          </tr>
-          </tbody>
-        </table>
+    <div class="flex-container">
+      <!-- User List Section -->
+      <div>
+        <h1>User List</h1>
+        <button class="create-user-button" @click="createUserModalStore.showCreateUserModal = true">Create User</button>
+        <!-- Check if there are users -->
+        <div class="table-container">
+          <div v-if="adminStore.users.length > 0">
+            <table>
+              <thead>
+              <tr>
+                <th>Name</th>
+                <th>Actions</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr v-for="user in adminStore.users" :key="user">
+                <td>{{ user }}</td>
+                <td>
+                  <button @click="adminStore.deleteUsername = user">Delete</button>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p v-else>No users available to display.</p>
+        </div>
       </div>
-
-      <p v-else>No users available to display.</p>
     </div>
-    <div> DIV </div>
+
+
+    <!-- Color Options Section -->
     <div>
       <h1>Color Options</h1>
-      <div class="color-options">
+      <div class="table-container">
         <table>
           <thead>
           <tr>
@@ -41,11 +49,11 @@
           <tbody>
           <tr>
             <td>Background Color</td>
-            <td><input type="color" />a bf colour</td>
+            <td><input type="color" /> a bf colour</td>
           </tr>
           <tr>
             <td>Text Color</td>
-            <td><input type="color"/>another bf colour</td>
+            <td><input type="color"/> another bf colour</td>
           </tr>
           </tbody>
         </table>
@@ -77,9 +85,21 @@ onMounted(() => {
 </script>
 
 <style scoped>
-
 .create-user-button {
   margin-bottom: 16px; /* Adds space below the button */
 }
 
+/* Divider style */
+.divider {
+  height: 1px;
+  background-color: #ccc;
+  margin: 20px 0;
+}
+
+.flex-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
 </style>
