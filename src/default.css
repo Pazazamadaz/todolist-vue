@@ -204,7 +204,3 @@ button:active {
 .portal-switch-button:hover {
   transform: scale(1);
 }
-
-.create-user-button {
-  margin-bottom: 16px; /* Adds space below the button */
-}

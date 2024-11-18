@@ -52,3 +52,11 @@ onMounted(() => {
   adminStore.fetchUsers();
 });
 </script>
+
+<style scoped>
+
+.create-user-button {
+  margin-bottom: 16px; /* Adds space below the button */
+}
+
+</style>
