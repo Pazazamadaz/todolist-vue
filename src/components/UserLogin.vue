@@ -39,3 +39,24 @@ onMounted(() => {
   inputRef.value.focus();
 });
 </script>
+
+<style scoped>
+/* Make the styles for inputs and buttons specific to the login form */
+.login-inputs .input-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-inputs input.custom-input {
+  margin-right: 10px; /* Adds spacing between the username and password inputs */
+}
+
+.login-inputs button {
+  margin-left: 10px; /* Adds spacing between the last input and the button */
+}
+
+.register-button {
+  margin-top: 10px;
+}
+</style>
