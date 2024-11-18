@@ -18,9 +18,9 @@
 import { onMounted, ref } from "vue";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useCreateUserModalStore } from "@/stores/useCreateUserModalStore";
-import ShowErrorModal from "@/components/Helpers/ShowErrorModal.vue";
-import ShowLoadingModal from "@/components/Helpers/ShowLoadingModal.vue";
-import ShowCreateUserModal from "@/components/Helpers/ShowCreateUserModal.vue";
+import ShowErrorModal from "@/components/ShowErrorModal.vue";
+import ShowLoadingModal from "@/components/ShowLoadingModal.vue";
+import ShowCreateUserModal from "@/components/ShowCreateUserModal.vue";
 
 // Setup stores
 const authStore = useAuthStore();

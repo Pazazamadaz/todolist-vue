@@ -59,8 +59,8 @@
 import { onMounted } from 'vue';
 import { useToDoStore } from '@/stores/useToDoStore';
 import { useAuthStore } from '@/stores/useAuthStore';
-import ShowErrorModal from '@/components/Helpers/ShowErrorModal.vue';
-import ShowLoadingModal from "@/components/Helpers/ShowLoadingModal.vue";
+import ShowErrorModal from '@/components/ShowErrorModal.vue';
+import ShowLoadingModal from "@/components/ShowLoadingModal.vue";
 
 const authStore = useAuthStore();
 const todoStore = useToDoStore();
