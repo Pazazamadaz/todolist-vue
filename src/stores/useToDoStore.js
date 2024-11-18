@@ -71,14 +71,15 @@ export const useToDoStore = defineStore('todo', () => {
         }
 
         try {
-            const newTodo = { title: newTodoTitle.value, isCompleted: false, isPriority: newTodoPriority };
+            const newTodo = { title: newTodoTitle.value, isCompleted: false, isPriority: newTodoPriority.value };
             await http.post('/api/TodoItems', newTodo);
             newTodoTitle.value = '';
+            newTodoPriority.value = false;
             await fetchTodoItems();
         } catch (error) {
             errorModalStore.showErrorModal = true;
             errorModalStore.errorModalTitle = 'Add Error';
-            errorModalStore.errorModalMessage = 'Failed to add task';
+            errorModalStore.errorModalMessage = `Failed to add item with error: ${error}`;
         }
     };
 
