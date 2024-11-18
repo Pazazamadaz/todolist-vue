@@ -5,132 +5,87 @@
 }
 
 body {
-  overflow-y: scroll; /* Forces a vertical scrollbar */
+  overflow-y: scroll;
 }
 
-.completed {
-  text-decoration: line-through;
-}
-
-/* New input-container class to align switch and input field */
 .input-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 20px; /* Optional spacing below */
+  margin-bottom: 20px;
 }
 
-/* Make the styles for inputs and buttons specific to the login form */
-.login-inputs .input-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.login-inputs input.custom-input {
-  margin-right: 10px; /* Adds spacing between the username and password inputs */
-}
-
-.login-inputs button {
-  margin-left: 10px; /* Adds spacing between the last input and the button */
-}
-
-/* Make the styles for inputs and buttons specific to the register form */
-.register-inputs .input-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.register-inputs input.custom-input {
-  margin-right: 10px; /* Adds spacing between the username and password inputs */
-}
-
-.register-inputs button {
-  margin-left: 10px; /* Adds spacing between the last input and the button */
-}
-
-.register-button {
-  margin-top: 10px;
-}
-
-/* Centering the table */
 .table-container {
-  width: 700px; /* Set a fixed width for the table container */
-  margin: 0 auto; /* Center the table container horizontally */
+  width: 700px;
+  margin: 0 auto;
 }
 
-/* Style the table */
 table {
-  width: 100%; /* Table takes up the full width of its container */
+  width: 100%;
   border-collapse: collapse;
-  table-layout: fixed; /* Fix the table layout */
+  table-layout: fixed;
 }
 
 th, td {
   border: 1px solid #ddd;
   padding: 10px;
   text-align: center;
-  overflow: hidden; /* Hide overflow content */
-  word-wrap: break-word; /* Ensure text wraps */
+  overflow: hidden;
+  word-wrap: break-word;
 }
 
 th {
   background-color: #f1f1db;
 }
 
-/* Fixed column widths */
 th:nth-child(1), td:nth-child(1) {
-  width: 200px; /* Width for the title column */
+  width: 200px;
 }
 
 th:nth-child(2), td:nth-child(2) {
-  width: 300px; /* Width for the actions column */
+  width: 300px;
 }
 
 .custom-input {
-  background-color: #e0f7fa; /* Set your desired color */
-  border: 1px solid #b2ebf2; /* Optional: border color */
-  padding: 9px; /* Optional: padding inside the input */
-  border-radius: 4px; /* Optional: rounded corners */
-  font-family: 'Arial', sans-serif; /* Font family */
-  font-size: 16px; /* Font size */
+  background-color: #e0f7fa;
+  border: 1px solid #b2ebf2;
+  padding: 9px;
+  border-radius: 4px;
+  font-family: 'Arial', sans-serif;
+  font-size: 16px;
 }
 
-/* Custom button styles */
 button {
-  background-color: #00796b; /* Background color */
-  color: #ffffff; /* Text color */
-  border: none; /* Remove default border */
-  border-radius: 4px; /* Rounded corners */
-  padding: 10px 20px; /* Padding */
+  background-color: #00796b;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  padding: 10px 20px;
   width: 140px;
-  font-family: Arial, sans-serif; /* Font family */
-  font-size: 16px; /* Font size */
-  cursor: pointer; /* Pointer cursor on hover */
-  transition: background-color 0.3s, transform 0.2s; /* Smooth transitions */
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
   margin-left: 10px;
   display: inline-block;
 }
 
 button:first-of-type {
-  margin-right: 15px; /* Add space to the right of the first button (Complete) */
+  margin-right: 15px;
 }
 
-/* Remove margin on the last button */
 button:last-of-type {
   margin-right: 0;
 }
 
 button:hover {
-  background-color: #004d40; /* Darker background on hover */
+  background-color: #004d40;
 }
 
 button:active {
-  transform: scale(0.98); /* Slightly scale down on click */
+  transform: scale(0.98);
 }
 
-/* Modal styling */
 .modal {
   position: fixed;
   left: 0;
@@ -141,7 +96,7 @@ button:active {
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000; /* Make sure modal is on top */
+  z-index: 1000;
 }
 
 .modal-content {
@@ -185,10 +140,9 @@ button:active {
   font-size: 24px;
 }
 
-/* Loading spinner */
 .loading-spinner {
-  border: 8px solid #f3f3f3; /* Light grey */
-  border-top: 8px solid #00796b; /* Blue color */
+  border: 8px solid #f3f3f3;
+  border-top: 8px solid #00796b;
   border-radius: 50%;
   width: 50px;
   height: 50px;
@@ -199,78 +153,6 @@ button:active {
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
-}
-
-/* Add switch toggle styles */
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 60px;
-  height: 34px;
-  margin-right: 10px;
-}
-
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  transition: 0.4s;
-}
-
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 26px;
-  width: 26px;
-  left: 4px;
-  bottom: 4px;
-  background-color: white;
-  transition: 0.4s;
-}
-
-input:checked + .slider {
-  background-color: #00796b;
-}
-
-input:checked + .slider:before {
-  transform: translateX(26px);
-}
-
-/* Rounded sliders */
-.slider.round {
-  border-radius: 34px;
-}
-
-.slider.round:before {
-  border-radius: 50%;
-}
-
-/* Smaller switch class */
-.switch-smaller {
-  width: 35px; /* Shrink width to 70% of original */
-  height: 20px; /* Shrink height to 70% of original */
-}
-
-.switch-smaller .slider:before {
-  height: 14px; /* Shrink the slider to match */
-  width: 14px; /* Shrink the slider to match */
-  left: 3px; /* Adjust the position of the slider knob */
-  bottom: 3px; /* Adjust the position of the slider knob */
-}
-
-/* Optional: you can also tweak the transition speed if needed */
-.switch-smaller .slider {
-  transition: 0.3s; /* Faster transition for the smaller switch */
 }
 
 .logout-button {
@@ -285,7 +167,7 @@ input:checked + .slider:before {
   border-radius: 4px;
   cursor: pointer;
   transform: scale(0.8);
-  transform-origin: top right;  /* Makes sure the scaling happens from the top-right corner */
+  transform-origin: top right;
   transition: transform 0.2s ease;
 }
 
@@ -293,10 +175,10 @@ input:checked + .slider:before {
   transform: scale(1);
 }
 
-.admin-button {
+.portal-switch-button {
   position: absolute;
   top: 10px;
-  right: 130px;  /* Increased right property to 130px for better spacing */
+  right: 130px;
   padding: 8px 16px;
   font-size: 0.9rem;
   background-color: #409EFF;
@@ -305,14 +187,10 @@ input:checked + .slider:before {
   border-radius: 4px;
   cursor: pointer;
   transform: scale(0.8);
-  transform-origin: top right;  /* Ensures the scale happens from the top-right corner */
+  transform-origin: top right;
   transition: transform 0.2s ease;
 }
 
-.admin-button:hover {
+.portal-switch-button:hover {
   transform: scale(1);
-}
-
-.create-user-button {
-  margin-bottom: 16px; /* Adds space below the button */
 }

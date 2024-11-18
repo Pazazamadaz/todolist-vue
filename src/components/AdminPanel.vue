@@ -1,6 +1,6 @@
 <template>
   <div>
-    <button class="admin-button" @click="() => $router.push('/todos')">Todos</button>
+    <button class="portal-switch-button" @click="() => $router.push('/todos')">Todos</button>
     <button class="logout-button" @click="authStore.logout()">Logout</button>
 
     <h1>User List</h1>
@@ -38,17 +38,23 @@ import { onMounted } from 'vue';
 import { useAdminStore } from '@/stores/useAdminStore';
 import { useAuthStore } from '@/stores/useAuthStore';
 import { useCreateUserModalStore } from "@/stores/useCreateUserModalStore";
-import ShowErrorModal from '@/components/Helpers/ShowErrorModal.vue';
-import ShowLoadingModal from "@/components/Helpers/ShowLoadingModal.vue";
-import ShowCreateUserModal from "@/components/Helpers/ShowCreateUserModal.vue";
+import ShowErrorModal from '@/components/ShowErrorModal.vue';
+import ShowLoadingModal from "@/components/ShowLoadingModal.vue";
+import ShowCreateUserModal from "@/components/ShowCreateUserModal.vue";
 
-// Initialize stores
 const adminStore = useAdminStore();
 const authStore = useAuthStore();
 const createUserModalStore = useCreateUserModalStore();
 
-// Fetch users on mount
 onMounted(() => {
   adminStore.fetchUsers();
 });
 </script>
+
+<style scoped>
+
+.create-user-button {
+  margin-bottom: 16px; /* Adds space below the button */
+}
+
+</style>

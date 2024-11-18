@@ -66,6 +66,7 @@ watch(
 </script>
 
 <style scoped>
+
 .modal {
   display: flex;
   justify-content: center;
@@ -129,11 +130,11 @@ watch(
   margin-top: 5px; /* Space between input and error message */
 }
 
-
 .button-container {
   display: flex;
   gap: 10px;
   width: 100%;
   justify-content: center;
 }
+
 </style>

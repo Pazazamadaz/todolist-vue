@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <button v-if="authStore.isAdmin" class="admin-button" @click="() => $router.push('/admin')">Admin</button>
+    <button v-if="authStore.isAdmin" class="portal-switch-button" @click="() => $router.push('/admin')">Admin</button>
     <button class="logout-button" @click="authStore.logout">Logout</button>
     <h1>Todo List</h1>
 
@@ -59,8 +59,8 @@
 import { onMounted } from 'vue';
 import { useToDoStore } from '@/stores/useToDoStore';
 import { useAuthStore } from '@/stores/useAuthStore';
-import ShowErrorModal from '@/components/Helpers/ShowErrorModal.vue';
-import ShowLoadingModal from "@/components/Helpers/ShowLoadingModal.vue";
+import ShowErrorModal from '@/components/ShowErrorModal.vue';
+import ShowLoadingModal from "@/components/ShowLoadingModal.vue";
 
 const authStore = useAuthStore();
 const todoStore = useToDoStore();
@@ -71,22 +71,21 @@ onMounted(() => {
 </script>
 
 <style scoped>
-/* Style for the custom checkbox */
+
 .priority-checkbox {
-  appearance: none; /* Remove default styling */
-  width: 18px; /* Match the size of your input field */
+  appearance: none;
+  width: 18px;
   height: 18px;
-  background-color: #e0f7fa; /* Match the input field's background */
-  border: 1px solid #b2ebf2; /* Match the input field's border */
-  border-radius: 4px; /* Optional: rounded corners for the checkbox */
+  background-color: #e0f7fa;
+  border: 1px solid #b2ebf2;
+  border-radius: 4px;
   cursor: pointer;
   display: inline-block;
-  vertical-align: middle; /* Align with the text */
+  vertical-align: middle;
 }
 
-/* Add checked state for the checkbox */
 .priority-checkbox:checked {
-  background-color: #00796b; /* Fill with your desired color */
+  background-color: #00796b;
   border-color: #00796b;
   background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="white"%3E%3Cpath d="M6.173 13.707l-3.828-3.828 1.414-1.414L6.173 10.88l6.364-6.364 1.414 1.414z"/%3E%3C/svg%3E');
   background-repeat: no-repeat;
@@ -94,15 +93,68 @@ onMounted(() => {
   background-size: 70%;
 }
 
-/* Style the checkbox label */
 .checkbox-label {
-  font-size: 0.8rem; /* Smaller text size */
-  color: #00796b; /* Match your app's color scheme */
-  margin-left: 8px; /* Spacing between checkbox and label */
-  font-family: Arial, sans-serif; /* Match input text styling */
-  line-height: 18px; /* Match the height of the checkbox */
-  vertical-align: middle; /* Ensure alignment with the checkbox */
+  font-size: 0.8rem;
+  color: #00796b;
+  margin-left: 8px;
+  font-family: Arial, sans-serif;
+  line-height: 18px;
+  vertical-align: middle;
 }
 
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+  margin-right: 10px;
+}
 
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: #00796b;
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+.completed {
+  text-decoration: line-through;
+}
 </style>

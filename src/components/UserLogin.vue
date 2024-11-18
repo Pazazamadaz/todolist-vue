@@ -18,9 +18,9 @@
 import { onMounted, ref } from "vue";
 import { useAuthStore } from "@/stores/useAuthStore";
 import { useCreateUserModalStore } from "@/stores/useCreateUserModalStore";
-import ShowErrorModal from "@/components/Helpers/ShowErrorModal.vue";
-import ShowLoadingModal from "@/components/Helpers/ShowLoadingModal.vue";
-import ShowCreateUserModal from "@/components/Helpers/ShowCreateUserModal.vue";
+import ShowErrorModal from "@/components/ShowErrorModal.vue";
+import ShowLoadingModal from "@/components/ShowLoadingModal.vue";
+import ShowCreateUserModal from "@/components/ShowCreateUserModal.vue";
 
 // Setup stores
 const authStore = useAuthStore();
@@ -39,3 +39,24 @@ onMounted(() => {
   inputRef.value.focus();
 });
 </script>
+
+<style scoped>
+/* Make the styles for inputs and buttons specific to the login form */
+.login-inputs .input-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-inputs input.custom-input {
+  margin-right: 10px; /* Adds spacing between the username and password inputs */
+}
+
+.login-inputs button {
+  margin-left: 10px; /* Adds spacing between the last input and the button */
+}
+
+.register-button {
+  margin-top: 10px;
+}
+</style>

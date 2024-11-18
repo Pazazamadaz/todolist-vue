@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { ref, computed, watchEffect } from 'vue';
-import http from '@/http';
+import http from '@/utils/http';
 import { useAuthStore } from './useAuthStore';
 import { useShowLoadingModalStore } from '@/stores/useShowLoadingModalStore';
 import { useShowErrorModalStore } from '@/stores/useShowErrorModalStore';
