@@ -1,6 +1,6 @@
 <template>
   <div>
-    <button class="admin-button" @click="() => $router.push('/todos')">Todos</button>
+    <button class="portal-switch-button" @click="() => $router.push('/todos')">Todos</button>
     <button class="logout-button" @click="authStore.logout()">Logout</button>
 
     <h1>User List</h1>

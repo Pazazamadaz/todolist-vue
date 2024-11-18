@@ -8,10 +8,6 @@ body {
   overflow-y: scroll; /* Forces a vertical scrollbar */
 }
 
-.completed {
-  text-decoration: line-through;
-}
-
 /* New input-container class to align switch and input field */
 .input-container {
   display: flex;
@@ -168,76 +164,6 @@ button:active {
 }
 
 /* Add switch toggle styles */
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 60px;
-  height: 34px;
-  margin-right: 10px;
-}
-
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  transition: 0.4s;
-}
-
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 26px;
-  width: 26px;
-  left: 4px;
-  bottom: 4px;
-  background-color: white;
-  transition: 0.4s;
-}
-
-input:checked + .slider {
-  background-color: #00796b;
-}
-
-input:checked + .slider:before {
-  transform: translateX(26px);
-}
-
-/* Rounded sliders */
-.slider.round {
-  border-radius: 34px;
-}
-
-.slider.round:before {
-  border-radius: 50%;
-}
-
-/* Smaller switch class */
-.switch-smaller {
-  width: 35px; /* Shrink width to 70% of original */
-  height: 20px; /* Shrink height to 70% of original */
-}
-
-.switch-smaller .slider:before {
-  height: 14px; /* Shrink the slider to match */
-  width: 14px; /* Shrink the slider to match */
-  left: 3px; /* Adjust the position of the slider knob */
-  bottom: 3px; /* Adjust the position of the slider knob */
-}
-
-/* Optional: you can also tweak the transition speed if needed */
-.switch-smaller .slider {
-  transition: 0.3s; /* Faster transition for the smaller switch */
-}
 
 .logout-button {
   position: absolute;
@@ -259,7 +185,7 @@ input:checked + .slider:before {
   transform: scale(1);
 }
 
-.admin-button {
+.portal-switch-button {
   position: absolute;
   top: 10px;
   right: 130px;  /* Increased right property to 130px for better spacing */
@@ -275,7 +201,7 @@ input:checked + .slider:before {
   transition: transform 0.2s ease;
 }
 
-.admin-button:hover {
+.portal-switch-button:hover {
   transform: scale(1);
 }
 
