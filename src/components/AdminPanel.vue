@@ -67,7 +67,7 @@
                         width: '20px',
                         height: '20px',
                         borderRadius: '50%',
-                        border: '1px solid black' // Ensure visibility for light colors
+                        border: '1px solid black'
                       }"
                         title="Preview"
                     ></span>
