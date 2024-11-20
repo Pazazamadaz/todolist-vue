@@ -76,7 +76,7 @@
                   </div>
                 </td>
                 <td>
-                  <button>Edit</button>
+                  <button @click="colourThemeStore.showColourThemeModal = true">Edit</button>
                 </td>
               </tr>
               </tbody>
@@ -91,6 +91,7 @@
     <ShowLoadingModal />
     <ShowErrorModal />
     <ShowCreateUserModal />
+    <ShowColourThemeModal />
   </div>
 </template>
 
@@ -99,10 +100,13 @@ import { onMounted } from 'vue';
 import { useAdminStore } from '@/stores/useAdminStore';
 import { useAuthStore } from '@/stores/useAuthStore';
 import { useCreateUserModalStore } from '@/stores/useCreateUserModalStore';
+import { useColourThemeStore } from '@/stores/useColourThemeStore';
+
 import ShowErrorModal from '@/components/ShowErrorModal.vue';
 import ShowLoadingModal from '@/components/ShowLoadingModal.vue';
 import ShowCreateUserModal from '@/components/ShowCreateUserModal.vue';
-import { useColourThemeStore } from '@/stores/useColourThemeStore';
+import ShowColourThemeModal from "@/components/ShowColourThemeModal.vue";
+
 
 const adminStore = useAdminStore();
 const authStore = useAuthStore();

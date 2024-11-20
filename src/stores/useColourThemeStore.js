@@ -3,6 +3,7 @@ import { defineStore } from 'pinia';
 
 export const useColourThemeStore = defineStore('colourThemeStore', () => {
     const colours = ref([]);
+    const showColourThemeModal = ref(false);
 
     const loadColours = () => {
         const root = document.querySelector(':root');
@@ -34,6 +35,7 @@ export const useColourThemeStore = defineStore('colourThemeStore', () => {
 
     return {
         colours,
+        showColourThemeModal,
         loadColours,
     };
 });
