@@ -63,7 +63,7 @@
                   <div class="colour-sample">
                     <span
                         :style="{
-                        backgroundColor: colour.value,
+                        backgroundColor: colour.optionValue,
                         display: 'inline-block',
                         width: '20px',
                         height: '20px',
@@ -72,7 +72,7 @@
                       }"
                         title="Preview"
                     ></span>
-                    {{ colour.value }}
+                    {{ colour.optionValue }}
                   </div>
                 </td>
                 <td>

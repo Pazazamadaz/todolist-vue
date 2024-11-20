@@ -32,7 +32,7 @@ export const useColourThemeStore = defineStore('colourThemeStore', () => {
         const colourList = predefinedVariables.map((variable) => {
             return {
                 optionName: variable,
-                value: rootStyles.getPropertyValue(variable).trim(),
+                optionValue: rootStyles.getPropertyValue(variable).trim(),
             };
         });
 
@@ -40,11 +40,16 @@ export const useColourThemeStore = defineStore('colourThemeStore', () => {
     };
 
     const openColourModal = () => {
+        colourOption.value = editColourIndex.value;
+        const selectedColour = colours.value.find(
+            (colour) => colour.optionName === editColourIndex.value
+        );
+        colourValue.value = selectedColour.optionValue;
         showColourThemeModal.value = true;
     }
 
     watch(editColourIndex, (newValue) => {
-        if (newValue !== null) {
+        if (newValue !== '') {
             openColourModal();
         }
     });

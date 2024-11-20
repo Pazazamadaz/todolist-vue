@@ -20,7 +20,7 @@
         <button class="modal-btn" @click="colourThemeStore.updateColour = true">OK</button>
         <button class="modal-btn" @click="colourThemeStore.showColourThemeModal = false">Cancel</button>
       </div>
-S
+
     </div>
   </div>
 </template>
