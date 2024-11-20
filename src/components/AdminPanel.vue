@@ -60,6 +60,7 @@
               <tr v-for="colour in colourThemeStore.colours" :key="colour.option">
                 <td>{{ colour.option }}</td>
                 <td>
+                  <div class="colour-sample">
                     <span
                         :style="{
                         backgroundColor: colour.value,
@@ -71,7 +72,8 @@
                       }"
                         title="Preview"
                     ></span>
-                  {{ colour.value }}
+                    {{ colour.value }}
+                  </div>
                 </td>
                 <td>
                   <button>Edit</button>
@@ -147,20 +149,14 @@ table td {
   text-align: center;
 }
 
-.actions-cell {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 th, td {
   padding: 10px;
   text-align: left;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid var(--table-border-colour);
 }
 
 th {
-  background-color: #f4f4f4;
+  background-color: var(--table-header-bgcolour);
   text-align: center;
 }
 
@@ -172,6 +168,13 @@ td > button {
 }
 
 td > button:hover {
-  background-color: #ddd;
+  background-color: var(--button-hover-bgcolour);
+}
+
+.colour-sample {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
 }
 </style>

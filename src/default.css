@@ -5,6 +5,7 @@
   --input-bgcolour: #e0f7fa;
   --input-border-colour: #b2ebf2;
   --table-header-bgcolour: #f1f1db;
+  --table-border-colour: #ddd;
   --modal-bgcolour: white;
   --modal-overlay-bgcolour: rgba(0, 0, 0, 0.5);
   --loading-spinner-colour: #00796b;
@@ -41,7 +42,7 @@ table {
 }
 
 th, td {
-  border: 1px solid #ddd;
+  border: 1px solid var(--table-border-colour);
   padding: 10px;
   text-align: center;
   overflow: hidden;

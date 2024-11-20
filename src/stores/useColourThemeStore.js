@@ -14,6 +14,7 @@ export const useColourThemeStore = defineStore('colourThemeStore', () => {
             '--input-bgcolour',
             '--input-border-colour',
             '--table-header-bgcolour',
+            '--table-border-colour',
             '--modal-bgcolour',
             '--modal-overlay-bgcolour',
             '--loading-spinner-colour',
