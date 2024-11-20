@@ -29,7 +29,8 @@ export const useColourThemeStore = defineStore('colourThemeStore', () => {
             '--portal-switch-button-bgcolour'
         ];
 
-        const colourList = predefinedVariables.map((variable) => {
+        let colourList;
+        colourList = predefinedVariables.map((variable) => {
             return {
                 optionName: variable,
                 optionValue: rootStyles.getPropertyValue(variable).trim(),
