@@ -43,9 +43,9 @@ export const useColourThemeStore = defineStore('colourThemeStore', () => {
     const openColourModal = () => {
         colourOption.value = editColourIndex.value;
         const selectedColour = colours.value.find(
-            (colour) => colour.optionName === editColourIndex.value
+            ({optionName}) => optionName === editColourIndex.value
         );
-        colourValue.value = selectedColour.optionValue;
+        ({optionValue: colourValue.value} = selectedColour);
         showColourThemeModal.value = true;
     }
 
