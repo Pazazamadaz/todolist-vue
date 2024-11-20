@@ -1,3 +1,17 @@
+:root {
+  --button-bgcolour: #00796b;
+  --button-hover-bgcolour: #004d40;
+  --button-text-colour: #ffffff;
+  --input-bgcolour: #e0f7fa;
+  --input-border-colour: #b2ebf2;
+  --table-header-bgcolour: #f1f1db;
+  --modal-bgcolour: white;
+  --modal-overlay-bgcolour: rgba(0, 0, 0, 0.5);
+  --loading-spinner-colour: #00796b;
+  --logout-button-bgcolour: #f56c6c;
+  --portal-switch-button-bgcolour: #409EFF;
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   text-align: center;
@@ -35,7 +49,7 @@ th, td {
 }
 
 th {
-  background-color: #f1f1db;
+  background-color: var(--table-header-bgcolour);
 }
 
 th:nth-child(1), td:nth-child(1) {
@@ -47,8 +61,8 @@ th:nth-child(2), td:nth-child(2) {
 }
 
 .custom-input {
-  background-color: #e0f7fa;
-  border: 1px solid #b2ebf2;
+  background-color: var(--input-bgcolour);
+  border: 1px solid var(--input-border-colour);
   padding: 9px;
   border-radius: 4px;
   font-family: 'Arial', sans-serif;
@@ -56,8 +70,8 @@ th:nth-child(2), td:nth-child(2) {
 }
 
 button {
-  background-color: #00796b;
-  color: #ffffff;
+  background-color: var(--button-bgcolour);
+  color: var(--button-text-colour);
   border: none;
   border-radius: 4px;
   padding: 10px 20px;
@@ -79,7 +93,7 @@ button:last-of-type {
 }
 
 button:hover {
-  background-color: #004d40;
+  background-color: var(--button-hover-bgcolour);
 }
 
 button:active {
@@ -92,7 +106,7 @@ button:active {
   top: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background: var(--modal-overlay-bgcolour);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -100,7 +114,7 @@ button:active {
 }
 
 .modal-content {
-  background: white;
+  background: var(--modal-bgcolour);
   padding: 20px;
   border-radius: 8px;
   width: 300px;
@@ -119,8 +133,8 @@ button:active {
 }
 
 .modal-btn {
-  background-color: #00796b;
-  color: white;
+  background-color: var(--button-bgcolour);
+  color: var(--button-text-colour);
   border: none;
   border-radius: 4px;
   padding: 10px 20px;
@@ -129,7 +143,7 @@ button:active {
 }
 
 .modal-btn:hover {
-  background-color: #004d40;
+  background-color: var(--button-hover-bgcolour);
 }
 
 .modal-close {
@@ -142,7 +156,7 @@ button:active {
 
 .loading-spinner {
   border: 8px solid #f3f3f3;
-  border-top: 8px solid #00796b;
+  border-top: 8px solid var(--loading-spinner-colour);
   border-radius: 50%;
   width: 50px;
   height: 50px;
@@ -161,8 +175,8 @@ button:active {
   right: 10px;
   padding: 8px 16px;
   font-size: 0.9rem;
-  background-color: #f56c6c;
-  color: white;
+  background-color: var(--logout-button-bgcolour);
+  color: var(--button-text-colour);
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -181,8 +195,8 @@ button:active {
   right: 130px;
   padding: 8px 16px;
   font-size: 0.9rem;
-  background-color: #409EFF;
-  color: white;
+  background-color: var(--portal-switch-button-bgcolour);
+  color: var(--button-text-colour);
   border: none;
   border-radius: 4px;
   cursor: pointer;
