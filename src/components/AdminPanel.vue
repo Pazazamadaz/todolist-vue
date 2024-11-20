@@ -14,6 +14,10 @@
         <div class="admin-table-container">
           <div v-if="adminStore.users.length > 0">
             <table>
+              <colgroup>
+                <col style="width: 50%" />
+                <col style="width: 50%" />
+              </colgroup>
               <thead>
               <tr>
                 <th>Name</th>
@@ -40,6 +44,11 @@
         <div class="admin-table-container">
           <div v-if="colourThemeStore.colours.length > 0">
             <table>
+              <colgroup>
+                <col style="width: 40%;">
+                <col style="width: 30%;">
+                <col style="width: 30%;">
+              </colgroup>
               <thead>
               <tr>
                 <th>Option</th>
@@ -65,7 +74,6 @@
                   {{ colour.value }}
                 </td>
                 <td>
-                  <!-- Action Buttons for Colours -->
                   <button>Edit</button>
                 </td>
               </tr>
@@ -99,7 +107,6 @@ const authStore = useAuthStore();
 const createUserModalStore = useCreateUserModalStore();
 const colourThemeStore = useColourThemeStore();
 
-// Fetch users and colors on mount
 onMounted(() => {
   adminStore.fetchUsers();
   colourThemeStore.loadColours();
@@ -110,7 +117,7 @@ onMounted(() => {
 .user-list-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   gap: 10px;
 }
 
@@ -136,6 +143,16 @@ table {
   border-collapse: collapse;
 }
 
+table td {
+  text-align: center;
+}
+
+.actions-cell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 th, td {
   padding: 10px;
   text-align: left;
@@ -144,6 +161,7 @@ th, td {
 
 th {
   background-color: #f4f4f4;
+  text-align: center;
 }
 
 td > button {
