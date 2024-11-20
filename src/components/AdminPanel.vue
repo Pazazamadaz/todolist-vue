@@ -57,8 +57,8 @@
               </tr>
               </thead>
               <tbody>
-              <tr v-for="colour in colourThemeStore.colours" :key="colour.option">
-                <td>{{ colour.option }}</td>
+              <tr v-for="colour in colourThemeStore.colours" :key="colour.optionName">
+                <td>{{ colour.optionName }}</td>
                 <td>
                   <div class="colour-sample">
                     <span
@@ -76,7 +76,7 @@
                   </div>
                 </td>
                 <td>
-                  <button @click="colourThemeStore.showColourThemeModal = true">Edit</button>
+                  <button @click="colourThemeStore.editColourIndex = colour.optionName">Edit</button>
                 </td>
               </tr>
               </tbody>

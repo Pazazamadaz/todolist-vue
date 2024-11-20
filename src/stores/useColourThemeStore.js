@@ -1,9 +1,15 @@
-import { ref } from 'vue';
+import { ref, watch} from 'vue';
 import { defineStore } from 'pinia';
 
 export const useColourThemeStore = defineStore('colourThemeStore', () => {
     const colours = ref([]);
+    const colourOption = ref('');
+    const colourValue = ref('');
+    const newColourOption = ref('');
+    const newColourValue = ref('');
     const showColourThemeModal = ref(false);
+    const updateColour = ref(false);
+    const editColourIndex = ref('');
 
     const loadColours = () => {
         const root = document.querySelector(':root');
@@ -25,7 +31,7 @@ export const useColourThemeStore = defineStore('colourThemeStore', () => {
 
         const colourList = predefinedVariables.map((variable) => {
             return {
-                option: variable,
+                optionName: variable,
                 value: rootStyles.getPropertyValue(variable).trim(),
             };
         });
@@ -33,9 +39,32 @@ export const useColourThemeStore = defineStore('colourThemeStore', () => {
         colours.value = colourList;
     };
 
+    const openColourModal = () => {
+        showColourThemeModal.value = true;
+    }
+
+    watch(editColourIndex, (newValue) => {
+        if (newValue !== null) {
+            openColourModal();
+        }
+    });
+
+
+    watch(updateColour, () => {
+        if (updateColour.value !== false) {
+            updateColour();
+        }
+    })
+
     return {
         colours,
+        colourOption,
+        colourValue,
+        newColourOption,
+        newColourValue,
+        editColourIndex,
         showColourThemeModal,
+        updateColour,
         loadColours,
     };
 });
