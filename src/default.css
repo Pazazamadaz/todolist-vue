@@ -70,6 +70,14 @@ th:nth-child(2), td:nth-child(2) {
   font-size: 16px;
 }
 
+.button-container {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  justify-content: center;
+  margin-top: 5px;
+}
+
 button {
   background-color: var(--button-bgcolour);
   color: var(--button-text-colour);

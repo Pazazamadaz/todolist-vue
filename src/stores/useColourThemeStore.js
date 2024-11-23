@@ -11,6 +11,13 @@ export const useColourThemeStore = defineStore('colourThemeStore', () => {
     const saveColour = ref(false);
     const editColourIndex = ref('');
 
+    const resetColourRefs = () => {
+        colourValue.value = '';
+        colourOption.value = '';
+        saveColour.value = false;
+        editColourIndex.value = '';
+    }
+
     const loadColours = () => {
         const root = document.querySelector(':root');
         const rootStyles = getComputedStyle(root);
@@ -52,10 +59,6 @@ export const useColourThemeStore = defineStore('colourThemeStore', () => {
     const updateColour = () => {
         document.documentElement.style.setProperty(colourOption.value, colourValue.value);
         loadColours();
-        editColourIndex.value = '';
-        colourOption.value = '';
-        colourValue.value = '';
-        saveColour.value = false;
         showColourThemeModal.value = false;
     }
 
@@ -70,6 +73,12 @@ export const useColourThemeStore = defineStore('colourThemeStore', () => {
             openColourModal();
         }
     });
+
+    watch(showColourThemeModal, (newValue) => {
+        if (newValue == false) {
+            resetColourRefs();
+        }
+    })
 
     return {
         colours,

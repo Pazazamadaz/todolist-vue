@@ -16,7 +16,7 @@
         />
       </div>
 
-      <div>
+      <div class="button-container">
         <button class="modal-btn" @click="colourThemeStore.saveColour = true">Save</button>
         <button class="modal-btn" @click="colourThemeStore.showColourThemeModal = false">Cancel</button>
       </div>
