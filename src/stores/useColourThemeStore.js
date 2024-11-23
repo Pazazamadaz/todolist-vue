@@ -52,6 +52,11 @@ export const useColourThemeStore = defineStore('colourThemeStore', () => {
     const updateColour = () => {
         document.documentElement.style.setProperty(colourOption.value, colourValue.value);
         loadColours();
+        editColourIndex.value = '';
+        colourOption.value = '';
+        colourValue.value = '';
+        saveColour.value = false;
+        showColourThemeModal.value = false;
     }
 
     watch(saveColour, (newValue) => {
