@@ -75,7 +75,7 @@ export const useColourThemeStore = defineStore('colourThemeStore', () => {
     });
 
     watch(showColourThemeModal, (newValue) => {
-        if (newValue == false) {
+        if (newValue === false) {
             resetColourRefs();
         }
     })
