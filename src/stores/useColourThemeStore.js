@@ -47,6 +47,28 @@ export const useColourThemeStore = defineStore('colourThemeStore', () => {
         colours.value = colourList;
     };
 
+    const applyThemeFromToken = (decodedToken) => {
+        console.log('Decoded Token:', decodedToken);
+
+        const themeName = decodedToken['DefaultColourTheme.Name'];
+        console.log('Theme Name:', themeName);
+
+        if (themeName !== 'Default Theme') {
+            const themeProperties = Object.entries(decodedToken)
+                .filter(([key]) => key.startsWith('DefaultColourTheme.Colour.'))
+                .map(([key, value]) => {
+                    const variable = key.split('.').pop(); // Extract the variable name
+                    return [variable, value];
+                });
+
+            themeProperties.forEach(([variable, value]) => {
+                document.documentElement.style.setProperty(`${variable}`, value); // Set as global CSS variable
+            });
+        } else {
+            console.log('Default Theme detected. No properties applied.');
+        }
+    };
+
     const openColourModal = () => {
         colourOption.value = editColourIndex.value;
         const selectedColour = colours.value.find(
@@ -90,5 +112,6 @@ export const useColourThemeStore = defineStore('colourThemeStore', () => {
         showColourThemeModal,
         saveColour,
         loadColours,
+        applyThemeFromToken
     };
 });

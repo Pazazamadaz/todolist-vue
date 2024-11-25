@@ -1,11 +1,12 @@
 import { defineStore } from 'pinia';
 import router from '@/router';
 import http from '@/utils/http';
-import {computed, ref, watch} from 'vue';
+import { computed, ref, watch } from 'vue';
 import { decodeJwt } from '@/utils/JWTDecoder';
 import { useCreateUserModalStore } from '@/stores/useCreateUserModalStore';
 import { useShowErrorModalStore } from '@/stores/useShowErrorModalStore';
 import { useShowLoadingModalStore } from '@/stores/useShowLoadingModalStore';
+import { useColourThemeStore} from "@/stores/useColourThemeStore";
 
 export const useAuthStore = defineStore('authStore', () => {
   const username = ref('');
@@ -18,6 +19,7 @@ export const useAuthStore = defineStore('authStore', () => {
   const createUserModalStore = useCreateUserModalStore();
   const errorModalStore = useShowErrorModalStore();
   const loadingModalStore = useShowLoadingModalStore();
+  const colourThemeStore = useColourThemeStore();
 
   const register = async () => {
     try {
@@ -49,9 +51,9 @@ export const useAuthStore = defineStore('authStore', () => {
   const login = async () => {
     let loadingTimeout;
 
-    if (username.value === '' || password.value === '') {
+    if (!username.value || !password.value) {
       errorModalStore.errorModalTitle = 'Login Error';
-      errorModalStore.errorModalMessage = "Username and password required to login";
+      errorModalStore.errorModalMessage = 'Username and password are required to log in';
       errorModalStore.showErrorModal = true;
       return;
     }
@@ -64,13 +66,19 @@ export const useAuthStore = defineStore('authStore', () => {
       const response = await http.post('/api/auth/login', { username: username.value, password: password.value });
       token.value = response.data.token;
       localStorage.setItem('token', token.value);
+
+      const decodedToken = decodeJwt(token.value);
       username.value = '';
       password.value = '';
+
+      // Apply theme if not default
+      colourThemeStore.applyThemeFromToken(decodedToken);
+
       router.push('/todos');
     } catch (error) {
       errorModalStore.showErrorModal = true;
       errorModalStore.errorModalTitle = 'Login Error';
-      errorModalStore.errorModalMessage = `Failed to login with error: ${error.response.data}`;
+      errorModalStore.errorModalMessage = `Failed to log in with error: ${error.response?.data}`;
       console.error('Login failed:', error);
     } finally {
       if (loadingTimeout) clearTimeout(loadingTimeout);
@@ -82,9 +90,13 @@ export const useAuthStore = defineStore('authStore', () => {
     token.value = null;
     localStorage.removeItem('token');
     router.push('/login');
+
+    // Reset :root properties to default
+    const root = document.documentElement;
+    root.removeAttribute('style'); // Clears all inline styles
   };
 
-  const isAuthenticated = computed(() => !!token.value);  // Dynamically checks if the user is authenticated
+  const isAuthenticated = computed(() => !!token.value); // Dynamically checks if the user is authenticated
   const isAdmin = computed(() => {
     const decodedToken = token.value ? decodeJwt(token.value) : null;
     console.log('Decoded Token:', decodedToken);
@@ -109,6 +121,6 @@ export const useAuthStore = defineStore('authStore', () => {
     registerOtherUser,
     login,
     logout,
-    isAuthenticated
+    isAuthenticated,
   };
 });
