@@ -5,13 +5,18 @@ import http from '@/utils/http';
 export const useColourThemeStore = defineStore('colourThemeStore', () => {
     const colourTheme = reactive({
         id: null,
+        userId: null,
         name: '',
         colours: [
             {
                 colourProperty: '',
                 colourValue: '',
+                colourThemeId: null,
             }
         ],
+        isActive: false,
+        isDefault: false,
+        isSystemDefined: false
     });
 
     const colourProperty = ref('');
@@ -45,31 +50,41 @@ export const useColourThemeStore = defineStore('colourThemeStore', () => {
             '--portal-switch-button-bgcolour',
         ];
 
-        colourTheme.colours = predefinedVariables.map((variable) => ({
-            colourProperty: variable,
-            colourValue: root.style.getPropertyValue(variable).trim(),
+        colourTheme.colours = predefinedVariables.map((colourProperty, colourThemeId) => ({
+            colourProperty: colourProperty,
+            colourValue: root.style.getPropertyValue(colourProperty).trim(),
+            colourThemeId: colourThemeId
         }));
     };
 
     const applyThemeFromToken = (decodedToken) => {
         console.log('Decoded Token:', decodedToken);
 
+        // Assign top-level properties from the token
         colourTheme.id = decodedToken['DefaultColourTheme.Id'] || null;
+        colourTheme.userId = decodedToken['UserId'] || null;
         colourTheme.name = decodedToken['DefaultColourTheme.Name'] || 'Default Theme';
+        colourTheme.isDefault = decodedToken['DefaultColourTheme.IsDefault'];
+        colourTheme.isSystemDefined = decodedToken['DefaultColourTheme.IsSystemDefined'];
+        colourTheme.isActive = decodedToken['DefaultColourTheme.IsActive']
 
-        // Populate the colours array
+        // Extract and parse colour data
         const themeProperties = Object.entries(decodedToken)
-            .filter(([key]) => key.startsWith('DefaultColourTheme.Colour.'))
+            .filter(([key]) => key.startsWith('DefaultColourTheme.Colour.')) // Only colour-related claims
             .map(([key, value]) => {
-                const variable = key.split('.').pop();
+                const variable = key.split('.').pop(); // Extract colourProperty (e.g., '--button-bgcolour')
+                const [colourValue, colourThemeId] = value.split(':'); // Extract colourValue and colourThemeId
+
                 return {
                     colourProperty: variable,
-                    colourValue: value,
+                    colourValue: colourValue.trim(), // Clean up the value
+                    colourThemeId: parseInt(colourThemeId, 10), // Parse as integer
                 };
             });
 
         colourTheme.colours = themeProperties;
 
+        // Apply colours to the DOM
         themeProperties.forEach(({ colourProperty, colourValue }) => {
             document.documentElement.style.setProperty(colourProperty, colourValue);
         });
@@ -89,11 +104,16 @@ export const useColourThemeStore = defineStore('colourThemeStore', () => {
             // Prepare the colour theme object for saving
             const theme = {
                 id: colourTheme.id,
+                userId: colourTheme.userId,
                 name: colourTheme.name,
-                colours: colourTheme.colours.map(({ colourProperty, colourValue }) => ({
-                    name: colourProperty,
-                    value: colourValue,
+                colours: colourTheme.colours.map(({ colourProperty, colourValue, colourThemeId }) => ({
+                    colourProperty: colourProperty,
+                    colourValue: colourValue,
+                    colourThemeId: colourThemeId
                 })),
+                isActive: colourTheme.isActive,
+                isSystemDefined: colourTheme.isSystemDefined,
+                isDefault: colourTheme.isDefault
             };
 
             await http.put('/api/ColourTheme', theme);
@@ -107,13 +127,12 @@ export const useColourThemeStore = defineStore('colourThemeStore', () => {
     };
 
     const updateColour = () => {
-        // Update the selected colour in the reactive theme object
         const colourToUpdate = colourTheme.colours.find(
-            ({ colourProperty }) => colourProperty === colourProperty.value
+            ({colourProperty}) => colourProperty.value === colourProperty.value
         );
 
         if (colourToUpdate) {
-            colourToUpdate.colourProperty = colourValue.value;
+            colourToUpdate.colourValue = colourValue.value;
         }
 
         showColourThemeModal.value = false;
