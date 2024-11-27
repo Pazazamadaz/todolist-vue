@@ -1,26 +1,35 @@
-import { ref, watch} from 'vue';
+import { ref, reactive, watch } from 'vue';
 import { defineStore } from 'pinia';
+import http from '@/utils/http';
 
 export const useColourThemeStore = defineStore('colourThemeStore', () => {
-    const colours = ref([]);
-    const colourOption = ref('');
+    const colourTheme = reactive({
+        id: null,
+        name: '',
+        colours: [
+            {
+                colourProperty: '',
+                colourValue: '',
+            }
+        ],
+    });
+
+    const colourProperty = ref('');
     const colourValue = ref('');
-    const newColourOption = ref('');
-    const newColourValue = ref('');
     const showColourThemeModal = ref(false);
     const saveColour = ref(false);
     const editColourIndex = ref('');
 
     const resetColourRefs = () => {
         colourValue.value = '';
-        colourOption.value = '';
+        colourProperty.value = '';
         saveColour.value = false;
         editColourIndex.value = '';
-    }
+    };
 
     const loadColours = () => {
-        const root = document.querySelector(':root');
-        const rootStyles = getComputedStyle(root);
+        const root = document.documentElement;
+        //const rootStyles = getComputedStyle(root);
         const predefinedVariables = [
             '--button-bgcolour',
             '--button-hover-bgcolour',
@@ -33,56 +42,83 @@ export const useColourThemeStore = defineStore('colourThemeStore', () => {
             '--modal-overlay-bgcolour',
             '--loading-spinner-colour',
             '--logout-button-bgcolour',
-            '--portal-switch-button-bgcolour'
+            '--portal-switch-button-bgcolour',
         ];
 
-        let colourList;
-        colourList = predefinedVariables.map((variable) => {
-            return {
-                optionName: variable,
-                optionValue: rootStyles.getPropertyValue(variable).trim(),
-            };
-        });
-
-        colours.value = colourList;
+        colourTheme.colours = predefinedVariables.map((variable) => ({
+            colourProperty: variable,
+            colourValue: root.style.getPropertyValue(variable).trim(),
+        }));
     };
 
     const applyThemeFromToken = (decodedToken) => {
         console.log('Decoded Token:', decodedToken);
 
-        const themeName = decodedToken['DefaultColourTheme.Name'];
-        console.log('Theme Name:', themeName);
+        colourTheme.id = decodedToken['DefaultColourTheme.Id'] || null;
+        colourTheme.name = decodedToken['DefaultColourTheme.Name'] || 'Default Theme';
 
-        if (themeName !== 'Default Theme') {
-            const themeProperties = Object.entries(decodedToken)
-                .filter(([key]) => key.startsWith('DefaultColourTheme.Colour.'))
-                .map(([key, value]) => {
-                    const variable = key.split('.').pop(); // Extract the variable name
-                    return [variable, value];
-                });
-
-            themeProperties.forEach(([variable, value]) => {
-                document.documentElement.style.setProperty(`${variable}`, value); // Set as global CSS variable
+        // Populate the colours array
+        const themeProperties = Object.entries(decodedToken)
+            .filter(([key]) => key.startsWith('DefaultColourTheme.Colour.'))
+            .map(([key, value]) => {
+                const variable = key.split('.').pop();
+                return {
+                    colourProperty: variable,
+                    colourValue: value,
+                };
             });
-        } else {
-            console.log('Default Theme detected. No properties applied.');
-        }
+
+        colourTheme.colours = themeProperties;
+
+        themeProperties.forEach(({ colourProperty, colourValue }) => {
+            document.documentElement.style.setProperty(colourProperty, colourValue);
+        });
     };
 
     const openColourModal = () => {
-        colourOption.value = editColourIndex.value;
-        const selectedColour = colours.value.find(
-            ({optionName}) => optionName === editColourIndex.value
+        colourProperty.value = editColourIndex.value;
+        const selectedColour = colourTheme.colours.find(
+            ({ colourProperty }) => colourProperty === editColourIndex.value
         );
-        ({optionValue: colourValue.value} = selectedColour);
+        ({ colourValue: colourValue.value } = selectedColour);
         showColourThemeModal.value = true;
-    }
+    };
+
+    const updateColourTheme = async () => {
+        try {
+            // Prepare the colour theme object for saving
+            const theme = {
+                id: colourTheme.id,
+                name: colourTheme.name,
+                colours: colourTheme.colours.map(({ colourProperty, colourValue }) => ({
+                    name: colourProperty,
+                    value: colourValue,
+                })),
+            };
+
+            await http.put('/api/ColourTheme', theme);
+
+            console.log('Colour theme updated successfully');
+            //loadColours(); // Refresh local colours
+        } catch (error) {
+            console.error('Failed to update colour theme:', error);
+            throw error;
+        }
+    };
 
     const updateColour = () => {
-        document.documentElement.style.setProperty(colourOption.value, colourValue.value);
-        loadColours();
+        // Update the selected colour in the reactive theme object
+        const colourToUpdate = colourTheme.colours.find(
+            ({ colourProperty }) => colourProperty === colourProperty.value
+        );
+
+        if (colourToUpdate) {
+            colourToUpdate.colourProperty = colourValue.value;
+        }
+
         showColourThemeModal.value = false;
-    }
+        updateColourTheme();
+    };
 
     watch(saveColour, (newValue) => {
         if (newValue === true) {
@@ -100,18 +136,17 @@ export const useColourThemeStore = defineStore('colourThemeStore', () => {
         if (newValue === false) {
             resetColourRefs();
         }
-    })
+    });
 
     return {
-        colours,
-        colourOption,
+        colourTheme,
+        colourProperty,
         colourValue,
-        newColourOption,
-        newColourValue,
         editColourIndex,
         showColourThemeModal,
         saveColour,
         loadColours,
-        applyThemeFromToken
+        applyThemeFromToken,
+        updateColourTheme,
     };
 });

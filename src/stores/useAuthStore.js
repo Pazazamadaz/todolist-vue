@@ -71,7 +71,6 @@ export const useAuthStore = defineStore('authStore', () => {
       username.value = '';
       password.value = '';
 
-      // Apply theme if not default
       colourThemeStore.applyThemeFromToken(decodedToken);
 
       router.push('/todos');
@@ -93,10 +92,10 @@ export const useAuthStore = defineStore('authStore', () => {
 
     // Reset :root properties to default
     const root = document.documentElement;
-    root.removeAttribute('style'); // Clears all inline styles
+    root.removeAttribute('style');
   };
 
-  const isAuthenticated = computed(() => !!token.value); // Dynamically checks if the user is authenticated
+  const isAuthenticated = computed(() => !!token.value);
   const isAdmin = computed(() => {
     const decodedToken = token.value ? decodeJwt(token.value) : null;
     console.log('Decoded Token:', decodedToken);

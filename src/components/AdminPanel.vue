@@ -42,7 +42,7 @@
       <div>
         <h1>Color Options</h1>
         <div class="admin-table-container">
-          <div v-if="colourThemeStore.colours.length > 0">
+          <div v-if="colourThemeStore.colourTheme.colours.length > 0">
             <table>
               <colgroup>
                 <col style="width: 40%;">
@@ -57,13 +57,13 @@
               </tr>
               </thead>
               <tbody>
-              <tr v-for="colour in colourThemeStore.colours" :key="colour.optionName">
-                <td>{{ colour.optionName }}</td>
+              <tr v-for="colour in colourThemeStore.colourTheme.colours" :key="colour.colourProperty">
+                <td>{{ colour.colourProperty }}</td>
                 <td>
                   <div class="colour-sample">
                     <span
                         :style="{
-                        backgroundColor: colour.optionValue,
+                        backgroundColor: colour.colourValue,
                         display: 'inline-block',
                         width: '20px',
                         height: '20px',
@@ -72,11 +72,11 @@
                       }"
                         title="Preview"
                     ></span>
-                    {{ colour.optionValue }}
+                    {{ colour.colourValue }}
                   </div>
                 </td>
                 <td>
-                  <button @click="colourThemeStore.editColourIndex = colour.optionName">Edit</button>
+                  <button @click="colourThemeStore.editColourIndex = colour.colourProperty">Edit</button>
                 </td>
               </tr>
               </tbody>
@@ -115,7 +115,7 @@ const colourThemeStore = useColourThemeStore();
 
 onMounted(() => {
   adminStore.fetchUsers();
-  colourThemeStore.loadColours();
+  //colourThemeStore.loadColours();
 });
 </script>
 
