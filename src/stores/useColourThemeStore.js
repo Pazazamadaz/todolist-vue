@@ -63,9 +63,9 @@ export const useColourThemeStore = defineStore('colourThemeStore', () => {
         colourTheme.id = decodedToken['DefaultColourTheme.Id'] ? parseInt(decodedToken['DefaultColourTheme.Id'], 10) : null;
         colourTheme.userId = decodedToken['UserId'] ? parseInt(decodedToken['UserId'], 10) : null;
         colourTheme.name = decodedToken['DefaultColourTheme.Name'] || 'Default Theme';
-        colourTheme.isDefault = decodedToken['DefaultColourTheme.IsDefault'] == "true" ? true : false;
-        colourTheme.SystemDefined = decodedToken['DefaultColourTheme.SystemDefined'] == "true" ? true : false;
-        colourTheme.isActive = decodedToken['DefaultColourTheme.IsActive'] == "true" ? true : false;
+        colourTheme.isDefault = decodedToken['DefaultColourTheme.IsDefault'] === "true";
+        colourTheme.SystemDefined = decodedToken['DefaultColourTheme.SystemDefined'] === "true";
+        colourTheme.isActive = decodedToken['DefaultColourTheme.IsActive'] === "true";
 
         // Extract and parse colour data
         const themeProperties = Object.entries(decodedToken)
@@ -134,9 +134,9 @@ export const useColourThemeStore = defineStore('colourThemeStore', () => {
             colourToUpdate.colourValue = colourValue.value;
         }
 
-        showColourThemeModal.value = false;
         updateColourTheme();
-        loadColours();
+        document.documentElement.style.setProperty(colourToUpdate.colourProperty, colourToUpdate.colourValue);
+        showColourThemeModal.value = false;
     };
 
     watch(saveColour, (newValue) => {
