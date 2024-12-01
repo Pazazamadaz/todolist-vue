@@ -16,7 +16,7 @@ export const useColourThemeStore = defineStore('colourThemeStore', () => {
         ],
         isActive: false,
         isDefault: false,
-        isSystemDefined: false
+        SystemDefined: false
     });
 
     const colourProperty = ref('');
@@ -60,25 +60,24 @@ export const useColourThemeStore = defineStore('colourThemeStore', () => {
     const applyThemeFromToken = (decodedToken) => {
         console.log('Decoded Token:', decodedToken);
 
-        // Assign top-level properties from the token
-        colourTheme.id = decodedToken['DefaultColourTheme.Id'] || null;
-        colourTheme.userId = decodedToken['UserId'] || null;
+        colourTheme.id = decodedToken['DefaultColourTheme.Id'] ? parseInt(decodedToken['DefaultColourTheme.Id'], 10) : null;
+        colourTheme.userId = decodedToken['UserId'] ? parseInt(decodedToken['UserId'], 10) : null;
         colourTheme.name = decodedToken['DefaultColourTheme.Name'] || 'Default Theme';
-        colourTheme.isDefault = decodedToken['DefaultColourTheme.IsDefault'];
-        colourTheme.isSystemDefined = decodedToken['DefaultColourTheme.IsSystemDefined'];
-        colourTheme.isActive = decodedToken['DefaultColourTheme.IsActive']
+        colourTheme.isDefault = decodedToken['DefaultColourTheme.IsDefault'] == "true" ? true : false;
+        colourTheme.SystemDefined = decodedToken['DefaultColourTheme.SystemDefined'] == "true" ? true : false;
+        colourTheme.isActive = decodedToken['DefaultColourTheme.IsActive'] == "true" ? true : false;
 
         // Extract and parse colour data
         const themeProperties = Object.entries(decodedToken)
-            .filter(([key]) => key.startsWith('DefaultColourTheme.Colour.')) // Only colour-related claims
+            .filter(([key]) => key.startsWith('DefaultColourTheme.Colour.'))
             .map(([key, value]) => {
-                const variable = key.split('.').pop(); // Extract colourProperty (e.g., '--button-bgcolour')
-                const [colourValue, colourThemeId] = value.split(':'); // Extract colourValue and colourThemeId
+                const variable = key.split('.').pop();
+                const [colourValue, colourThemeId] = value.split(':');
 
                 return {
                     colourProperty: variable,
                     colourValue: colourValue.trim(), // Clean up the value
-                    colourThemeId: parseInt(colourThemeId, 10), // Parse as integer
+                    colourThemeId: parseInt(colourThemeId, 10),
                 };
             });
 
@@ -112,7 +111,7 @@ export const useColourThemeStore = defineStore('colourThemeStore', () => {
                     colourThemeId: colourThemeId
                 })),
                 isActive: colourTheme.isActive,
-                isSystemDefined: colourTheme.isSystemDefined,
+                SystemDefined: colourTheme.SystemDefined,
                 isDefault: colourTheme.isDefault
             };
 
@@ -137,6 +136,7 @@ export const useColourThemeStore = defineStore('colourThemeStore', () => {
 
         showColourThemeModal.value = false;
         updateColourTheme();
+        loadColours();
     };
 
     watch(saveColour, (newValue) => {

@@ -115,7 +115,6 @@ const colourThemeStore = useColourThemeStore();
 
 onMounted(() => {
   adminStore.fetchUsers();
-  //colourThemeStore.loadColours();
 });
 </script>
 
