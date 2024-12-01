@@ -6,7 +6,7 @@
       <input v-model="authStore.password" type="password" class="custom-input" placeholder="Password" required @keyup.enter="authStore.login" />
       <button @click="authStore.login">Login</button>
     </div>
-    <button @click="Register()" class="custom-button register-button">Register</button>
+    <button @click="Register()" class="register-button">Register</button>
   </div>
 
   <ShowCreateUserModal />
