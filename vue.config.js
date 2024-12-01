@@ -1,8 +1,7 @@
-const { defineConfig } = require('@vue/cli-service')
+const { defineConfig } = require('@vue/cli-service');
 module.exports = defineConfig({
   transpileDependencies: true,
-  publicPath: process.env.NODE_ENV === 'production'
-      ? '/todolist-vue/'
-      : '/'
-})
+  publicPath: '/' // no need for separate path for production as going to use Azure Static instead of GitHub Pages
+});
+
 
