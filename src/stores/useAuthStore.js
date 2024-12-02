@@ -23,7 +23,7 @@ export const useAuthStore = defineStore('authStore', () => {
 
   const register = async () => {
     try {
-      const response = await http.post('/api/auth/register', { username: newUsername.value, password: newPassword.value });
+      const response = await http.post('/api/Auth/register', { username: newUsername.value, password: newPassword.value });
       console.log('Registration successful:', response.data);
     } catch (error) {
       errorModalStore.showErrorModal = true;
