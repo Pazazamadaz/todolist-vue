@@ -43,4 +43,3 @@ jobs:
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_ICY_GRASS_0E4E30C03 }}
           action: "close"
-Update azure-static-web-apps-icy-grass-0e4e30c03.yml · Pazazamadaz/todolist-vue@5233fcd 
