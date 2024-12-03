@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const http = axios.create({
     //baseURL: 'http://localhost:5000', // Set your base URL here
-    baseURL: 'https://icy-grass-0e4e30c03.4.azurestaticapps.net'
+    baseURL: 'https://todolist-api-g2g8gvgmgagwdyh6.uksouth-01.azurewebsites.net/'
 });
 
 // Add a request interceptor
