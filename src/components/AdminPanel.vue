@@ -76,7 +76,7 @@
                   </div>
                 </td>
                 <td>
-                  <button @click="colourThemeStore.editColourIndex = colour.colourProperty">Edit</button>
+                  <button @click="colourThemeStore.colourProperty = colour.colourProperty">Edit</button>
                 </td>
               </tr>
               </tbody>
