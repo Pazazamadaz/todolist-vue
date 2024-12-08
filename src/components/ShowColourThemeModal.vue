@@ -5,7 +5,7 @@
 
       <h2>Edit Colour Option</h2>
 
-      <p>Editing Colour for: <strong>{{ colourThemeStore.colourOption}}</strong></p>
+      <p>Editing Colour for: <strong>{{ colourThemeStore.colourProperty}}</strong></p>
 
       <div>
         <label for="colour-picker">Select new color:</label>

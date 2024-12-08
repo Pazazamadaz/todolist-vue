@@ -127,7 +127,7 @@ export const useColourThemeStore = defineStore('colourThemeStore', () => {
 
     const updateColour = () => {
         const colourToUpdate = colourTheme.colours.find(
-            ({colourProperty}) => colourProperty.value === colourProperty.value
+            ({ colourProperty: property }) => property === colourProperty.value
         );
 
         if (colourToUpdate) {
