@@ -20,17 +20,27 @@ export const useToDoStore = defineStore('todo', () => {
     // Computed ordered list of todo items
     const orderedTodoItems = computed(() => {
         return todoItems.value.slice().sort((a, b) => {
-            // First, sort by priority (true > false)
-            if (a.isPriority !== b.isPriority) {
-                return a.isPriority ? -1 : 1;  // Higher priority first
+            // Check the ordering mode (default: uncompleted > priority)
+            if (!orderByCompleted.value) {
+                // Uncompleted first, then priority
+                if (a.isCompleted !== b.isCompleted) {
+                    return a.isCompleted ? 1 : -1; // Uncompleted first
+                }
+                if (a.isPriority !== b.isPriority) {
+                    return a.isPriority ? -1 : 1; // Higher priority first
+                }
+            } else {
+                // Completed first, then priority
+                if (a.isCompleted !== b.isCompleted) {
+                    return a.isCompleted ? -1 : 1; // Completed first
+                }
+                if (a.isPriority !== b.isPriority) {
+                    return a.isPriority ? -1 : 1; // Higher priority first
+                }
             }
 
-            // If priorities are equal, then sort by completion status
-            if (orderByCompleted.value) {
-                return a.isCompleted === b.isCompleted ? 0 : a.isCompleted ? -1 : 1;
-            } else {
-                return a.isCompleted === b.isCompleted ? 0 : a.isCompleted ? 1 : -1;
-            }
+            // If both completion and priority are equal, maintain original order
+            return 0;
         });
     });
 
