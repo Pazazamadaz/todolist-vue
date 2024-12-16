@@ -32,7 +32,6 @@ export const useColourThemeStore = defineStore('colourThemeStore', () => {
 
     const loadColours = () => {
         const root = document.documentElement;
-        //const rootStyles = getComputedStyle(root);
         const predefinedVariables = [
             '--button-bgcolour',
             '--button-hover-bgcolour',
@@ -46,6 +45,7 @@ export const useColourThemeStore = defineStore('colourThemeStore', () => {
             '--loading-spinner-colour',
             '--logout-button-bgcolour',
             '--portal-switch-button-bgcolour',
+            '--isadmin-text-colour',
         ];
 
         colourTheme.colours = predefinedVariables.map((colourProperty, colourThemeId) => ({

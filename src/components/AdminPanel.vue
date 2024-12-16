@@ -26,9 +26,18 @@
               </thead>
               <tbody>
               <tr v-for="user in adminStore.users" :key="user">
-                <td>{{ user }}</td>
+                <td>{{ user.username }}</td>
                 <td>
-                  <button @click="adminStore.deleteUsername = user">Delete</button>
+                  <div class="actions-container">
+                    <div class="switch-container">
+                      <span class="admin-label">Is Admin</span>
+                      <label class="switch">
+                        <input type="checkbox" v-model="user.isAdmin" :value="user.isAdmin" />
+                        <span class="slider round"></span>
+                      </label>
+                    </div>
+                    <button @click="adminStore.deleteUsername = user.username">Delete</button>
+                  </div>
                 </td>
               </tr>
               </tbody>
@@ -180,4 +189,22 @@ td > button:hover {
   gap: 10px;
   justify-content: center;
 }
+
+.actions-container {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px; /* Space between the switch-container and the button */
+}
+
+.switch-container {
+  display: flex;
+  align-items: center;
+  gap: 5px; /* Space between the label and the switch */
+}
+
+.admin-label {
+  font-size: 14px;
+  color: var(--text-color, #000); /* Use a default text color or a variable */
+}
+
 </style>
