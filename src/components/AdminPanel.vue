@@ -25,14 +25,14 @@
               </tr>
               </thead>
               <tbody>
-              <tr v-for="user in adminStore.users" :key="user">
+              <tr v-for="user in adminStore.users" :key="user.username">
                 <td>{{ user.username }}</td>
                 <td>
                   <div class="actions-container">
                     <div class="switch-container">
                       <span class="admin-label">Is Admin</span>
                       <label class="switch">
-                        <input type="checkbox" v-model="user.isAdmin" :value="user.isAdmin" />
+                        <input type="checkbox" v-model="user.isAdmin" />
                         <span class="slider round"></span>
                       </label>
                     </div>

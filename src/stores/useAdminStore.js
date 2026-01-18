@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia';
-import { ref, watch } from 'vue';
+import { ref, watch, reactive, watchEffect } from 'vue';
 import http from '@/utils/http';
 import { useAuthStore } from '@/stores/useAuthStore';
 import { useShowErrorModalStore } from '@/stores/useShowErrorModalStore';
@@ -7,9 +7,12 @@ import { useShowLoadingModalStore } from '@/stores/useShowLoadingModalStore';
 import { useCreateUserModalStore } from '@/stores/useCreateUserModalStore';
 
 export const useAdminStore = defineStore('adminStore', () => {
-    // State
-    const users = ref([]);
+    // State - reactive array of User objects
+    const users = reactive([]);
     const deleteUsername = ref('');
+
+    // Track initial isAdmin values to detect changes
+    const initialAdminStatus = new Map();
 
     // Dependency stores
     const authStore = useAuthStore();
@@ -34,7 +37,36 @@ export const useAdminStore = defineStore('adminStore', () => {
             }, 500);
 
             const response = await http.get('/api/Admin'); // Replace with actual endpoint
-            users.value = response.data;
+
+            // Clear existing users and tracking map
+            users.splice(0, users.length);
+            initialAdminStatus.clear();
+
+            // Populate with User objects and set up watchers
+            response.data.forEach(userData => {
+                const user = reactive({
+                    username: userData.username,
+                    isAdmin: userData.isAdmin
+                });
+
+                // Store the initial isAdmin value
+                initialAdminStatus.set(user.username, user.isAdmin);
+
+                // Watch for changes to this user's isAdmin property
+                watchEffect(() => {
+                    const currentIsAdmin = user.isAdmin;
+                    const initialValue = initialAdminStatus.get(user.username);
+
+                    // Only update if it changed from initial value
+                    if (currentIsAdmin !== initialValue && initialValue !== undefined) {
+                        // Update the stored value to prevent repeated calls
+                        initialAdminStatus.set(user.username, currentIsAdmin);
+                        updateUser(user.username, currentIsAdmin);
+                    }
+                });
+
+                users.push(user);
+            });
         } catch (error) {
             console.error('Fetch users error:', error);
             errorModalStore.showErrorModal = true;
@@ -55,9 +87,9 @@ export const useAdminStore = defineStore('adminStore', () => {
             });
 
             // Remove the user from the local state after successful deletion
-            const userIndex = users.value.findIndex(user => user === deleteUsername.value);
+            const userIndex = users.findIndex(user => user.username === deleteUsername.value);
             if (userIndex !== -1) {
-                users.value.splice(userIndex, 1);
+                users.splice(userIndex, 1);
             }
 
             // Clear the username after successful deletion
@@ -71,6 +103,23 @@ export const useAdminStore = defineStore('adminStore', () => {
 
     const createUser = () => {
         createUserModalStore.showCreateUserModal = true;
+    };
+
+    const updateUser = async (username, isAdmin) => {
+        try {
+            await http.put('/api/Admin/update', {
+                username: username,
+                isAdmin: isAdmin
+            });
+        } catch (error) {
+            console.error('Update user error:', error);
+            errorModalStore.showErrorModal = true;
+            errorModalStore.errorModalTitle = 'Update Error';
+            errorModalStore.errorModalMessage = `Failed to update user: ${error.response?.data || error.message}`;
+
+            // Revert the change in the UI by re-fetching users
+            await fetchUsers();
+        }
     };
 
     // Watch `deleteUsername` and delete user if it's set
