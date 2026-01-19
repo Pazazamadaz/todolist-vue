@@ -14,6 +14,7 @@ export const useAuthStore = defineStore('authStore', () => {
   const newUsername = ref('');
   const newPassword = ref('');
   const isRegistration = ref(false);
+  const Register = ref(false);
   const token = ref(localStorage.getItem('token') || null);
 
   const createUserModalStore = useCreateUserModalStore();
@@ -114,6 +115,7 @@ export const useAuthStore = defineStore('authStore', () => {
     newUsername,
     newPassword,
     isRegistration,
+    Register,
     token,
     isAdmin,
     register,
