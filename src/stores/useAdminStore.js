@@ -131,7 +131,7 @@ export const useAdminStore = defineStore('adminStore', () => {
 
     // Watch for Register state change and trigger registration logic
     watch(() => authStore.Register, (newValue) => {
-        if (newValue === true) {
+        if (newValue) {
             authStore.isRegistration = true;
             createUserModalStore.openModal();
             // Reset Register to false for next use
