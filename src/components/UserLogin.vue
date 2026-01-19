@@ -6,7 +6,7 @@
       <input v-model="authStore.password" type="password" class="custom-input" placeholder="Password" required @keyup.enter="authStore.login" />
       <button @click="authStore.login">Login</button>
     </div>
-    <button @click="Register()" class="register-button">Register</button>
+    <button @click="authStore.Register = true" class="register-button">Register</button>
   </div>
 
   <ShowCreateUserModal />
@@ -17,22 +17,15 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import { useAuthStore } from "@/stores/useAuthStore";
-import { useCreateUserModalStore } from "@/stores/useCreateUserModalStore";
 import ShowErrorModal from "@/components/ShowErrorModal.vue";
 import ShowLoadingModal from "@/components/ShowLoadingModal.vue";
 import ShowCreateUserModal from "@/components/ShowCreateUserModal.vue";
 
 // Setup stores
 const authStore = useAuthStore();
-const createUserModalStore = useCreateUserModalStore();
 
 // Ref for input focus
 const inputRef = ref(null);
-
-function Register() {
-  authStore.isRegistration = true;
-  createUserModalStore.openModal();
-}
 
 // Focus on the username input when mounted
 onMounted(() => {
